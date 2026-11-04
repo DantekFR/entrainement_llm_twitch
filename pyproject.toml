@@ -1,0 +1,33 @@
+[project]
+name = "entrainement-llm-twitch"
+version = "0.1.0"
+description = "Fine-tuning d'un LLM"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "accelerate>=1.15.0",
+    "bitsandbytes>=0.50.2",
+    "datasets>=4.7,<5",
+    "huggingface-hub>=1.5,<2",
+    "numpy>=2.5.4",
+    "peft>=0.21.2",
+    "sentencepiece>=0.2.2",
+    "tensorboard>=2.21.0",
+    "torch>=2.14.0",
+    "torchvision>=0.29.1",
+    "transformers>=5.2,<=5.17.0",
+    "trl>=1.0,<=1.15.0",
+    "unsloth>=2026.11.1",
+]
+
+[tool.uv]
+environments = ["sys_platform == 'linux'"]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }

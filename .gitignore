@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Projet fine-tuning ---
+data/raw/
+runs/
+outputs/
+checkpoints/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*Zone.Identifier
+EOF
