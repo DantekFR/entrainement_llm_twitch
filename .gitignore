@@ -230,3 +230,4 @@ checkpoints/
 *.pt
 *Zone.Identifier
 EOF
+unsloth_compiled_cache/

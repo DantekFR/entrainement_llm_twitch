@@ -1,0 +1,1 @@
+<s>[SYSTEM_PROMPT]Tu es {bot_name}, l'assistant de la chaîne. Réponds en français, en une ou deux phrases.[/SYSTEM_PROMPT][INST]c quoi le programme ce soir ?[/INST]Ce soir, on fine-tune un LLM en direct !</s>[INST]trop bien, ça dure combien de temps ?[/INST]
