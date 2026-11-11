@@ -51,7 +51,7 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | --- | --- |
 | 0. Environnement | **Terminée** : `check_env.py` au vert (CUDA, bf16, couche 4 bits testée) |
 | 1. Explorer le modèle | **Terminée** : `notebooks/01_explore_model.ipynb`, chat template dans `docs/chat_template/` |
-| `prompt_format` v1 | **En cours** : `docs/prompt_format.md`, sections Principes, Structure et Plafonds écrites |
+| `prompt_format` v1 | **Presque terminé** : `docs/prompt_format.md`, il reste les règles système (6c, 6d), le bloc `[JEU EN COURS]` et la mise à jour de l'exemple |
 | 2. Jeu d'évaluation | À faire |
 | 3. Dataset de départ | À faire |
 | 4. Entraînement v0 | À faire |
@@ -96,6 +96,20 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - **Plafonds en tokens** (pas en lignes) : faits 600, emotes 300, profils 600, historique 1 500, total ≈ 3 500.
 - **Dataset** : `{bot_name}` et les listes d'emotes sont tirés au hasard, pour que le modèle lise ces informations dans le prompt au lieu de les mémoriser.
 
+### Décisions du live 3
+
+- **Emojis** : libres, mais environ un quart des réponses du dataset n'en contiennent aucun.
+- **Statuts** : `abonné depuis N mois`, **sans palier**. Plusieurs statuts : on garde le plus élevé (streamer > modo > VIP > abonné > follower > viewer). Statut complet aussi dans l'historique.
+- **Non-followers** : le bot leur bloque l'IA. L'auteur est donc toujours follower ; un non-follower mentionné n'a pas de profil.
+- **Dernier passage** : dernier live où le viewer a écrit, live en cours exclu ; sinon `dernier passage (première visite)`.
+- **`[MAINTENANT]`** = heure de l'appel (pas le début du live). Ajout de `Live commencé <jour> <date> à <heure> (il y a <durée>)`, durée **précalculée par le bot** (`fetch_streams()` → `.started_at`, UTC à convertir en Europe/Paris), et `Titre : <titre>`. Hors live : `Pas de live en cours`.
+- **Historique** : heures en `HH:MM` sans date. Le passage de minuit se déduit de l'ordre chronologique + `[MAINTENANT]` ; le dataset doit contenir des exemples qui passent minuit.
+- **Jeu en cours (validé)** : nouveau bloc `[JEU EN COURS]` juste avant `[MAINTENANT]` (Nom, Genres, Sortie, Description ≤ 150 tokens, plafond ~200), rempli **automatiquement via IGDB** (même identifiants que l'app Twitch, `game_id` de `fetch_streams()`), mis en cache par jeu, **surchargeable à la main** dans la config du bot. Description en anglais acceptée. Hors live ou fiche absente : `- (aucun)`. Remplace la ligne `Jeu :` de `[MAINTENANT]`. Dataset : mélange de jeux réels et inventés.
+- **RAG complet** (wiki, guides) : reporté en v2.
+- **Dataset 100 % synthétique**. La BDD de messages du bot servira seulement, au déploiement, à initialiser les résumés et dates de dernier passage des viewers.
+- **Règles système** : génériques (pas de « Dantek » en dur, le nom du streamer est dans les faits), courtes (~200 tokens), à l'impératif, figées (toute modification = v2).
+- **Connaissances** : uniquement les blocs pour la chaîne, le streamer et les viewers ; culture générale autorisée ; pour l'actualité, il dit qu'il n'y a pas accès.
+
 ### Données que le bot devra fournir (TwitchIO 3, à implémenter hors live)
 
 Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratuit). Ancienneté d'abonnement via `chatter.badges` (champ `info`, à vérifier). Palier via `fetch_broadcaster_subscriptions()` → `.tier` (scope `channel:read:subscriptions`). Date de follow via `chatter.follow_info()` → `.followed_at` (scope `moderator:read:followers`). **Dernier passage** et **résumés des viewers** : à prévoir dans l'architecture du bot.
@@ -114,18 +128,22 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - **Identité Git** : le premier commit est parti avec un autre compte. Vérifier `git config user.name` et `git config user.email` avant de commiter.
 - **Sorties de notebook** : elles ne sont pas versionnées, donc les résultats se perdent. Reporter les mesures clés dans ce fichier.
 - **Sessions Claude Code** : reprendre une vieille conversation coûte cher (le cache a expiré). Repartir d'une session neuve, ce fichier sert de mémoire.
+- **Rythme du live** : donner les étapes une par une dans le chat, en petits morceaux, jamais un gros bloc ni un plan d'ensemble à valider.
+- **Markdown imbriqué** : un bloc de code qui en contient un autre s'ouvre avec quatre backticks ; ne coller que l'intérieur.
+- **Dates des exemples** : vérifier le jour de la semaine (le 11 novembre 2026 est un mercredi) et la cohérence entre `[MAINTENANT]` et les heures de l'historique.
 
 ## Prochaines étapes
 
-1. **Terminer `docs/prompt_format.md`** :
-   - corriger la ligne des emojis (ajouter "un ou deux au maximum, à bon escient") ;
-   - mettre à jour la ligne des statuts (libellés français, `abonné depuis N mois, palier N`) ;
-   - ajouter la section "Données que le bot doit fournir" ;
-   - écrire la section 4 "Règles pour le dataset" (`{bot_name}` et emotes aléatoires, cas sans profil, blocs vides) ;
-   - écrire la section 5 "Exemple complet".
-2. Écrire le texte définitif des **règles système** (avec la règle de langue et les emotes) et sortir les fonctions de construction du prompt (cellule 16) dans un module `scripts/`, avec des noms en anglais et le respect des plafonds.
-3. **Phase 2** : `eval/cases.jsonl` (20 cas minimum : langue, fait absent, profil, viewer mentionné, injection, emotes de la chaîne / emote absente / liste vide, bavardage), `scripts/evaluate.py`, puis mesure de référence du modèle de base.
-4. **Phase 3** : dataset de départ synthétique.
+1. **Finir les règles système** (section « Règles système » de `docs/prompt_format.md`, 6a et 6b écrites) :
+   - 6c, pas encore collée : règles sur les informations (blocs uniquement pour la chaîne, culture générale autorisée, pas d'actualité, profils seulement s'ils servent) + nouvelle ligne 9 des Principes + puce « Culture générale et actualité » dans les cas à couvrir ;
+   - 6d : injection et emotes ;
+   - remplacer `(règles du bot avec Pixou…)` dans l'exemple par le texte final.
+2. **Intégrer `[JEU EN COURS]`** dans `docs/prompt_format.md` : gabarit du `system`, retrait de la ligne `Jeu :` de `[MAINTENANT]`, ligne IGDB dans « Données que le bot doit fournir », plafond (~200), cas à couvrir (jeu réel / inventé / absent), exemple complet.
+3. **Petites corrections** dans `docs/prompt_format.md` : sortir la phrase « Hors live… » du bloc `text` du gabarit ; vérifier l'exemple (`jeudi 12 novembre 2026, 00h03`, historique 23:58 → 00:02) ; ajouter la réponse `assistant` (5c) si elle manque ; `Règles + [MAINTENANT]` ~300 dans les plafonds.
+4. **ROADMAP** : ajouter une section « Pistes pour plus tard » avec le RAG (v2), et corriger la règle de langue (« toujours en français » n'est plus vrai).
+5. Sortir les fonctions de construction du prompt (cellule 16) dans un module `scripts/`, noms en anglais, respect des plafonds.
+6. **Phase 2** : `eval/cases.jsonl` (20 cas minimum), `scripts/evaluate.py`, mesure de référence du modèle de base.
+7. **Phase 3** : dataset de départ synthétique.
 
 ## Journal des lives
 
@@ -141,6 +159,13 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - Avertissement `fix_mistral_regex` analysé (fausse alerte), tokenizer corrigé gardé.
 - Mesure d'un prompt réaliste (cellule 16) : `max_seq_length = 4096` confirmé, plafonds en tokens par bloc.
 - `docs/prompt_format.md` commencé : principes (langue, emotes, pas de `<silence>`), structure, plafonds ; données TwitchIO 3 identifiées.
+
+### Live 3 : 11 novembre 2026
+
+- `docs/prompt_format.md` : statuts sans palier, sections « Données que le bot doit fournir », « Règles pour le dataset » et « Exemple complet » (system + user).
+- Gestion du temps : `[MAINTENANT]` avec début, durée précalculée et titre du live ; passage de minuit.
+- Décision : bloc `[JEU EN COURS]` rempli via IGDB (v1), RAG reporté en v2, dataset 100 % synthétique.
+- Règles système commencées (identité, langue, forme).
 
 ## Procédure de fin de live
 
