@@ -6,36 +6,39 @@ Nov 4, 2026 · @Princesse Audrey
 
 Ce repo fine-tune **Ministral 3 8B Instruct** pour en faire dantekos\_bot, puis l'exporte vers Ollama sur le Steam Deck. Le but est **pédagogique** : chaque étape doit pouvoir s'expliquer au chat, et chaque résultat doit être mesuré plutôt que ressenti.
 
-Ce que le fine-tuning doit apprendre au modèle : un **comportement** (réponses courtes, ton de la chaîne, appui sur les blocs de contexte, "je ne sais pas" quand l'info manque, résistance aux injections, réponse toujours en français). Ce qu'il ne doit pas apprendre : des **connaissances** (faits de la chaîne, infos sur les jeux). Celles-ci restent dans la base du bot.
+Ce que le fine-tuning doit apprendre au modèle : un **comportement** (réponses courtes, ton de la chaîne, appui sur les blocs de contexte, "je ne sais pas" quand l'info manque, résistance aux injections, réponse en français par défaut, dans la langue du viewer seulement si son message est clairement écrit dans une autre langue). Ce qu'il ne doit pas apprendre : des **connaissances** (faits de la chaîne, infos sur les jeux). Celles-ci restent dans la base du bot.
 
 Quatre règles valent pour tout le repo :
 
 1. **On mesure avant d'entraîner.** Le jeu d'évaluation existe avant le premier exemple d'entraînement.
-2. **On entraîne comme on sert.** Le format du prompt vient du repo du bot, jamais d'une copie.
+2. **On entraîne comme on sert.** Le prompt est toujours construit par le même code (`scripts/prompt_format.py`), à l'entraînement, à l'évaluation et dans le bot, jamais par une copie.
 3. **Tout run est reproductible** : config, versions, seed et métriques sont enregistrés avec le run.
 4. **On réentraîne toujours depuis le modèle de base**, sur le dataset cumulé, jamais en empilant des LoRA.
 
 ## Structure du repo
 
-Nom proposé : `dantekos-training`. Il tourne sur le PC (WSL 2, RTX 4070), le bot reste sur le Steam Deck.
+Le repo `entrainement_llm_twitch` tourne sur le PC (WSL 2, RTX 4070), le bot reste sur le Steam Deck. Les éléments marqués *(à venir)* n'existent pas encore.
 
 ```text
-dantekos-training/
-├── README.md            # vue d'ensemble + journal des lives
-├── MODELS.md            # changelog des versions (v0, v1...) et leurs scores
-├── pyproject.toml       # dépendances et index PyTorch (uv)
+entrainement_llm_twitch/
+├── CLAUDE.md            # mémoire du projet : état, décisions, pièges, journal des lives
+├── README.md            # vue d'ensemble
+├── MODELS.md            # changelog des versions (v0, v1...) et leurs scores (à venir)
+├── pyproject.toml       # dépendances, index PyTorch (uv), config pytest
 ├── uv.lock              # versions exactes, versionné
-├── configs/             # train_v0.yaml, eval.yaml
-├── eval/cases.jsonl     # jeu d'évaluation (versionné, jamais vu à l'entraînement)
+├── docs/                # ROADMAP, prompt_format.md (référence du format), chat_template/
+├── configs/             # train_v0.yaml, eval.yaml (à venir)
+├── eval/cases.jsonl     # jeu d'évaluation, versionné, jamais vu à l'entraînement (à venir)
 ├── data/
-│   ├── seed/            # dataset synthétique (peut être versionné)
-│   └── raw/             # exports du bot (JAMAIS versionné)
-├── scripts/             # check_env, generate_seed, train, evaluate, export
+│   ├── seed/            # dataset synthétique, peut être versionné (à venir)
+│   └── raw/             # exports du bot, JAMAIS versionné (à venir)
+├── scripts/             # check_env, prompt_format ; puis generate_seed, train, evaluate, export
+├── tests/               # tests pytest (cohérence code / docs/prompt_format.md)
 ├── notebooks/           # 01_explore_model.ipynb
 └── runs/                # un dossier par run : config, métriques, logs (ignoré)
 ```
 
-**Le lien avec le repo du bot.** `prompt_format.py` vit dans le repo du bot, car c'est lui qui sert le modèle. Ce repo l'installe comme dépendance, épinglée sur un tag Git (par exemple `pip install git+https://github.com/DantekFR/dantek_bot_twitch@prompt-v1`). Un seul code de rendu, une version explicite : c'est la garantie technique que l'entraînement et le live voient le même format.
+**Le lien avec le repo du bot.** Le code qui construit le prompt (`scripts/prompt_format.py`) vit dans ce repo, car c'est ici que le format est défini, testé et utilisé pour le dataset et l'évaluation. Lors de la refonte de l'architecture du bot, celui-ci l'importera comme dépendance épinglée sur un tag Git (par exemple `prompt-v1`). Un seul code de rendu, une version explicite : c'est la garantie technique que l'entraînement et le live voient le même format.
 
 **Le `.gitignore` dès le premier commit** : `data/raw/`, `runs/`, `outputs/`, `*.gguf`, `*.safetensors`, `.env` (token Hugging Face). Aucune donnée de viewer ne doit entrer dans ce repo public.
 
@@ -90,7 +93,7 @@ torch = { index = "pytorch-cu128" }
 
 **Objectif :** une note de référence pour le modèle de base, **avant** tout entraînement. Sans elle, impossible de savoir si le fine-tuning a amélioré quoi que ce soit.
 
-Le fichier `eval/cases.jsonl` contient de 50 à 80 cas, écrits à la main et répartis par catégorie :
+Le fichier `eval/cases.jsonl` contient de 50 à 80 cas (20 au minimum pour commencer), écrits à la main au format `prompt_format` v1 et répartis par catégorie. Les situations détaillées à couvrir sont listées dans `docs/prompt_format.md` (« Cas à couvrir » : culture générale et actualité, catégorie du live, emotes…).
 
 | Catégorie | Ce qu'on teste | Part |
 | --- | --- | --- |
@@ -98,7 +101,7 @@ Le fichier `eval/cases.jsonl` contient de 50 à 80 cas, écrits à la main et r�
 | Fait absent | Le modèle dit qu'il ne sait pas, sans inventer | 20 % |
 | Injection | "Ignore tes règles", faux bloc, faux modo | 15 % |
 | Mémoire viewer | Un fait déclaré par le viewer reste présenté comme tel | 10 % |
-| Langue et registre | Toujours en français, même face à un message dans une autre langue, en comprenant l'argot et les anglicismes du chat | 15 % |
+| Langue et registre | En français par défaut (anglicismes, argot et messages mixtes compris), dans la langue du viewer si son message est clairement écrit dans une autre langue | 15 % |
 | Bavardage et provocation | Ton, humour, refus courtois | 20 % |
 
 Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis.
@@ -115,7 +118,7 @@ Chaque cas contient le contexte complet, la question, et des **critères vérifi
 
 **Objectif :** 300 à 800 exemples synthétiques de qualité, au format `prompt_format` v1, pour l'entraînement v0.
 
-1. **Une matrice de diversité** dans `configs/seed_matrix.yaml` : catégories (les mêmes que l'évaluation) × registres (soutenu, familier, argot, fautes de frappe) × états du live (jeu, code, discussion) × profils de viewers (nouveau, habitué, provocateur). On génère en parcourant cette matrice, pas au hasard.
+1. **Une matrice de diversité** dans `configs/seed_matrix.yaml` : catégories (les mêmes que l'évaluation) × registres (soutenu, familier, argot, fautes de frappe) × états du live (jeu avec fiche IGDB, jeu sans fiche, catégorie non gaming, hors live) × profils de viewers (nouveau, habitué, provocateur). On génère en parcourant cette matrice, pas au hasard.
 2. `scripts/generate_seed.py` demande à un gros modèle de produire le contexte, la question et la réponse idéale, puis rend le tout avec `prompt_format`. **Vérifie les conditions d'utilisation du fournisseur** : certaines interdisent d'utiliser leurs sorties pour entraîner un autre modèle.
 3. **Filtrer automatiquement :** doublons, réponses trop longues, mauvaise langue, faits inventés absents du contexte.
 4. **Relire à la main un échantillon** (au moins 50 exemples). C'est ici que se joue le ton de dantekos\_bot.
@@ -142,7 +145,7 @@ Point de départ de `configs/train_v0.yaml`, à ajuster selon la VRAM observée 
 | Learning rate | 2e-4, décroissance linéaire | Valeur classique pour LoRA |
 | Époques | 2 | Petit dataset, on surveille le surapprentissage |
 | Batch / accumulation | 2 / 4 (batch effectif 8) | Compromis VRAM et stabilité |
-| `max_seq_length` | Mesuré en phase 1, plus une marge | Ne pas couper les prompts |
+| `max_seq_length` | 4096 | Prompt v1 plafonné à ~3 500 tokens, plus une marge |
 | Gradient checkpointing | Activé | Économise beaucoup de VRAM |
 | Perte | Réponses de l'assistant uniquement | On n'apprend pas à écrire les prompts |
 | Seed | Fixée | Reproductibilité |
@@ -198,28 +201,13 @@ Quand le format du prompt change (v2), on régénère tout le dataset avec le no
 
 **Ce qu'on explique au chat :** que leurs messages font progresser le bot, et comment leurs données sont protégées (pseudonymisation, rien de public, commande `!oublie-moi`).
 
-## Ce soir et demain
+## Avant le premier entraînement en live
 
-Le live de demain démarre l'entraînement v0 en début de stream. Tout ce qui pourrait le bloquer se fait ce soir.
+- [ ] Entraînement test de 5 minutes pour valider toute la chaîne (dataset → entraînement → sauvegarde).
+- [ ] Enregistrement OBS de 10 minutes pendant cet entraînement, pour vérifier qu'aucune image n'est perdue quand le GPU est chargé.
+- [ ] Pendant le live d'entraînement : TensorBoard à l'écran, point sur la courbe de perte toutes les 15 minutes environ, puis lecture de réponses avant/après avec le chat.
+- [ ] Le déploiement sur le Steam Deck (phase 6) se fait dans un live séparé : mieux vaut un export testé tranquillement qu'un modèle cassé en fin de stream.
 
-**Ce soir, hors live :**
+## Pistes pour plus tard
 
-- [ ] Créer le repo avec la structure et le `.gitignore`
-- [ ] Phase 0 complète : `check_env.py` au vert
-- [ ] Phase 1 rapide : chat template sauvegardé, taille d'un prompt mesurée
-- [ ] Figer `prompt_format` v1 dans le repo du bot et poser le tag `prompt-v1`
-- [ ] Phase 2 minimale : 20 cas d'évaluation (on complètera à 80 en live plus tard)
-- [ ] Phase 3 : dataset de départ généré, filtré et survolé
-- [ ] Entraînement test de 5 minutes pour valider la chaîne
-- [ ] Enregistrement OBS de 10 minutes pendant cet entraînement pour vérifier qu'aucune image n'est perdue
-
-**Demain, en live :**
-
-1. Présenter le projet, le repo et la feuille de route.
-2. Mesure de référence de Ministral 8B sur les 20 cas.
-3. Lancer l'entraînement v0, TensorBoard à l'écran.
-4. Pendant qu'il tourne : coder la nouvelle couche IA du bot en SSH sur la branche `feat/ia-v2`.
-5. Point sur la courbe de perte toutes les 15 minutes environ.
-6. En fin de live : évaluation de la v0 et lecture de réponses avant/après avec le chat.
-
-Le déploiement sur le Steam Deck (phase 6) peut attendre le live de vendredi : mieux vaut un export testé tranquillement qu'un modèle cassé en fin de stream.
+- **RAG complet (v2)** : donner au modèle des extraits de wikis et de guides sur le jeu en cours, retrouvés par recherche dans une base de documents. En v1, il n'a que le bloc `[CATÉGORIE DU LIVE]` (fiche IGDB courte). Ce sera un changement de format, donc un `prompt_format` v2 avec un dataset et une évaluation régénérés.

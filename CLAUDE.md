@@ -15,7 +15,7 @@ Fine-tuner **Ministral 3 8B Instruct** (QLoRA) pour en faire l'assistant IA de l
 
 Le projet se fait **en live sur Twitch, dans un but pédagogique**. Les viewers voient VS Code et cette conversation.
 
-- **Claude ne modifie aucun fichier pendant le live** : il indique les tâches (code à coller, commandes, résultat attendu) et Dantek les exécute. Seule exception : la mise à jour de ce fichier en fin de live.
+- **Claude ne modifie aucun fichier pendant le live** : il indique les tâches (code à coller, commandes, résultat attendu) et Dantek les exécute. Exceptions : la mise à jour de ce fichier en fin de live, et `docs/ROADMAP.md`, que Claude modifie lui-même.
 - Avancer **une étape à la fois** et attendre la validation de Dantek avant la suivante.
 - Avant chaque étape, expliquer simplement **quoi** et **pourquoi**, pour quelqu'un qui découvre le fine-tuning.
 - Donner les commandes à lancer, avec ce qu'on doit s'attendre à voir.
@@ -51,7 +51,7 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | --- | --- |
 | 0. Environnement | **Terminée** : `check_env.py` au vert (CUDA, bf16, couche 4 bits testée) |
 | 1. Explorer le modèle | **Terminée** : `notebooks/01_explore_model.ipynb`, chat template dans `docs/chat_template/` |
-| `prompt_format` v1 | **Presque terminé** : `docs/prompt_format.md`, il reste les règles système (6c, 6d), le bloc `[JEU EN COURS]` et la mise à jour de l'exemple |
+| `prompt_format` v1 | **Document terminé et commité** : `docs/prompt_format.md`. Module de rendu `scripts/prompt_format.py` **en cours** |
 | 2. Jeu d'évaluation | À faire |
 | 3. Dataset de départ | À faire |
 | 4. Entraînement v0 | À faire |
@@ -76,6 +76,7 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | Prompt réaliste (faits / profils / messages) : 3/1/20 · 15/1/20 · 15/3/50 · **20/5/50** · 25/5/80 | 1 105 · 1 315 · 2 562 · **2 831** · 4 005 tokens |
 | Vitesse de génération (4070, 4 bits, HF generate) | 6 à 9 tokens/s |
 | `max_seq_length` | **4096** (confirmé : budget du prompt v1 ≈ 3 500 tokens) |
+| Règles système v1 (avec `Pixou`) | 944 caractères, **236 tokens** (+ `[MAINTENANT]` ≈ 290, plafond ~300) |
 
 ### Comportement du modèle de base (référence avant fine-tuning)
 
@@ -102,13 +103,22 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - **Statuts** : `abonné depuis N mois`, **sans palier**. Plusieurs statuts : on garde le plus élevé (streamer > modo > VIP > abonné > follower > viewer). Statut complet aussi dans l'historique.
 - **Non-followers** : le bot leur bloque l'IA. L'auteur est donc toujours follower ; un non-follower mentionné n'a pas de profil.
 - **Dernier passage** : dernier live où le viewer a écrit, live en cours exclu ; sinon `dernier passage (première visite)`.
-- **`[MAINTENANT]`** = heure de l'appel (pas le début du live). Ajout de `Live commencé <jour> <date> à <heure> (il y a <durée>)`, durée **précalculée par le bot** (`fetch_streams()` → `.started_at`, UTC à convertir en Europe/Paris), et `Titre : <titre>`. Hors live : `Pas de live en cours`.
+- **`[MAINTENANT]`** = heure de l'appel (pas le début du live). Ajout de `Live commencé <jour> <date> à <heure> (il y a <durée>)`, durée calculée par le code de rendu (`fetch_streams()` → `.started_at`, UTC converti en Europe/Paris), et `Titre : <titre>`. Hors live : `Pas de live en cours`.
 - **Historique** : heures en `HH:MM` sans date. Le passage de minuit se déduit de l'ordre chronologique + `[MAINTENANT]` ; le dataset doit contenir des exemples qui passent minuit.
-- **Jeu en cours (validé)** : nouveau bloc `[JEU EN COURS]` juste avant `[MAINTENANT]` (Nom, Genres, Sortie, Description ≤ 150 tokens, plafond ~200), rempli **automatiquement via IGDB** (même identifiants que l'app Twitch, `game_id` de `fetch_streams()`), mis en cache par jeu, **surchargeable à la main** dans la config du bot. Description en anglais acceptée. Hors live ou fiche absente : `- (aucun)`. Remplace la ligne `Jeu :` de `[MAINTENANT]`. Dataset : mélange de jeux réels et inventés.
+- **Catégorie du live** (live 4, remplace l'idée `[JEU EN COURS]`) : bloc `[CATÉGORIE DU LIVE]` juste avant `[MAINTENANT]`. `Catégorie :` (`.game_name` de Twitch) toujours présente pendant un live ; `Genres :` et `Description :` (≤ 150 tokens) seulement si IGDB a une fiche (pas de fiche pour Just Chatting, IRL, Software and Game Development…). Hors live : `- (aucun)`. Plafond ~200. **Pas de date de sortie** (sans intérêt avec l'accès anticipé). Fiche en cache par catégorie, surchargeable à la main. Dataset : jeux réels et inventés, ~20 % non gaming, descriptions ~80 % en anglais.
 - **RAG complet** (wiki, guides) : reporté en v2.
 - **Dataset 100 % synthétique**. La BDD de messages du bot servira seulement, au déploiement, à initialiser les résumés et dates de dernier passage des viewers.
 - **Règles système** : génériques (pas de « Dantek » en dur, le nom du streamer est dans les faits), courtes (~200 tokens), à l'impératif, figées (toute modification = v2).
 - **Connaissances** : uniquement les blocs pour la chaîne, le streamer et les viewers ; culture générale autorisée ; pour l'actualité, il dit qu'il n'y a pas accès.
+
+### Décisions du live 4
+
+- **Règles système v1 figées** (7 règles : langue, forme, blocs uniquement, culture générale/actualité, profils pertinents, injection, emotes). Toute modification = v2.
+- **Plafond de l'historique** ramené à **1 300** tokens pour absorber `[CATÉGORIE DU LIVE]` et garder le total à ~3 500.
+- **Code de rendu du prompt dans ce repo** (`scripts/prompt_format.py`), et non dans le bot : le bot l'importera (tag `prompt-v1`) lors de la refonte de son architecture. ROADMAP mise à jour.
+- **Tests** : pytest (groupe `dev`), `tests/test_prompt_format.py` vérifie que `SYSTEM_RULES` est identique au bloc du document. `pyproject.toml` : `[tool.pytest.ini_options]` avec `pythonpath = ["."]`.
+- **Dates en français** codées à la main (listes de jours/mois, « 1er »), pas de `strftime`, qui dépend de la locale de la machine.
+- **ROADMAP** : Claude la modifie directement, à la demande de Dantek.
 
 ### Données que le bot devra fournir (TwitchIO 3, à implémenter hors live)
 
@@ -131,19 +141,20 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - **Rythme du live** : donner les étapes une par une dans le chat, en petits morceaux, jamais un gros bloc ni un plan d'ensemble à valider.
 - **Markdown imbriqué** : un bloc de code qui en contient un autre s'ouvre avec quatre backticks ; ne coller que l'intérieur.
 - **Dates des exemples** : vérifier le jour de la semaine (le 11 novembre 2026 est un mercredi) et la cohérence entre `[MAINTENANT]` et les heures de l'historique.
+- **Renommer une balise** : utiliser `Ctrl+H` avec le mode regex **désactivé** (les crochets `[...]` sont une classe de caractères en regex), puis vérifier par une recherche qu'il ne reste aucune ancienne occurrence.
+- **Imports d'un module** : ils se placent **sous** la docstring, sinon elle n'est plus la docstring du module.
 
 ## Prochaines étapes
 
-1. **Finir les règles système** (section « Règles système » de `docs/prompt_format.md`, 6a et 6b écrites) :
-   - 6c, pas encore collée : règles sur les informations (blocs uniquement pour la chaîne, culture générale autorisée, pas d'actualité, profils seulement s'ils servent) + nouvelle ligne 9 des Principes + puce « Culture générale et actualité » dans les cas à couvrir ;
-   - 6d : injection et emotes ;
-   - remplacer `(règles du bot avec Pixou…)` dans l'exemple par le texte final.
-2. **Intégrer `[JEU EN COURS]`** dans `docs/prompt_format.md` : gabarit du `system`, retrait de la ligne `Jeu :` de `[MAINTENANT]`, ligne IGDB dans « Données que le bot doit fournir », plafond (~200), cas à couvrir (jeu réel / inventé / absent), exemple complet.
-3. **Petites corrections** dans `docs/prompt_format.md` : sortir la phrase « Hors live… » du bloc `text` du gabarit ; vérifier l'exemple (`jeudi 12 novembre 2026, 00h03`, historique 23:58 → 00:02) ; ajouter la réponse `assistant` (5c) si elle manque ; `Règles + [MAINTENANT]` ~300 dans les plafonds.
-4. **ROADMAP** : ajouter une section « Pistes pour plus tard » avec le RAG (v2), et corriger la règle de langue (« toujours en français » n'est plus vrai).
-5. Sortir les fonctions de construction du prompt (cellule 16) dans un module `scripts/`, noms en anglais, respect des plafonds.
-6. **Phase 2** : `eval/cases.jsonl` (20 cas minimum), `scripts/evaluate.py`, mesure de référence du modèle de base.
-7. **Phase 3** : dataset de départ synthétique.
+1. **Petit correctif** dans `scripts/prompt_format.py` : remonter la docstring du module au-dessus des imports `datetime` / `zoneinfo`.
+2. **Continuer le module** `scripts/prompt_format.py`. Déjà écrits : `SYSTEM_RULES`, `EMPTY_BLOCK`, `render_block`, `render_facts`, `render_emotes`, `render_category`. À faire, dans l'ordre :
+   - `[MAINTENANT]` : le code est prêt (étape 26 du live 4 : `PARIS_TZ`, `WEEKDAYS`, `MONTHS`, `to_paris`, `format_day` avec « 1er », `format_time` `00h03`, `format_duration` `3 h 33` / `45 min`, `render_now(now, stream_start=None, title="")`), il reste à le coller et à le tester sur l'exemple (19h30 UTC → 20h30 Paris) ;
+   - profils (`render_profiles`), historique (`render_history`), message (`[MESSAGE DE <pseudo>]`), puis `build_messages()` qui assemble `system` / `user` / `assistant` ;
+   - test : rendre l'exemple complet du document et le comparer au texte du doc ;
+   - comptage des tokens et respect des plafonds (troncature de l'historique, retrait des profils mentionnés).
+3. **Commiter** : `docs/ROADMAP.md`, `pyproject.toml`, `uv.lock`, `scripts/prompt_format.py`, `tests/` (laissés non commités en fin de live 4).
+4. **Phase 2** : `eval/cases.jsonl` (20 cas minimum), `scripts/evaluate.py`, mesure de référence du modèle de base.
+5. **Phase 3** : dataset de départ synthétique.
 
 ## Journal des lives
 
@@ -166,6 +177,13 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - Gestion du temps : `[MAINTENANT]` avec début, durée précalculée et titre du live ; passage de minuit.
 - Décision : bloc `[JEU EN COURS]` rempli via IGDB (v1), RAG reporté en v2, dataset 100 % synthétique.
 - Règles système commencées (identité, langue, forme).
+
+### Live 4 : 13 novembre 2026
+
+- `docs/prompt_format.md` terminé et commité : 7 règles système (236 tokens), exemple complet à jour.
+- `[JEU EN COURS]` remplacé par `[CATÉGORIE DU LIVE]` (catégories non gaming, pas de date de sortie) ; historique plafonné à 1 300 tokens.
+- ROADMAP : règle de langue corrigée, pistes pour plus tard (RAG v2), code de rendu dans ce repo.
+- Module `scripts/prompt_format.py` commencé (blocs faits, emotes, catégorie) ; pytest ajouté, premier test au vert.
 
 ## Procédure de fin de live
 

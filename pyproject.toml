@@ -32,7 +32,12 @@ explicit = true
 torch = { index = "pytorch-cu130" }
 torchvision = { index = "pytorch-cu130" }
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
 [dependency-groups]
 dev = [
     "ipykernel>=7.4.0",
+    "pytest>=9.2.0",
 ]
