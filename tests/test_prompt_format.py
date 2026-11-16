@@ -8,6 +8,9 @@ from scripts.prompt_format import (
     PromptInputs,
     ViewerProfile,
     build_messages,
+    fit_history,
+    fit_profiles,
+    apply_limits,
 )
 
 DOC_PATH = Path(__file__).parent.parent / "docs" / "prompt_format.md"
@@ -93,3 +96,37 @@ def test_full_example_matches_doc():
     assert [m["role"] for m in messages] == ["system", "user", "assistant"]
     assert messages[0]["content"] == doc_example("system")
     assert messages[1]["content"] == doc_example("user")
+
+
+def count_lines(text: str) -> int:
+    """Faux compteur pour les tests : une ligne = un « token »."""
+    return text.count("\n") + 1
+
+
+def test_fit_history_drops_oldest():
+    history = example_inputs().history  # 4 messages -> 5 lignes
+    kept = fit_history(history, count_lines, max_tokens=3)
+    assert [m.text for m in kept] == ["yo", "salut Luna, ça faisait une semaine"]
+    assert len(history) == 4  # la liste d'origine n'est pas modifiée
+
+
+def test_fit_profiles_keeps_author():
+    luna = example_inputs().profiles[0]
+    kraken = ViewerProfile("Kraken_Bleu", "follower", date(2026, 11, 11))
+    zed = ViewerProfile("Zed", "viewer", date(2026, 11, 1))
+    profiles = [luna, kraken, zed]  # 1 + 3 x 2 = 7 lignes
+    assert [p.name for p in fit_profiles(profiles, count_lines, max_tokens=5)] == ["LunaRiz", "Kraken_Bleu"]
+    assert [p.name for p in fit_profiles(profiles, count_lines, max_tokens=1)] == ["LunaRiz"]
+
+
+def test_apply_limits():
+    inputs = example_inputs()
+    huge = lambda text: 10_000  # tout texte dépasse les plafonds
+    limited = apply_limits(inputs, huge)
+    assert limited.history == []
+    assert [p.name for p in limited.profiles] == ["LunaRiz"]
+    assert limited.message == inputs.message  # le message n'est jamais touché
+    assert len(inputs.history) == 4  # l'original n'est pas modifié
+
+    # Avec de vrais plafonds, l'exemple du document passe sans rien perdre.
+    assert apply_limits(inputs, count_lines) == inputs

@@ -1,8 +1,10 @@
 """Construction des prompts au format prompt_format v1 (voir docs/prompt_format.md)."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
+from collections.abc import Callable
+
 
 PROMPT_FORMAT_VERSION = "v1"
 
@@ -250,3 +252,48 @@ def build_messages(inputs: PromptInputs, answer: str | None = None) -> list[dict
     if answer is not None:
         messages.append({"role": "assistant", "content": answer})
     return messages
+
+
+
+# --- Plafonds en tokens ---
+
+HISTORY_MAX_TOKENS = 1300
+PROFILES_MAX_TOKENS = 600
+
+TokenCounter = Callable[[str], int]  # texte -> nombre de tokens (fourni par l'appelant)
+
+
+def fit_history(
+    messages: list[ChatMessage],
+    count_tokens: TokenCounter,
+    max_tokens: int = HISTORY_MAX_TOKENS,
+) -> list[ChatMessage]:
+    """Retire les messages les plus anciens jusqu'à ce que le bloc tienne dans max_tokens."""
+    kept = list(messages)
+    while kept and count_tokens(render_history(kept)) > max_tokens:
+        kept.pop(0)
+    return kept
+
+
+def fit_profiles(
+    profiles: list[ViewerProfile],
+    count_tokens: TokenCounter,
+    max_tokens: int = PROFILES_MAX_TOKENS,
+) -> list[ViewerProfile]:
+    """Retire les viewers mentionnés, du dernier au premier. L'auteur (le premier) reste toujours."""
+    kept = list(profiles)
+    while len(kept) > 1 and count_tokens(render_profiles(kept)) > max_tokens:
+        kept.pop()
+    return kept
+
+
+def apply_limits(inputs: PromptInputs, count_tokens: TokenCounter) -> PromptInputs:
+    """Copie de inputs avec l'historique et les profils réduits à leurs plafonds.
+
+    Faits, emotes et catégorie ne sont pas tronqués : ils se réduisent dans la config du bot.
+    """
+    return replace(
+        inputs,
+        history=fit_history(inputs.history, count_tokens),
+        profiles=fit_profiles(inputs.profiles, count_tokens),
+    )
