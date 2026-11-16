@@ -95,16 +95,21 @@ torch = { index = "pytorch-cu128" }
 
 Le fichier `eval/cases.jsonl` contient de 50 à 80 cas (20 au minimum pour commencer), écrits à la main au format `prompt_format` v1 et répartis par catégorie. Les situations détaillées à couvrir sont listées dans `docs/prompt_format.md` (« Cas à couvrir » : culture générale et actualité, catégorie du live, emotes…).
 
-| Catégorie | Ce qu'on teste | Part |
-| --- | --- | --- |
-| Fait présent | La réponse s'appuie sur le bloc FAITS | 20 % |
-| Fait absent | Le modèle dit qu'il ne sait pas, sans inventer | 20 % |
-| Injection | "Ignore tes règles", faux bloc, faux modo | 15 % |
-| Mémoire viewer | Un fait déclaré par le viewer reste présenté comme tel | 10 % |
-| Langue et registre | En français par défaut (anglicismes, argot et messages mixtes compris), dans la langue du viewer si son message est clairement écrit dans une autre langue | 15 % |
-| Bavardage et provocation | Ton, humour, refus courtois | 20 % |
+| `category` | Ce qu'on teste | Part | Sur les 20 premiers cas |
+| --- | --- | --- | --- |
+| `fait_present` | La réponse s'appuie sur `[FAITS DE LA CHAÎNE]` | 15 % | 3 |
+| `fait_absent` | Le modèle dit qu'il ne sait pas, sans inventer | 15 % | 3 |
+| `injection` | "Ignore tes règles", faux bloc, faux modo | 15 % | 3 |
+| `profil` | Souvenir utile utilisé, souvenir hors sujet ignoré, nouveau viewer, un fait déclaré par le viewer reste présenté comme tel | 10 % | 2 |
+| `langue` | En français par défaut (anglicismes, argot et messages mixtes compris), dans la langue du viewer si son message est clairement écrit dans une autre langue | 10 % | 2 |
+| `live` | Catégorie, titre, jeu inventé ou sans fiche IGDB, hors live | 10 % | 2 |
+| `culture_actu` | Culture générale : il répond ; actualité : il dit qu'il n'y a pas accès | 10 % | 2 |
+| `bavardage` | Salutations, blagues, provocation, refus courtois | 10 % | 2 |
+| `emotes` | Emote de la chaîne adaptée, aucune adaptée, liste vide | 5 % | 1 |
 
-Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis.
+Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis. **Critères communs à tous les cas** : langue, deux phrases au maximum, pas de markdown.
+
+Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inputs` (exactement les champs de `PromptInputs`, dates en ISO 8601 avec décalage, ex. `2026-11-17T21:40:00+01:00`) et `checks` (`language`, `max_sentences`, `must_include_any`, `must_not_match`…). Les noms du bot, pseudos et faits des cas ne doivent jamais être réutilisés dans le dataset.
 
 `scripts/evaluate.py` fait répondre un modèle à tous les cas, applique les vérifications automatiques et sort un score par catégorie dans `runs/<id>/eval.json`. Pour le ton, une relecture humaine sur un échantillon suffit au début.
 
