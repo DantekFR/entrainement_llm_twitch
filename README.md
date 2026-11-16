@@ -12,9 +12,9 @@ Le bot lui-même vit dans un autre repo : [dantek_bot_twitch](https://github.com
 | --- | --- |
 | 0. Environnement | Terminée |
 | 1. Explorer le modèle | Terminée |
-| Format du prompt v1 | Document terminé, module de rendu en cours |
-| 2. Jeu d'évaluation | À faire |
-| 3. Dataset de départ | À faire |
+| Format du prompt v1 | Terminé : document et module de rendu testés |
+| 2. Jeu d'évaluation | 20 cas (tag `eval-v1`), modèle de base mesuré : 1/20 |
+| 3. Dataset de départ | En cours : réservoirs et tirage des contextes |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
@@ -34,14 +34,20 @@ Prérequis : WSL 2 avec un GPU NVIDIA (pilote installé côté Windows), et [uv]
 ```bash
 uv sync                                  # recrée l'environnement à l'identique (uv.lock)
 uv run python scripts/check_env.py       # doit finir par "Environnement prêt pour la phase 1"
-uv run pytest                            # tests du format de prompt
+uv run pytest                            # tests (format, évaluation, réservoirs)
+uv run python -m scripts.evaluate --name base               # évalue le modèle de base (GPU)
+uv run python -m scripts.rescore runs/<run>/eval.json       # recalcule les scores, sans GPU
 ```
 
 ## Contenu
 
 - `scripts/check_env.py` : vérification de l'environnement (CUDA, bf16, couche 4 bits).
-- `scripts/prompt_format.py` : construction des prompts au format v1.
-- `tests/` : tests pytest.
+- `scripts/prompt_format.py` : construction des prompts au format v1 (blocs, assemblage, plafonds en tokens).
+- `scripts/measure_prompt.py` : mesure en tokens de l'exemple du document.
+- `eval/cases.jsonl` : jeu d'évaluation (un cas par ligne), à ne jamais montrer au générateur du dataset.
+- `scripts/eval_cases.py`, `scripts/checks.py`, `scripts/evaluate.py`, `scripts/rescore.py` : lecture des cas, vérifications automatiques, évaluation d'un modèle, recalcul des scores.
+- `configs/pools.yaml`, `scripts/contexts.py` : réservoirs et tirage aléatoire des contextes du dataset.
+- `tests/` : tests pytest (dont les garde-fous contre la contamination du jeu d'évaluation).
 - `notebooks/01_explore_model.ipynb` : exploration du modèle (tokenizer, chat template, tailles de prompt, premières générations).
 
 ## Licence

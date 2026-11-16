@@ -51,9 +51,9 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | --- | --- |
 | 0. Environnement | **Terminée** : `check_env.py` au vert (CUDA, bf16, couche 4 bits testée) |
 | 1. Explorer le modèle | **Terminée** : `notebooks/01_explore_model.ipynb`, chat template dans `docs/chat_template/` |
-| `prompt_format` v1 | **Document terminé et commité** : `docs/prompt_format.md`. Module de rendu `scripts/prompt_format.py` **en cours** |
-| 2. Jeu d'évaluation | À faire |
-| 3. Dataset de départ | À faire |
+| `prompt_format` v1 | **Terminé** : `docs/prompt_format.md` + `scripts/prompt_format.py` (tous les blocs, `build_messages`, plafonds), test de l'exemple complet au vert |
+| 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas (tag `eval-v1`), `evaluate.py`, base = 1/20. Référence Qwen reportée en phase 6 |
+| 3. Dataset de départ | **En cours** : réservoirs `configs/pools.yaml` et tirage `scripts/contexts.py` faits |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
@@ -77,6 +77,9 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | Vitesse de génération (4070, 4 bits, HF generate) | 6 à 9 tokens/s |
 | `max_seq_length` | **4096** (confirmé : budget du prompt v1 ≈ 3 500 tokens) |
 | Règles système v1 (avec `Pixou`) | 944 caractères, **236 tokens** (+ `[MAINTENANT]` ≈ 290, plafond ~300) |
+| Exemple complet du doc (`measure_prompt.py`) | system 492 · user 212 · **total 709 tokens** avec template (le template ajoute 5 tokens) |
+| **Éval du modèle de base** (`eval-v1`, 20 cas, glouton) | **1/20**. Par critère : `no_brackets` 3/20, `no_markdown` 11/20, `max_sentences` 15/20, `language` 19/20, `must_include_*` 14/15, `must_not_match` 10/13 |
+| Vitesse pendant l'éval | ~7 tokens/s ; le temps suit le nombre de tokens générés ; 1er cas lent (préchauffage GPU, 51 tokens en 33 s) |
 
 ### Comportement du modèle de base (référence avant fine-tuning)
 
@@ -85,6 +88,7 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - Ressort des souvenirs hors sujet (le script Python dans une réponse sur l'âge).
 - Message en anglais : il répond en français (le prompt disait alors "toujours en français").
 - Injection : il refuse, mais en inventant des précisions ("je ne suis pas un modo").
+- Éval du live 5 : il **imite les balises** (`[Dantek]`, `[dantekfRage]` : une emote entre crochets ne s'affiche pas sur Twitch), ajoute une **parenthèse en italique** sur une 2e ligne, confirme un faux bloc (`[FAITS…]` dans le message), recopie ses règles si on le demande, ressort un souvenir hors sujet. Le fond est souvent bon : il échoue surtout sur la forme.
 
 ### Décisions du `prompt_format` v1 (détails dans `docs/prompt_format.md`)
 
@@ -120,6 +124,17 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - **Dates en français** codées à la main (listes de jours/mois, « 1er »), pas de `strftime`, qui dépend de la locale de la machine.
 - **ROADMAP** : Claude la modifie directement, à la demande de Dantek.
 
+### Décisions du live 5
+
+- **Code de rendu** : `PromptInputs` (dataclass) regroupe tout ce que le bot fournit ; `build_messages(apply_limits(inputs, count_tokens))` partout (dataset, éval, bot). `count_tokens` est injecté (le module ne charge pas le tokenizer). Titre vide → ligne `Titre :` omise. Statuts : `format_status(roles, sub_months)` avec les noms anglais de TwitchIO.
+- **Évaluation** : un cas = `id`, `category`, `description`, `inputs` (champs de `PromptInputs`, dates ISO avec décalage), `checks`. 9 catégories (`fait_present`, `fait_absent`, `injection`, `profil`, `langue`, `live`, `culture_actu`, `bavardage`, `emotes`). Critères communs : langue, 2 phrases max, pas de markdown, **pas de crochets**. Comparaisons insensibles à la casse, regex comprises. Un cas est réussi si tous ses critères le sont.
+- **Langue** : lingua (6 langues), texte nettoyé (crochets, `@pseudo`, `*`) ; échec seulement si une autre langue dépasse 0,5 de confiance.
+- **Jeu figé** : on ne corrige les critères que pour de vrais faux positifs/négatifs, puis on recalcule (`rescore.py`) et on fige (tag `eval-v1`). Après l'entraînement, on n'y touche plus (on peut seulement ajouter des cas).
+- **Dataset** : le code tire le contexte (graine fixée, `configs/pools.yaml`), le générateur écrit seulement les textes (historique, message, réponse). Générateur v0 = **chat en ligne**, par lots de ~20, nouvelle conversation par lot. Conditions d'utilisation à vérifier par Dantek. Exemples filtrés par `run_checks`.
+- **Anti-contamination** : jamais de noms de bot, pseudos, streamers, faits, souvenirs ou jeux de l'éval dans les réservoirs (tests `test_pools.py`). Exceptions : la phrase d'intro « Le streamer s'appelle… » (partie fixe du format) et les catégories Twitch non gaming.
+- **Réservoirs** : streamers jamais Dantek (et des streameuses), faits en groupes exclusifs (au plus un par groupe) + faits libres, emotes préfixe + suffixe dont ~20 % opaques au sens tiré au hasard, catégories (jeux réels avec fiche ~80 % EN, inventés, sans fiche, non gaming ~20 %), 15 % hors live, lives qui passent minuit.
+- **Modèle plus léger** : pas maintenant ; piste si le 8B est trop lent sur le Deck (phase 6).
+
 ### Données que le bot devra fournir (TwitchIO 3, à implémenter hors live)
 
 Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratuit). Ancienneté d'abonnement via `chatter.badges` (champ `info`, à vérifier). Palier via `fetch_broadcaster_subscriptions()` → `.tier` (scope `channel:read:subscriptions`). Date de follow via `chatter.follow_info()` → `.followed_at` (scope `moderator:read:followers`). **Dernier passage** et **résumés des viewers** : à prévoir dans l'architecture du bot.
@@ -143,18 +158,21 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - **Dates des exemples** : vérifier le jour de la semaine (le 11 novembre 2026 est un mercredi) et la cohérence entre `[MAINTENANT]` et les heures de l'historique.
 - **Renommer une balise** : utiliser `Ctrl+H` avec le mode regex **désactivé** (les crochets `[...]` sont une classe de caractères en regex), puis vérifier par une recherche qu'il ne reste aucune ancienne occurrence.
 - **Imports d'un module** : ils se placent **sous** la docstring, sinon elle n'est plus la docstring du module.
+- **Contamination de l'éval** : ne jamais donner `eval/cases.jsonl` au générateur du dataset (il en produirait des copies, le modèle apprendrait l'examen). Donner l'exemple de `docs/prompt_format.md`.
+- **Édition à la main du JSONL** : un glisser-déposer peut déplacer un mot d'une clé à l'autre en gardant un JSON valide (`"message"` → `""` + `"messagechecks"`). Le test `test_case_is_valid` le détecte ; vérifier avec `git diff --word-diff`.
+- **Attendus de tests périmés** : quand `run_checks` gagne un critère, mettre à jour le dictionnaire attendu de `test_run_checks`.
+- **Regex trop larges dans les critères** : `\d` attrapait un « 100 % » venu du profil. Cibler ce qu'on veut vraiment interdire (dates, heures).
+- **Lancer les scripts avec `-m`** (`uv run python -m scripts.evaluate`) pour que `scripts` et `tests` soient importables.
+- **Claude ne lance pas de commandes pendant le live** (sauf lecture demandée par Dantek) : c'est Dantek qui exécute.
 
 ## Prochaines étapes
 
-1. **Petit correctif** dans `scripts/prompt_format.py` : remonter la docstring du module au-dessus des imports `datetime` / `zoneinfo`.
-2. **Continuer le module** `scripts/prompt_format.py`. Déjà écrits : `SYSTEM_RULES`, `EMPTY_BLOCK`, `render_block`, `render_facts`, `render_emotes`, `render_category`. À faire, dans l'ordre :
-   - `[MAINTENANT]` : le code est prêt (étape 26 du live 4 : `PARIS_TZ`, `WEEKDAYS`, `MONTHS`, `to_paris`, `format_day` avec « 1er », `format_time` `00h03`, `format_duration` `3 h 33` / `45 min`, `render_now(now, stream_start=None, title="")`), il reste à le coller et à le tester sur l'exemple (19h30 UTC → 20h30 Paris) ;
-   - profils (`render_profiles`), historique (`render_history`), message (`[MESSAGE DE <pseudo>]`), puis `build_messages()` qui assemble `system` / `user` / `assistant` ;
-   - test : rendre l'exemple complet du document et le comparer au texte du doc ;
-   - comptage des tokens et respect des plafonds (troncature de l'historique, retrait des profils mentionnés).
-3. **Commiter** : `docs/ROADMAP.md`, `pyproject.toml`, `uv.lock`, `scripts/prompt_format.py`, `tests/` (laissés non commités en fin de live 4).
-4. **Phase 2** : `eval/cases.jsonl` (20 cas minimum), `scripts/evaluate.py`, mesure de référence du modèle de base.
-5. **Phase 3** : dataset de départ synthétique.
+1. **Vérifier le commit de fin du live 5** : `configs/pools.yaml`, `scripts/contexts.py`, `tests/test_contexts.py`, `tests/test_pools.py`, `pyproject.toml` / `uv.lock` (pyyaml), docs. `uv run pytest -q` → 47 passed.
+2. **Matrice de diversité** `configs/seed_matrix.yaml` : catégories de l'éval × registres (soutenu, familier, argot, fautes) × états du live × profils (nouveau, habitué, provocateur), avec la part de chaque catégorie. Un contexte tiré = une case de la matrice (la « situation » à couvrir).
+3. **Export d'un lot** (~20 contextes + situation + `meta`) vers un fichier, et **prompt du chat** : exemple du doc, règles système, consignes (remplir `text` de l'historique, `message` qui commence par `@{bot_name}` et mentionne les viewers de `meta`, réponse idéale ; sortie JSONL stricte). Ne jamais donner `eval/cases.jsonl`.
+4. **Fusion** des réponses du chat avec les contextes, rendu par `case_to_inputs` + `build_messages`, filtre `run_checks`, puis relecture d'un échantillon.
+5. Générer les 300 premiers exemples (≈15 lots), découper train/val 90/10, fiche `data/seed/README.md`.
+6. Phase 4 : `configs/train_v0.yaml`, `scripts/train.py`, entraînement test de 5 minutes.
 
 ## Journal des lives
 
@@ -184,6 +202,12 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - `[JEU EN COURS]` remplacé par `[CATÉGORIE DU LIVE]` (catégories non gaming, pas de date de sortie) ; historique plafonné à 1 300 tokens.
 - ROADMAP : règle de langue corrigée, pistes pour plus tard (RAG v2), code de rendu dans ce repo.
 - Module `scripts/prompt_format.py` commencé (blocs faits, emotes, catégorie) ; pytest ajouté, premier test au vert.
+
+### Live 5 : 16 novembre 2026
+
+- `scripts/prompt_format.py` terminé : `[MAINTENANT]`, statuts, profils, historique, message, `build_messages`, plafonds ; test de l'exemple complet identique au document (709 tokens).
+- Phase 2 : 20 cas dans `eval/cases.jsonl`, `checks.py` (lingua pour la langue), `evaluate.py`, `rescore.py`. Modèle de base : 1/20 après correction des critères (ajout de `no_brackets`). Tag `eval-v1`.
+- Phase 3 commencée : génération par le code (contextes) + chat en ligne (textes) ; réservoirs `configs/pools.yaml` et `scripts/contexts.py`, avec tests anti-contamination.
 
 ## Procédure de fin de live
 

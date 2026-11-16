@@ -27,12 +27,12 @@ entrainement_llm_twitch/
 ├── pyproject.toml       # dépendances, index PyTorch (uv), config pytest
 ├── uv.lock              # versions exactes, versionné
 ├── docs/                # ROADMAP, prompt_format.md (référence du format), chat_template/
-├── configs/             # train_v0.yaml, eval.yaml (à venir)
-├── eval/cases.jsonl     # jeu d'évaluation, versionné, jamais vu à l'entraînement (à venir)
+├── configs/             # pools.yaml (réservoirs du dataset) ; train_v0.yaml (à venir)
+├── eval/cases.jsonl     # jeu d'évaluation, versionné, jamais vu à l'entraînement (tag eval-v1)
 ├── data/
 │   ├── seed/            # dataset synthétique, peut être versionné (à venir)
 │   └── raw/             # exports du bot, JAMAIS versionné (à venir)
-├── scripts/             # check_env, prompt_format ; puis generate_seed, train, evaluate, export
+├── scripts/             # check_env, prompt_format, eval_cases, checks, evaluate, rescore, contexts ; puis train, export
 ├── tests/               # tests pytest (cohérence code / docs/prompt_format.md)
 ├── notebooks/           # 01_explore_model.ipynb
 └── runs/                # un dossier par run : config, métriques, logs (ignoré)
@@ -107,13 +107,15 @@ Le fichier `eval/cases.jsonl` contient de 50 à 80 cas (20 au minimum pour comme
 | `bavardage` | Salutations, blagues, provocation, refus courtois | 10 % | 2 |
 | `emotes` | Emote de la chaîne adaptée, aucune adaptée, liste vide | 5 % | 1 |
 
-Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis. **Critères communs à tous les cas** : langue, deux phrases au maximum, pas de markdown.
+Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis. **Critères communs à tous les cas** : langue, deux phrases au maximum, pas de markdown, pas de crochets (`[Dantek]`, `[emote]` : imitation des balises du prompt). Toutes les comparaisons ignorent les majuscules, regex comprises.
 
 Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inputs` (exactement les champs de `PromptInputs`, dates en ISO 8601 avec décalage, ex. `2026-11-17T21:40:00+01:00`) et `checks` (`language`, `max_sentences`, `must_include_any`, `must_not_match`…). Les noms du bot, pseudos et faits des cas ne doivent jamais être réutilisés dans le dataset.
 
-`scripts/evaluate.py` fait répondre un modèle à tous les cas, applique les vérifications automatiques et sort un score par catégorie dans `runs/<id>/eval.json`. Pour le ton, une relecture humaine sur un échantillon suffit au début.
+`scripts/evaluate.py` fait répondre un modèle à tous les cas (décodage glouton, 150 tokens max), applique les vérifications automatiques (`scripts/checks.py`) et sort un score par catégorie et par critère dans `runs/<id>/eval.json`. `scripts/rescore.py` recalcule les scores d'un run à partir des réponses enregistrées, sans GPU. Pour le ton, une relecture humaine sur un échantillon suffit au début.
 
 **Mesures de référence :** Ministral 8B de base, et ton Qwen actuel via Ollama, avec le même script.
+
+**État (live 5) :** 20 cas écrits, jeu figé par le tag Git `eval-v1`. Modèle de base : **1/20**, surtout des échecs de forme (crochets, parenthèses en italique, réponses trop longues). La mesure du Qwen est reportée à la phase 6 : elle demande d'interroger Ollama depuis `evaluate.py`, ce qu'on écrira de toute façon pour évaluer le GGUF.
 
 **Critère de fin :** deux scores de référence notés dans `MODELS.md`.
 
@@ -124,8 +126,8 @@ Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inp
 **Objectif :** 300 à 800 exemples synthétiques de qualité, au format `prompt_format` v1, pour l'entraînement v0.
 
 1. **Une matrice de diversité** dans `configs/seed_matrix.yaml` : catégories (les mêmes que l'évaluation) × registres (soutenu, familier, argot, fautes de frappe) × états du live (jeu avec fiche IGDB, jeu sans fiche, catégorie non gaming, hors live) × profils de viewers (nouveau, habitué, provocateur). On génère en parcourant cette matrice, pas au hasard.
-2. `scripts/generate_seed.py` demande à un gros modèle de produire le contexte, la question et la réponse idéale, puis rend le tout avec `prompt_format`. **Vérifie les conditions d'utilisation du fournisseur** : certaines interdisent d'utiliser leurs sorties pour entraîner un autre modèle.
-3. **Filtrer automatiquement :** doublons, réponses trop longues, mauvaise langue, faits inventés absents du contexte.
+2. **Partage du travail.** Le **code** tire le contexte au hasard (graine fixée) dans les réservoirs de `configs/pools.yaml` : nom du bot, streamer, faits, emotes, catégorie, dates, profils et squelette de l'historique (`scripts/contexts.py`, même format que le champ `inputs` des cas d'évaluation). Le **générateur** écrit seulement la partie créative : textes de l'historique, message du viewer et réponse idéale. Pour la v0, le générateur est un **chat en ligne**, alimenté par lots d'environ 20 contextes (une nouvelle conversation par lot) ; un script pourra le remplacer plus tard sans changer le reste. **Vérifie les conditions d'utilisation du fournisseur** (chat ou API) : certaines interdisent d'utiliser leurs sorties pour entraîner un autre modèle. **Le générateur ne voit jamais `eval/cases.jsonl`** : l'exemple de format à lui donner est celui de `docs/prompt_format.md`.
+3. **Filtrer automatiquement :** les exemples doivent passer `run_checks` (les mêmes critères que l'évaluation), plus les doublons et les faits inventés absents du contexte.
 4. **Relire à la main un échantillon** (au moins 50 exemples). C'est ici que se joue le ton de dantekos\_bot.
 5. Découper en train et validation (90 / 10), et vérifier qu'aucun exemple ne ressemble à un cas de l'évaluation.
 6. Rédiger une courte fiche du dataset (`data/seed/README.md`) : source, taille, répartition, version du format.
@@ -182,7 +184,7 @@ Point de départ de `configs/train_v0.yaml`, à ajuster selon la VRAM observée 
 
 1. Fusionner l'adaptateur avec le modèle de base et exporter en **GGUF quantifié** (Q4\_K\_M pour commencer) via `scripts/export.py`.
 2. Écrire le **Modelfile** Ollama. Son `TEMPLATE` doit reproduire caractère pour caractère le chat template sauvegardé en phase 1. Le versionner dans le repo.
-3. **Tester d'abord sur le PC** : relancer l'évaluation contre le modèle servi par Ollama. Un score très inférieur à celui de la phase 5 signale presque toujours un problème de template ou de quantification.
+3. **Tester d'abord sur le PC** : relancer l'évaluation contre le modèle servi par Ollama (ajouter à `evaluate.py` un mode qui interroge Ollama). Un score très inférieur à celui de la phase 5 signale presque toujours un problème de template ou de quantification. Mesurer au passage, avec le même mode, la **référence Qwen** reportée de la phase 2.
 4. Copier le GGUF et le Modelfile sur le Steam Deck (`scp`), puis `ollama create dantekos:v0`.
 5. Mesurer la latence réelle sur le Deck (délai avant le premier token, tokens par seconde) et la noter dans `MODELS.md`.
 6. Basculer le bot sur `dantekos:v0` par sa config, en gardant l'ancien modèle disponible pour revenir en arrière en une ligne.
@@ -215,4 +217,5 @@ Quand le format du prompt change (v2), on régénère tout le dataset avec le no
 
 ## Pistes pour plus tard
 
+- **Modèle plus léger** : si le 8B est trop lent sur le Steam Deck (mesure de la phase 6), entraîner un Ministral 3 plus petit (3B) avec le même dataset et le même jeu d'évaluation, puis comparer.
 - **RAG complet (v2)** : donner au modèle des extraits de wikis et de guides sur le jeu en cours, retrouvés par recherche dans une base de documents. En v1, il n'a que le bloc `[CATÉGORIE DU LIVE]` (fiche IGDB courte). Ce sera un changement de format, donc un `prompt_format` v2 avec un dataset et une évaluation régénérés.

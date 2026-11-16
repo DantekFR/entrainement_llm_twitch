@@ -1,0 +1,444 @@
+# Réservoirs tirés au hasard pour générer les contextes du dataset (phase 3).
+# Règle : aucun nom, pseudo ou préfixe utilisé dans eval/cases.jsonl
+# ou dans l'exemple de docs/prompt_format.md (vérifié par tests/test_pools.py).
+
+bot_names:
+  # courts
+  - Jojo
+  - Lulu
+  - Max
+  - Ève
+  - Tobi
+  - Kaz
+  - Vox
+  # français, mignons ou rigolos
+  - Zébulon
+  - Croquette
+  - Moustache
+  - Galopin
+  - Patapouf
+  - Cornichon
+  - Brindille
+  - Fripouille
+  - Gribouille
+  - Chamallow
+  - Papillote
+  - Saperlipopette
+  - Tournesol
+  - Nougat
+  - Biloute
+  - Coquelicot
+  - Barnabé
+  - Bidule
+  # avec chiffres ou majuscules
+  - R2
+  - BOT9000
+  - HAL42
+  - Robo_7
+  - XR-12
+  - Machin42
+  - LE_BOT
+  - MONSIEUR_ROBOT
+  # anglais ou international
+  - Nova
+  - Orion
+  - Astro
+  - Sparky
+  - Wizzy
+  - Glitch
+  - Mochi
+  - Tofu
+  - Wasabi
+  - SirBotalot
+  # composés
+  - Comète
+  - Nébuleuse
+  - DameIA
+  - Professeur_Pouet
+  - Truc_Muche
+  - Mamie_Robot
+  - TchatGPTeuh
+
+emote_prefixes:
+  - zorg
+  - miaou
+  - blob
+  - pouic
+  - grumf
+  - lumi
+  - bzz
+  - ploof
+  - choco
+  - noxi
+  - krok
+  - fifi
+  - vroum
+  - titi
+  - mimi
+  - pako
+  - zouz
+  - rafa
+  - boubou
+  - glou
+  - pif
+  - tuba
+  - nini
+  - neko
+  - ouaf
+  - papri
+  - zigo
+  - moka
+  - flan
+  - yuzu
+
+# Suffixe : sens. Le sens se devine à partir du nom.
+emote_suffixes:
+  Hi: salutations
+  Bye: au revoir
+  Love: amour
+  GG: victoire
+  LOL: rire
+  Rage: colère
+  Cry: tristesse
+  Hype: excitation
+  Nope: refus
+  OK: acceptation
+  Sleep: fatigue
+  Pog: surprise
+  Think: réflexion
+  Clap: applaudissements
+  Facepalm: consternation
+  Wow: émerveillement
+  Sus: méfiance
+  Coffee: pause
+  Dance: fête
+  Scared: peur
+  Shy: gêne
+  Cool: décontraction
+  RIP: échec
+  Pray: espoir
+  Lurk: présence discrète
+  Flex: fierté
+
+# Suffixes opaques : leur sens est tiré au hasard parmi ceux de emote_suffixes,
+# pour obliger le modèle à lire la liste au lieu de deviner.
+emote_opaque_suffixes:
+  - Banane
+  - Patate
+  - Moai
+  - Chaussette
+  - Pingouin
+  - Tacos
+  - Dino
+  - Fusée
+
+
+# Streamers fictifs (jamais Dantek ni Plumetis, utilisés dans l'évaluation).
+streamers:
+  - {name: Kaelig, gender: m}
+  - {name: Bastou, gender: m}
+  - {name: Théo_Live, gender: m}
+  - {name: Grominou, gender: m}
+  - {name: Captain_Nours, gender: m}
+  - {name: Yanis, gender: m}
+  - {name: Fenrir, gender: m}
+  - {name: Lord_Kipik, gender: m}
+  - {name: Jeannot, gender: m}
+  - {name: Rémi_Games, gender: m}
+  - {name: Maëlle, gender: f}
+  - {name: Clémence_TV, gender: f}
+  - {name: Nymeria, gender: f}
+  - {name: Pétunia, gender: f}
+  - {name: LadyBrume, gender: f}
+  - {name: Zélie, gender: f}
+  - {name: Kitsune_Rose, gender: f}
+  - {name: Mamzelle_Pixie, gender: f}
+  - {name: Ondine, gender: f}
+  - {name: Capucine, gender: f}
+
+# Premier fait de chaque exemple, selon le genre du streamer.
+streamer_intro:
+  m: "Le streamer s'appelle {streamer}."
+  f: "La streameuse s'appelle {streamer}."
+
+# Groupes exclusifs : au plus un fait par groupe (sinon ils se contredisent).
+exclusive_facts:
+  schedule:
+    - "Le stream a lieu le mardi, le jeudi et le dimanche à partir de 21h."
+    - "Le stream a lieu tous les soirs de semaine à partir de 19h."
+    - "Le stream a lieu le week-end, de 14h à 18h."
+    - "Le stream a lieu le lundi et le jeudi à partir de 20h."
+    - "Le stream a lieu le mercredi et le samedi à partir de 21h30."
+  setup:
+    - "Config de {streamer} : RTX 3070, 16 Go de RAM, Ryzen 5 5600X."
+    - "Config de {streamer} : RX 7800 XT, 32 Go de RAM, Ryzen 7 7700."
+    - "{streamer} streame depuis un MacBook Pro M3."
+    - "Config de {streamer} : RTX 4090, 64 Go de RAM, Intel Core i9."
+  favorite_games:
+    - "Jeux préférés de {streamer} : Zelda Breath of the Wild, Hades, Slay the Spire."
+    - "Jeux préférés de {streamer} : Minecraft, Terraria, Factorio."
+    - "Jeux préférés de {streamer} : Final Fantasy IX, Chrono Trigger, Persona 5."
+    - "Jeux préférés de {streamer} : Rocket League, Valorant, Fall Guys."
+  next_game:
+    - "Prochain jeu prévu : Baldur's Gate 3."
+    - "Prochain jeu prévu : Disco Elysium."
+    - "Prochain jeu prévu : Stardew Valley en coop avec le chat."
+    - "Prochain jeu prévu : Resident Evil 4 Remake."
+  creation:
+    - "La chaîne a été créée en 2019."
+    - "La chaîne a été créée en 2023."
+    - "La chaîne a été créée en 2017, d'abord sur YouTube."
+  goal:
+    - "Objectif du mois : 2 000 followers."
+    - "Objectif du mois : 50 abonnés."
+    - "Objectif du mois : finir le jeu en cours sans guide."
+
+# Faits libres : cumulables.
+facts:
+  - "Les lives durent en général entre 3 et 4 heures."
+  - "Pas de stream pendant les vacances scolaires."
+  - "{streamer} joue avec une manette Xbox, même sur PC."
+  - "{streamer} utilise un micro Shure SM7B."
+  - "{streamer} ne joue jamais aux jeux d'horreur."
+  - "{streamer} a fini Dark Souls sans mourir en 2024."
+  - "Le jeu de la communauté est Among Us, le dimanche soir."
+  - "La chaîne a passé les 1 000 followers en mars 2026."
+  - "Le lien du Discord est dans la description de la chaîne."
+  - "Les meilleurs moments sont publiés sur TikTok."
+  - "Les abonnés peuvent proposer un jeu une fois par mois."
+  - "La mascotte de la chaîne est un raton laveur nommé Gaston."
+  - "Les modos sont choisis par {streamer} : ça ne se demande pas dans le chat."
+  - "Le spam de majuscules est interdit dans le chat."
+  - "Les spoilers sont interdits dans le chat."
+  - "La commande !planning donne les horaires de la semaine."
+  - "Un giveaway est organisé à chaque palier de 500 followers."
+  - "{streamer} est développeur web le jour."
+  - "{streamer} vit avec deux chats, Caramel et Nuage."
+  - "{streamer} parle aussi espagnol."
+  - "{streamer} boit beaucoup trop de café pendant les lives."
+  - "{streamer} fait du speedrun sur Celeste."
+  - "Projet en cours : créer un petit jeu vidéo avec Godot."
+  - "Projet en cours : un marathon caritatif en décembre."
+  - "Projet en cours : finir tous les Zelda dans l'ordre de sortie."
+  - "{streamer} prépare une vidéo YouTube sur l'histoire des RPG."
+
+# Pseudos des viewers (aucun pseudo de l'évaluation ni de l'exemple du document).
+viewer_names:
+  - Pandakoala
+  - Croissant_Furtif
+  - NeoTartine
+  - xX_Darkou_Xx
+  - Mimosa_Blue
+  - Tortue_Ninja_92
+  - Le_Grand_Mamouth
+  - Pruneau_Masqué
+  - SushiMaster3000
+  - Chips_Paprika
+  - Loutre_Sauvage
+  - Jambon_Beurre
+  - MlleChoupette
+  - BigBossBaba
+  - Paupiette_59
+  - Cookie_Monstre
+  - GeekDuDimanche
+  - Hibou_Nocturne
+  - ZeroCool_FR
+  - Petit_Scarabée
+  - Pastèque_Joyeuse
+  - Renard_Rusé
+  - Quiche_Lorraine
+  - PapyGamer_75
+  - Nuage_Rose
+  - Vortex_Gaming
+  - Escargot_Turbo
+  - Patate_Douce
+  - Crumble_Pomme
+  - L3g3nd4ry
+  - TacosVolant
+  - Cerise_Noire
+  - Ours_Polaire
+  - Mojito_Glacé
+  - DuckDuckGoose
+  - Ptit_Lu
+  - Zigouigoui
+  - Brownie_Fondant
+  - Kiki_la_Frite
+  - CaptainObvious
+  - Mangue_Sacrée
+  - Rillettes_du_Mans
+  - Chouquette
+  - Grizzly_Doux
+  - Pingu_Pingu
+  - Speedy_Gonzague
+  - Lama_Zen
+  - WaffleKing
+  - Biscotte_Rebelle
+  - Tonton_Flingueur
+
+# Répartition des statuts de l'auteur (toujours au moins follower) et des viewers mentionnés.
+status_weights:
+  follower: 45
+  subscriber: 30
+  vip: 12
+  moderator: 13
+sub_months: [1, 36]  # ancienneté d'abonnement, tirée entre ces bornes
+
+# Souvenirs : le résumé d'un profil combine 1 à 3 de ces phrases.
+# Les « Dit… » sont des déclarations du viewer, à rapporter comme telles.
+memories:
+  - "Joue à Minecraft avec ses cousins."
+  - "Fait des études de médecine."
+  - "Travaille de nuit dans un hôpital."
+  - "Regarde le stream depuis le Québec."
+  - "A un lapin qui s'appelle Pompon."
+  - "Apprend le japonais."
+  - "Collectionne les figurines Pokémon."
+  - "Prépare son permis de conduire."
+  - "Joue de la batterie dans un groupe."
+  - "N'aime pas les jeux d'horreur."
+  - "Joue surtout sur Steam Deck."
+  - "Est fan de speedrun."
+  - "Vient de déménager à Lyon."
+  - "Fait de la musique électronique."
+  - "Joue à League of Legends en ranked."
+  - "Débute en programmation Python."
+  - "Adore les jeux de gestion."
+  - "Regarde souvent le stream pendant sa pause déjeuner."
+  - "Est arrivé via un raid."
+  - "Pose souvent des questions sur les jeux en cours."
+  - "Fait des blagues sur les pâtes au ketchup."
+  - "A offert des subs à la communauté."
+  - "Est souvent là en fin de live."
+  - "Prépare un marathon."
+  - "Dessine des fan arts de la chaîne."
+  - "Joue à Elden Ring en même temps que le stream."
+  - "Fait de l'escalade le week-end."
+  - "Révise son bac."
+  - "Organise des parties de jeux de société."
+  - "Écoute le stream en fond pendant qu'il code."
+  - "Dit avoir déjà gagné un tournoi de Mario Kart."
+  - "Dit connaître personnellement un développeur de chez Ubisoft."
+  - "Dit avoir fini Celeste en moins d'une heure."
+  - "Dit être le premier follower de la chaîne."
+  - "Dit avoir vu un OVNI l'été dernier."
+  - "Dit parler cinq langues."
+  - "Dit avoir rencontré le streamer à la Paris Games Week."
+  - "Dit posséder plus de 300 jeux sur Steam."
+  - "Dit être champion régional d'échecs."
+  - "Dit avoir codé son propre bot Discord."
+
+
+# Catégories du live. Genres : libellés IGDB. Descriptions : ~80 % en anglais (comme IGDB).
+categories:
+  games_with_card:
+    - name: Minecraft
+      genres: [Simulator, Adventure]
+      description: "A sandbox game about placing blocks and going on adventures: explore randomly generated worlds, gather resources and build anything you can imagine."
+    - name: Slay the Spire
+      genres: [Card & Board Game, Strategy, Indie]
+      description: "A roguelike deck-building game where you craft a unique deck, encounter strange creatures and climb the Spire."
+    - name: Factorio
+      genres: [Simulator, Strategy, Indie]
+      description: "Build and maintain ever-growing factories on an alien planet, automating mining, production and logistics."
+    - name: "The Legend of Zelda: Breath of the Wild"
+      genres: [Adventure, Role-playing (RPG)]
+      description: "Link wakes up after a hundred years of slumber and explores the open kingdom of Hyrule to defeat Calamity Ganon."
+    - name: Terraria
+      genres: [Platform, Adventure, Indie]
+      description: "A 2D sandbox adventure: dig, fight, explore and build in a procedurally generated world."
+    - name: Rocket League
+      genres: [Sport, Racing]
+      description: "Soccer meets driving: rocket-powered cars hit a giant ball to score goals."
+    - name: Baldur's Gate 3
+      genres: [Role-playing (RPG), Turn-based strategy (TBS), Adventure]
+      description: "A party-based RPG set in the Forgotten Realms, where a mind flayer parasite threatens to transform you."
+    - name: Valorant
+      genres: [Shooter, Tactical]
+      description: "A 5v5 tactical shooter where agents with unique abilities fight to plant or defuse the Spike."
+    - name: Disco Elysium
+      genres: [Role-playing (RPG), Adventure, Indie]
+      description: "A detective RPG where an amnesiac cop investigates a murder in the city of Revachol, through dialogue and skill checks."
+    - name: Portal 2
+      genres: [Puzzle, Platform]
+      description: "A first-person puzzle game where you solve test chambers with a portal gun, under the eye of the AI GLaDOS."
+    - name: Super Mario Odyssey
+      genres: [Platform, Adventure]
+      description: "Mario travels across kingdoms aboard the Odyssey with Cappy, his living hat, to rescue Princess Peach from Bowser."
+    - name: Among Us
+      genres: [Strategy, Indie]
+      description: "Crewmates complete tasks on a spaceship while impostors secretly sabotage and eliminate them."
+    - name: "Animal Crossing: New Horizons"
+      genres: [Simulator]
+      description: "Move to a deserted island, gather resources, craft tools and build a community with animal villagers."
+    - name: Cyberpunk 2077
+      genres: [Role-playing (RPG), Shooter, Adventure]
+      description: "An open-world RPG set in Night City, where the mercenary V chases an implant that holds the key to immortality."
+    # Fiches réécrites en français dans la config du bot (~20 %).
+    - name: Mario Kart 8 Deluxe
+      genres: [Racing, Arcade]
+      description: "Jeu de course où les personnages de Nintendo s'affrontent sur des circuits remplis d'objets et de pièges."
+    - name: "Clair Obscur: Expedition 33"
+      genres: [Role-playing (RPG), Turn-based strategy (TBS), Adventure]
+      description: "Un RPG au tour par tour où une expédition part affronter la Peintresse, qui chaque année efface tous ceux qui ont l'âge du nombre qu'elle peint."
+    - name: Rayman Legends
+      genres: [Platform, Adventure]
+      description: "Jeu de plateforme où Rayman et ses amis traversent des mondes enchantés pour libérer les Ptizêtres."
+    - name: Dofus
+      genres: [Role-playing (RPG), Tactical, Turn-based strategy (TBS)]
+      description: "Jeu de rôle en ligne massivement multijoueur, aux combats tactiques au tour par tour, dans le Monde des Douze."
+
+  # Jeux inventés : le modèle ne peut s'appuyer que sur la fiche.
+  invented_with_card:
+    - name: Ferrous Hollow
+      genres: [Platform, Adventure, Indie]
+      description: "A metroidvania set inside a rusting giant robot, where you play a tiny mechanic repairing it from the inside."
+    - name: Orbital Ramen
+      genres: [Simulator, Arcade, Indie]
+      description: "Run a noodle stand on a space station and serve picky aliens before their shuttle leaves."
+    - name: Kingdom of Ash and Echo
+      genres: [Role-playing (RPG), Tactical]
+      description: "A tactical RPG where every fallen soldier comes back as an echo fighting for the other side."
+    - name: Turbo Taupe
+      genres: [Racing, Arcade, Indie]
+      description: "A kart racer where moles dig tunnels under the track to take shortcuts."
+    - name: Brume et Racines
+      genres: [Simulator, Indie]
+      description: "Un jeu de gestion où l'on tient une herboristerie dans un village perdu dans la brume."
+    - name: Sous la Glace
+      genres: [Adventure, Puzzle, Indie]
+      description: "Une aventure narrative où une plongeuse explore une station scientifique abandonnée sous la banquise."
+
+  # Pas de fiche IGDB (jeu trop récent ou trop confidentiel) : juste le nom.
+  games_without_card:
+    - Petit Jardin Cosmique
+    - NEON RIFT
+    - Moth Lantern
+    - Les Chroniques de Bidonville
+
+  # Catégories Twitch non gaming : jamais de fiche. Autorisées même si l'évaluation les utilise.
+  non_gaming:
+    - Just Chatting
+    - IRL
+    - Software and Game Development
+    - Music
+    - Art
+    - Makers & Crafting
+    - Food & Drink
+    - Talk Shows & Podcasts
+    - Science & Technology
+    - Retro
+
+# Titres de live. {category} est remplacé par la catégorie en cours.
+titles:
+  - "{category} : on continue l'aventure !"
+  - "Découverte de {category}"
+  - "On termine {category} ce soir"
+  - "{category} avec le chat"
+  - "{category} en chill"
+  - "Premier live sur {category}"
+  - "Soirée tranquille, venez papoter"
+  - "Live du soir !"
+  - "On teste des trucs, venez voir"
+  - "Retour après une semaine de pause"
+  - "Live spécial 1 an de la chaîne"
+  - "!planning pour les prochains lives"
