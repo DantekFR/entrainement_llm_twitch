@@ -67,3 +67,31 @@ def test_full_contexts_render():
         inputs["message"] = " ".join(["@" + name for name in meta["mentioned"]] + ["question"])
 
         build_messages(case_to_inputs({"inputs": inputs}))
+
+def test_non_gaming_titles_do_not_name_the_category():
+    for seed in SEEDS:
+        inputs, _ = sample_system(random.Random(seed), POOLS)
+        if inputs["category"] in POOLS["categories"]["non_gaming"]:
+            assert inputs["category"] not in inputs["title"]
+
+def test_unfollowed_mentions_have_no_profile():
+    total = 0
+    for seed in SEEDS:
+        inputs, meta = sample_context(random.Random(seed), POOLS)
+        unfollowed = set(meta["without_profile"])
+        names = {p["name"] for p in inputs["profiles"]}
+        assert unfollowed <= set(meta["mentioned"])
+        assert names == {inputs["author"], *meta["mentioned"]} - unfollowed
+        for message in inputs["history"]:
+            if message["author"] in unfollowed:
+                assert message["status"] == "viewer"
+        total += len(unfollowed)
+    assert total > 0  # le cas existe bien dans les tirages
+
+def test_bot_never_speaks_first_or_twice_in_a_row():
+    for seed in SEEDS:
+        inputs, _ = sample_context(random.Random(seed), POOLS)
+        statuses = [message["status"] for message in inputs["history"]]
+        if statuses:
+            assert statuses[0] != "bot"
+        assert all(not (b == "bot" and a in ("bot", "viewer")) for a, b in zip(statuses, statuses[1:]))

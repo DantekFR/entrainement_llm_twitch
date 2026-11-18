@@ -13,6 +13,8 @@ import yaml
 from scripts.prompt_format import PARIS_TZ, format_status
 
 POOLS_PATH = Path(__file__).parent.parent / "configs" / "pools.yaml"
+MATRIX_PATH = Path(__file__).parent.parent / "configs" / "seed_matrix.yaml"
+
 
 OFF_LIVE_RATE = 0.15        # part des contextes hors live
 NO_FACTS_RATE = 0.05        # part des contextes sans aucun fait
@@ -28,6 +30,7 @@ MENTION_WEIGHTS = {0: 70, 1: 22, 2: 8}  # nombre de viewers mentionnés -> poids
 NEW_VIEWER_RATE = 0.25    # profil sans souvenir
 FIRST_VISIT_RATE = 0.2    # pas de dernier passage
 EMPTY_HISTORY_RATE = 0.1  # historique vide
+UNFOLLOWED_MENTION_RATE = 0.2  # viewer mentionné qui ne suit pas la chaîne : pas de profil
 ROLES = {  # statut tiré -> rôles TwitchIO (tous suivent la chaîne)
     "follower": {"follower"},
     "subscriber": {"subscriber", "follower"},
@@ -57,6 +60,7 @@ def sample_live(rng: random.Random, pools: dict) -> dict:
     start = sample_datetime(rng, day, 18, 23)
     now = start + timedelta(minutes=rng.randint(5, 300))  # peut passer minuit
 
+    titles = []
     family = rng.choices(list(CATEGORY_WEIGHTS), weights=list(CATEGORY_WEIGHTS.values()))[0]
     choice = rng.choice(pools["categories"][family])
     if isinstance(choice, dict):  # jeu avec fiche
@@ -64,7 +68,11 @@ def sample_live(rng: random.Random, pools: dict) -> dict:
     else:  # jeu sans fiche ou catégorie non gaming
         category, genres, description = choice, None, None
 
-    title = rng.choice(pools["titles"]).replace("{category}", category)
+        titles = pools["generic_titles"]
+    if family != "non_gaming":  # un titre qui nomme la catégorie n'a de sens que pour un jeu
+        titles = titles + pools["game_titles"]
+    title = rng.choice(titles).replace("{category}", category)
+
     return {"now": now.isoformat(), "stream_start": start.isoformat(), "title": title,
             "category": category, "genres": genres, "description": description}
 
@@ -133,12 +141,14 @@ def sample_profile(rng: random.Random, pools: dict, name: str, now: datetime) ->
     }
 
 
-def sample_history(rng, pools, now, profiles, streamer, bot_name, on_live) -> list[dict]:
+def sample_history(rng, pools, now, profiles, unfollowed, streamer, bot_name, on_live) -> list[dict]:
     """Squelette de l'historique : auteurs, statuts et heures (texte vide, écrit par le générateur)."""
     if rng.random() < EMPTY_HISTORY_RATE:
         return []
     speakers = [(p["name"], p["status"]) for p in profiles]
-    others = rng.sample([n for n in pools["viewer_names"] if n not in {p["name"] for p in profiles}], k=3)
+    speakers += [(name, "viewer") for name in unfollowed]
+    taken = {name for name, _ in speakers}
+    others = rng.sample([n for n in pools["viewer_names"] if n not in taken], k=3)
     speakers += [(name, "viewer" if rng.random() < 0.2 else "follower") for name in others]
     speakers.append((bot_name, "bot"))
     if on_live:
@@ -148,11 +158,17 @@ def sample_history(rng, pools, now, profiles, streamer, bot_name, on_live) -> li
     for _ in range(rng.randint(1, 15)):
         moment -= timedelta(minutes=rng.randint(0, 4))
         times.append(moment)
+    humans = [speaker for speaker in speakers if speaker[1] != "bot"]
+    authors = []
+    for _ in times:
+# le bot répond à un follower ou plus : jamais en premier, ni après lui-même, ni après un non-follower
+        pool = speakers if authors and authors[-1][1] not in ("bot", "viewer") else humans
+        authors.append(rng.choice(pool))
     return [
         {"author": author, "status": status, "text": "", "sent_at": sent_at.isoformat()}
-        for sent_at in reversed(times)
-        for author, status in [rng.choice(speakers)]
+        for (author, status), sent_at in zip(authors, reversed(times))
     ]
+
 
 
 def sample_context(rng: random.Random, pools: dict) -> tuple[dict, dict]:
@@ -162,13 +178,36 @@ def sample_context(rng: random.Random, pools: dict) -> tuple[dict, dict]:
 
     n_mentions = rng.choices(list(MENTION_WEIGHTS), weights=list(MENTION_WEIGHTS.values()))[0]
     names = rng.sample(pools["viewer_names"], k=1 + n_mentions)
-    profiles = [sample_profile(rng, pools, name, now) for name in names]
+    author, mentioned = names[0], names[1:]
+    unfollowed = [name for name in mentioned if rng.random() < UNFOLLOWED_MENTION_RATE]
+    profiles = [sample_profile(rng, pools, name, now) for name in names if name not in unfollowed]
 
     inputs["profiles"] = profiles
     inputs["history"] = sample_history(
-        rng, pools, now, profiles, streamer, inputs["bot_name"], on_live=inputs["stream_start"] is not None
+        rng, pools, now, profiles, unfollowed, streamer, inputs["bot_name"],
+        on_live=inputs["stream_start"] is not None,
     )
-    inputs["author"] = names[0]
+    inputs["author"] = author
     inputs["message"] = ""
-    meta = {"streamer": streamer, "mentioned": names[1:]}
+    meta = {"streamer": streamer, "mentioned": mentioned, "without_profile": unfollowed}
     return inputs, meta
+
+def load_matrix(path: Path = MATRIX_PATH) -> dict:
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def weighted_choice(rng: random.Random, weights: dict) -> str:
+    """Une clé du dictionnaire, tirée selon son poids."""
+    return rng.choices(list(weights), weights=list(weights.values()))[0]
+
+
+def sample_situation(rng: random.Random, matrix: dict) -> dict:
+    """Situation à faire écrire au générateur : catégorie, consigne, registre, attitude."""
+    categories = matrix["categories"]
+    category = weighted_choice(rng, {name: c["weight"] for name, c in categories.items()})
+    return {
+        "category": category,
+        "instruction": categories[category]["instruction"],
+        "register": weighted_choice(rng, matrix["registers"]),
+        "attitude": weighted_choice(rng, matrix["attitudes"]),
+    }

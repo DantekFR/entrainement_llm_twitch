@@ -428,14 +428,17 @@ categories:
     - Science & Technology
     - Retro
 
-# Titres de live. {category} est remplacé par la catégorie en cours.
-titles:
+# Titres de live pour un jeu. {category} est remplacé par le jeu en cours.
+game_titles:
   - "{category} : on continue l'aventure !"
-  - "Découverte de {category}"
+  - "On découvre {category} !"
   - "On termine {category} ce soir"
   - "{category} avec le chat"
   - "{category} en chill"
   - "Premier live sur {category}"
+
+# Titres valables pour toutes les catégories (jeux et non gaming).
+generic_titles:
   - "Soirée tranquille, venez papoter"
   - "Live du soir !"
   - "On teste des trucs, venez voir"
