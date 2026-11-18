@@ -23,7 +23,7 @@ def test_good_row_is_accepted():
 def test_problems_are_detected():
     item = {**ITEM, "meta": {**ITEM["meta"], "mentioned": ["Pseudo_Test"]}}
     row = good_row(ITEM)  # sans la mention de Pseudo_Test
-    row["history"] = row["history"][:-1]
+    row["history"] = row["history"] + ["un texte en trop"]
     row["response"] = "Salut [Pseudo_Test] zzzFake"
     problems = " | ".join(find_problems(item, row))
     for expected in ["historique", "mention manquante", "no_brackets", "emote inconnue : zzzFake"]:

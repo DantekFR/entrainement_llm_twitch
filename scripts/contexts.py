@@ -201,13 +201,30 @@ def weighted_choice(rng: random.Random, weights: dict) -> str:
     return rng.choices(list(weights), weights=list(weights.values()))[0]
 
 
-def sample_situation(rng: random.Random, matrix: dict) -> dict:
+def sample_categories(rng: random.Random, matrix: dict, size: int) -> list[str]:
+    """Catégories d'un lot : chacune a sa part entière (poids × taille), le reste est tiré selon les fractions."""
+    weights = {name: c["weight"] for name, c in matrix["categories"].items()}
+    total = sum(weights.values())
+    shares = {name: weight * size / total for name, weight in weights.items()}
+    categories = [name for name, share in shares.items() for _ in range(int(share))]
+    remainders = {name: share - int(share) for name, share in shares.items()}
+    while len(categories) < size:
+        name = weighted_choice(rng, remainders)
+        categories.append(name)
+        remainders[name] = 0  # au plus une place de plus par catégorie
+    rng.shuffle(categories)
+    return categories
+
+
+def sample_situation(rng: random.Random, matrix: dict, category: str | None = None) -> dict:
     """Situation à faire écrire au générateur : catégorie, consigne, registre, attitude."""
     categories = matrix["categories"]
-    category = weighted_choice(rng, {name: c["weight"] for name, c in categories.items()})
+    if category is None:
+        category = weighted_choice(rng, {name: c["weight"] for name, c in categories.items()})
     return {
         "category": category,
         "instruction": categories[category]["instruction"],
         "register": weighted_choice(rng, matrix["registers"]),
         "attitude": weighted_choice(rng, matrix["attitudes"]),
     }
+

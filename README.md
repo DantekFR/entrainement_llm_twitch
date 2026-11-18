@@ -14,7 +14,7 @@ Le bot lui-même vit dans un autre repo : [dantek_bot_twitch](https://github.com
 | 1. Explorer le modèle | Terminée |
 | Format du prompt v1 | Terminé : document et module de rendu testés |
 | 2. Jeu d'évaluation | 20 cas (tag `eval-v1`), modèle de base mesuré : 1/20 |
-| 3. Dataset de départ | En cours : réservoirs et tirage des contextes |
+| 3. Dataset de départ | En cours : chaîne de production en place, 2 lots sur 15 validés (40 exemples) |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
@@ -37,6 +37,8 @@ uv run python scripts/check_env.py       # doit finir par "Environnement prêt p
 uv run pytest                            # tests (format, évaluation, réservoirs)
 uv run python -m scripts.evaluate --name base               # évalue le modèle de base (GPU)
 uv run python -m scripts.rescore runs/<run>/eval.json       # recalcule les scores, sans GPU
+uv run python -m scripts.export_batch --batch 3             # lot 3 du dataset + prompt du générateur
+uv run python -m scripts.merge_batch --batch 3              # contrôle la sortie du générateur et la met au format d'entraînement
 ```
 
 ## Contenu
@@ -47,6 +49,9 @@ uv run python -m scripts.rescore runs/<run>/eval.json       # recalcule les scor
 - `eval/cases.jsonl` : jeu d'évaluation (un cas par ligne), à ne jamais montrer au générateur du dataset.
 - `scripts/eval_cases.py`, `scripts/checks.py`, `scripts/evaluate.py`, `scripts/rescore.py` : lecture des cas, vérifications automatiques, évaluation d'un modèle, recalcul des scores.
 - `configs/pools.yaml`, `scripts/contexts.py` : réservoirs et tirage aléatoire des contextes du dataset.
+- `configs/seed_matrix.yaml` : situations à couvrir (catégories et leurs poids, registres, attitudes).
+- `configs/generator_prompt.md`, `scripts/export_batch.py`, `scripts/merge_batch.py` : prompt du générateur, export d'un lot, contrôle et fusion de la sortie.
+- `data/seed/batches/batch_NNN/` : un dossier par lot (contextes, prompt, sortie du générateur, exemples acceptés).
 - `tests/` : tests pytest (dont les garde-fous contre la contamination du jeu d'évaluation).
 - `notebooks/01_explore_model.ipynb` : exploration du modèle (tokenizer, chat template, tailles de prompt, premières générations).
 

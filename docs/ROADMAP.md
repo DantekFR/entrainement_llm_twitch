@@ -27,12 +27,12 @@ entrainement_llm_twitch/
 ├── pyproject.toml       # dépendances, index PyTorch (uv), config pytest
 ├── uv.lock              # versions exactes, versionné
 ├── docs/                # ROADMAP, prompt_format.md (référence du format), chat_template/
-├── configs/             # pools.yaml (réservoirs du dataset) ; train_v0.yaml (à venir)
+├── configs/             # pools.yaml (réservoirs), seed_matrix.yaml (situations), generator_prompt.md ; train_v0.yaml (à venir)
 ├── eval/cases.jsonl     # jeu d'évaluation, versionné, jamais vu à l'entraînement (tag eval-v1)
 ├── data/
-│   ├── seed/            # dataset synthétique, peut être versionné (à venir)
+│   ├── seed/            # dataset synthétique, versionné : batches/batch_NNN/ (un dossier par lot) ; train/val (à venir)
 │   └── raw/             # exports du bot, JAMAIS versionné (à venir)
-├── scripts/             # check_env, prompt_format, eval_cases, checks, evaluate, rescore, contexts ; puis train, export
+├── scripts/             # check_env, prompt_format, eval_cases, checks, evaluate, rescore, contexts, export_batch, merge_batch ; puis train, export
 ├── tests/               # tests pytest (cohérence code / docs/prompt_format.md)
 ├── notebooks/           # 01_explore_model.ipynb
 └── runs/                # un dossier par run : config, métriques, logs (ignoré)
@@ -125,7 +125,7 @@ Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inp
 
 **Objectif :** 300 à 800 exemples synthétiques de qualité, au format `prompt_format` v1, pour l'entraînement v0.
 
-1. **Une matrice de diversité** dans `configs/seed_matrix.yaml` : catégories (les mêmes que l'évaluation) × registres (soutenu, familier, argot, fautes de frappe) × états du live (jeu avec fiche IGDB, jeu sans fiche, catégorie non gaming, hors live) × profils de viewers (nouveau, habitué, provocateur). On génère en parcourant cette matrice, pas au hasard.
+1. **Une matrice de diversité** dans `configs/seed_matrix.yaml` : catégories (les mêmes que l'évaluation, avec leur poids et une consigne générique) × registres (soutenu, courant, familier, argot, fautes) × attitudes (neutre, enthousiaste, taquin, provocateur). Les états du live (jeu avec ou sans fiche, non gaming, hors live) et les profils (nouveau, habitué, sans profil) sont déjà tirés avec le contexte. Les catégories sont **stratifiées par lot** : chaque lot de 20 contient les 9 catégories dans les proportions de la matrice.
 2. **Partage du travail.** Le **code** tire le contexte au hasard (graine fixée) dans les réservoirs de `configs/pools.yaml` : nom du bot, streamer, faits, emotes, catégorie, dates, profils et squelette de l'historique (`scripts/contexts.py`, même format que le champ `inputs` des cas d'évaluation). Le **générateur** écrit seulement la partie créative : textes de l'historique, message du viewer et réponse idéale. Pour la v0, le générateur est un **chat en ligne**, alimenté par lots d'environ 20 contextes (une nouvelle conversation par lot) ; un script pourra le remplacer plus tard sans changer le reste. **Vérifie les conditions d'utilisation du fournisseur** (chat ou API) : certaines interdisent d'utiliser leurs sorties pour entraîner un autre modèle. **Le générateur ne voit jamais `eval/cases.jsonl`** : l'exemple de format à lui donner est celui de `docs/prompt_format.md`.
 3. **Filtrer automatiquement :** les exemples doivent passer `run_checks` (les mêmes critères que l'évaluation), plus les doublons et les faits inventés absents du contexte.
 4. **Relire à la main un échantillon** (au moins 50 exemples). C'est ici que se joue le ton de dantekos\_bot.
@@ -133,6 +133,10 @@ Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inp
 6. Rédiger une courte fiche du dataset (`data/seed/README.md`) : source, taille, répartition, version du format.
 
 **Le nom du bot n'est jamais écrit en dur dans les exemples.** Il est injecté par `prompt_format` depuis la config (`{bot_name}`), et le dataset synthétique utilise plusieurs noms différents. Le modèle apprend ainsi à prendre son nom dans le contexte : quand le chat choisira le nouveau nom, il suffira de changer la config, sans réentraîner.
+
+**La chaîne de production d'un lot.** `scripts/export_batch.py --batch N` tire 20 contextes et situations (graine = numéro du lot) et écrit `data/seed/batches/batch_NNN/batch.json`, ainsi que `prompt.md`. Ce prompt est assemblé à partir de `configs/generator_prompt.md`, des règles système et de l'exemple du doc. La sortie du chat est enregistrée dans `output.jsonl`. `scripts/merge_batch.py --batch N` contrôle chaque exemple (structure, mentions, `run_checks`, langue, emotes inventées), rejette les mauvais avec leur raison et écrit `merged.jsonl` au format d'entraînement (messages `system` / `user` / `assistant`).
+
+**État (live 6) :** chaîne complète en place. Lots 1 et 2 : 40/40 exemples acceptés, relus en entier, sans fait inventé. Restent les lots 3 à 15, le bilan de diversité (tics du générateur, doublons), puis le découpage train/val.
 
 **Critère de fin :** `train.jsonl` et `val.jsonl` produits, échantillon relu, fiche rédigée.
 

@@ -1,7 +1,7 @@
 import random
 from collections import Counter
 
-from scripts.contexts import load_matrix, sample_situation
+from scripts.contexts import load_matrix, sample_situation, sample_categories
 from scripts.eval_cases import CATEGORIES
 
 MATRIX = load_matrix()
@@ -23,3 +23,10 @@ def test_proportions_follow_weights():
     for name, category in MATRIX["categories"].items():
         expected = category["weight"] / total_weight
         assert abs(counts[name] / 10_000 - expected) < 0.02
+
+
+def test_every_batch_covers_all_categories():
+    for seed in range(50):
+        categories = sample_categories(random.Random(seed), MATRIX, 20)
+        assert len(categories) == 20
+        assert set(categories) == set(MATRIX["categories"])

@@ -9,7 +9,7 @@ import json
 import random
 from pathlib import Path
 
-from scripts.contexts import load_matrix, load_pools, sample_context, sample_situation
+from scripts.contexts import load_matrix, load_pools, sample_context, sample_situation, sample_categories
 from scripts.prompt_format import SYSTEM_RULES
 
 ROOT = Path(__file__).parent.parent
@@ -23,12 +23,13 @@ def batch_dir(batch_id: int) -> Path:
 
 def build_batch(batch_id: int, size: int, pools: dict, matrix: dict) -> list[dict]:
     rng = random.Random(batch_id)
+    categories = sample_categories(rng, matrix, size)
     items = []
     for index in range(size):
         inputs, meta = sample_context(rng, pools)
         items.append({
             "id": f"b{batch_id:03d}-{index:02d}",
-            "situation": sample_situation(rng, matrix),
+            "situation": sample_situation(rng, matrix, categories[index]),
             "meta": meta,
             "inputs": inputs,
         })

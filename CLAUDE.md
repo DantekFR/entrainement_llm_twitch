@@ -53,7 +53,7 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | 1. Explorer le modèle | **Terminée** : `notebooks/01_explore_model.ipynb`, chat template dans `docs/chat_template/` |
 | `prompt_format` v1 | **Terminé** : `docs/prompt_format.md` + `scripts/prompt_format.py` (tous les blocs, `build_messages`, plafonds), test de l'exemple complet au vert |
 | 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas (tag `eval-v1`), `evaluate.py`, base = 1/20. Référence Qwen reportée en phase 6 |
-| 3. Dataset de départ | **En cours** : réservoirs `configs/pools.yaml` et tirage `scripts/contexts.py` faits |
+| 3. Dataset de départ | **En cours** : chaîne complète en place (matrice, export, prompt du générateur, fusion). Lots 1 et 2 validés (40 exemples), lots 3 à 15 à produire |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
@@ -80,6 +80,9 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | Exemple complet du doc (`measure_prompt.py`) | system 492 · user 212 · **total 709 tokens** avec template (le template ajoute 5 tokens) |
 | **Éval du modèle de base** (`eval-v1`, 20 cas, glouton) | **1/20**. Par critère : `no_brackets` 3/20, `no_markdown` 11/20, `max_sentences` 15/20, `language` 19/20, `must_include_*` 14/15, `must_not_match` 10/13 |
 | Vitesse pendant l'éval | ~7 tokens/s ; le temps suit le nombre de tokens générés ; 1er cas lent (préchauffage GPU, 51 tokens en 33 s) |
+| Tirage des contextes (2 000 tirages) | 67 % jeux, 17 % non gaming, 15 % hors live |
+| Prompt du générateur (lot de 20) | ~75 000 caractères (~20 000 tokens) |
+| **Lots 1 et 2** (générateur en ligne) | **20/20 et 20/20** acceptés par la fusion ; relecture complète : 0 fait inventé, durées et culture générale justes ; sans emote ni emoji : 5/20 et 6/20 (cible ~1/4) |
 
 ### Comportement du modèle de base (référence avant fine-tuning)
 
@@ -135,6 +138,19 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - **Réservoirs** : streamers jamais Dantek (et des streameuses), faits en groupes exclusifs (au plus un par groupe) + faits libres, emotes préfixe + suffixe dont ~20 % opaques au sens tiré au hasard, catégories (jeux réels avec fiche ~80 % EN, inventés, sans fiche, non gaming ~20 %), 15 % hors live, lives qui passent minuit.
 - **Modèle plus léger** : pas maintenant ; piste si le 8B est trop lent sur le Deck (phase 6).
 
+### Décisions du live 6
+
+- **Matrice** `configs/seed_matrix.yaml` : catégorie (poids + consigne générique, jamais tirée de l'éval) × registre (`soutenu`, `courant`, `familier`, `argot_abreviations`, `fautes`) × attitude (`neutre`, `enthousiaste`, `taquin`, `provocateur`). L'état du live et le type de profil restent tirés par `contexts.py` (pas de doublon). Le registre et l'attitude ne valent que pour le message : la réponse reste en français correct.
+- **Tirage stratifié par lot** (`sample_categories`) : chaque catégorie a sa part entière (poids × 20), le reste est tiré selon les fractions. Les 9 catégories sont dans chaque lot.
+- **Langue** : 8 % de messages étrangers (poids 8, doc corrigé de 15 % à 8 %).
+- **Viewer mentionné non follower** (20 % des mentions) : pas de profil, statut `viewer` dans l'historique, listé dans `meta.without_profile`. Le bot ne sait rien de lui.
+- **Historique** : le bot ne parle jamais en premier, ni juste après lui-même, ni après un `viewer` (l'IA est bloquée aux non-followers). Des messages avant le début du live sont normaux (le chat reste ouvert).
+- **Titres** : `game_titles` (avec `{category}`) seulement pour les jeux, `generic_titles` pour tous ; aucun titre ne donne l'âge de la chaîne (« Live anniversaire de la chaîne ! »).
+- **Prompt du générateur** versionné dans `configs/generator_prompt.md`, avec les marqueurs `<<SYSTEM_RULES>>`, `<<EXAMPLE>>`, `<<BATCH>>` remplis par `export_batch.py` (règles lues dans `prompt_format.py`, exemple lu dans le doc : jamais de copie). Consigne : si la situation est impossible avec le contexte, l'adapter sans compléter le contexte.
+- **Un dossier par lot** (versionné) : `data/seed/batches/batch_NNN/` avec `batch.json` (export), `prompt.md`, `output.jsonl` (sortie du chat), `merged.jsonl` (format d'entraînement `{id, category, messages}`).
+- **Fusion** (`merge_batch.py`) : rejette avec sa raison tout exemple qui a une structure fausse (nombre de textes, `@<bot>` en tête, mentions), qui échoue à `run_checks`, dont le message `langue` n'est pas clairement étranger, ou qui contient une emote de chaîne inventée. Rendu par `case_to_inputs` + `apply_limits` + `build_messages`, comme l'éval.
+- **Un lot déjà envoyé au générateur n'est jamais réexporté** : la sortie correspond au tirage d'origine.
+
 ### Données que le bot devra fournir (TwitchIO 3, à implémenter hors live)
 
 Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratuit). Ancienneté d'abonnement via `chatter.badges` (champ `info`, à vérifier). Palier via `fetch_broadcaster_subscriptions()` → `.tier` (scope `channel:read:subscriptions`). Date de follow via `chatter.follow_info()` → `.followed_at` (scope `moderator:read:followers`). **Dernier passage** et **résumés des viewers** : à prévoir dans l'architecture du bot.
@@ -164,14 +180,21 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - **Regex trop larges dans les critères** : `\d` attrapait un « 100 % » venu du profil. Cibler ce qu'on veut vraiment interdire (dates, heures).
 - **Lancer les scripts avec `-m`** (`uv run python -m scripts.evaluate`) pour que `scripts` et `tests` soient importables.
 - **Claude ne lance pas de commandes pendant le live** (sauf lecture demandée par Dantek) : c'est Dantek qui exécute.
+- **Situation et contexte tirés séparément** : une situation peut être impossible (`fait_present` sans fait, `emotes` sans liste). Le prompt du générateur dit d'adapter la situation, jamais de compléter le contexte.
+- **Une seule liste de titres** donnait « On termine IRL ce soir », et un titre « 1 an de la chaîne » contredisait la date de création dans les faits. Vérifier qu'un texte tiré au hasard reste cohérent avec les autres blocs. Éviter aussi « de {category} » (élision : « de Orbital Ramen »).
+- **Squelette d'historique tiré au hasard** : le bot parlait sans qu'on le mentionne, ou répondait à un non-follower. Contraindre le tirage, et le dire au générateur.
+- **Petits lots tirés indépendamment** : une catégorie à 8 % manque environ une fois sur cinq dans un lot de 20. D'où le tirage stratifié.
+- **Changer l'ordre des tirages** (stratification, nouvelle règle) change tous les lots suivants : ne jamais réexporter un lot déjà généré.
+- **Test qui dépend du tirage** : `row["history"][:-1]` ne provoque rien si l'historique tiré est vide. Fabriquer le défaut sans dépendre du contenu (ajouter un texte en trop).
+- **Sortie collée sans `Ctrl+S`** : `output.jsonl` faisait 0 octet, donc fusion à 0/20 (« absent de la sortie »). Enregistrer avant de lancer la fusion.
 
 ## Prochaines étapes
 
-1. **Vérifier le commit de fin du live 5** : `configs/pools.yaml`, `scripts/contexts.py`, `tests/test_contexts.py`, `tests/test_pools.py`, `pyproject.toml` / `uv.lock` (pyyaml), docs. `uv run pytest -q` → 47 passed.
-2. **Matrice de diversité** `configs/seed_matrix.yaml` : catégories de l'éval × registres (soutenu, familier, argot, fautes) × états du live × profils (nouveau, habitué, provocateur), avec la part de chaque catégorie. Un contexte tiré = une case de la matrice (la « situation » à couvrir).
-3. **Export d'un lot** (~20 contextes + situation + `meta`) vers un fichier, et **prompt du chat** : exemple du doc, règles système, consignes (remplir `text` de l'historique, `message` qui commence par `@{bot_name}` et mentionne les viewers de `meta`, réponse idéale ; sortie JSONL stricte). Ne jamais donner `eval/cases.jsonl`.
-4. **Fusion** des réponses du chat avec les contextes, rendu par `case_to_inputs` + `build_messages`, filtre `run_checks`, puis relecture d'un échantillon.
-5. Générer les 300 premiers exemples (≈15 lots), découper train/val 90/10, fiche `data/seed/README.md`.
+1. **Vérifier le commit de fin du live 6**, qui doit inclure le tirage stratifié (`scripts/contexts.py`, `scripts/export_batch.py`, `tests/test_situations.py`, `tests/test_merge_batch.py`) et `data/seed/batches/batch_002/`. `uv run pytest -q` → 59 passed.
+2. **Garde-fou** dans `merge_batch.py` (proposé, pas encore ajouté) : juste après `rows = {...}`, `raise SystemExit(...)` si `output.jsonl` est vide.
+3. **Lots 3 à 15**, un par un : `uv run python -m scripts.export_batch --batch N`, nouvelle conversation, coller `batch_00N/prompt.md`, enregistrer la sortie dans `batch_00N/output.jsonl` (`Ctrl+S`), puis `uv run python -m scripts.merge_batch --batch N`. Montrer à Claude seulement les lignes `REJETÉ` et les lots sous 18/20.
+4. **Bilan des 15 lots** : script qui compte les débuts de réponse les plus fréquents (tics vus : « Le prochain jeu prévu, c'est… », « Raté : », « Bien essayé / Bien tenté »), doublons, répartition par catégorie, registre et état du live, fréquence de « Live anniversaire ». Relecture d'au moins 50 exemples (40 déjà relus).
+5. **Assemblage** : `data/seed/train.jsonl` et `val.jsonl` (90/10, graine fixée), fiche `data/seed/README.md` (source, taille, répartition, version du format).
 6. Phase 4 : `configs/train_v0.yaml`, `scripts/train.py`, entraînement test de 5 minutes.
 
 ## Journal des lives
@@ -208,6 +231,12 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - `scripts/prompt_format.py` terminé : `[MAINTENANT]`, statuts, profils, historique, message, `build_messages`, plafonds ; test de l'exemple complet identique au document (709 tokens).
 - Phase 2 : 20 cas dans `eval/cases.jsonl`, `checks.py` (lingua pour la langue), `evaluate.py`, `rescore.py`. Modèle de base : 1/20 après correction des critères (ajout de `no_brackets`). Tag `eval-v1`.
 - Phase 3 commencée : génération par le code (contextes) + chat en ligne (textes) ; réservoirs `configs/pools.yaml` et `scripts/contexts.py`, avec tests anti-contamination.
+
+### Live 6 : 18 novembre 2026
+
+- Matrice `configs/seed_matrix.yaml`, tirage stratifié des catégories, `export_batch.py` (lot + prompt du générateur assemblé depuis `configs/generator_prompt.md`) et `merge_batch.py` (contrôles + rendu au format d'entraînement). Un dossier par lot.
+- Cohérence des contextes corrigée : titres par famille de catégorie, viewers mentionnés sans profil, bot qui ne parle qu'après une mention d'un follower.
+- Lots 1 et 2 générés par un chat en ligne : 40/40 acceptés, relus en entier, aucun fait inventé.
 
 ## Procédure de fin de live
 
