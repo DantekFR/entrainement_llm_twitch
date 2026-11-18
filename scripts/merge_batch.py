@@ -15,8 +15,8 @@ from pathlib import Path
 from scripts.checks import LANGUAGE_NOISE, detect_language, run_checks
 from scripts.eval_cases import case_to_inputs
 from scripts.prompt_format import apply_limits, build_messages
+from scripts.export_batch import batch_dir
 
-BATCHES_DIR = Path(__file__).parent.parent / "data" / "seed" / "batches"
 MODEL_ID = "unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit"
 EMOTE_LIKE = re.compile(r"\b[a-z]{3,}[A-Z]\w*")  # forme d'une emote de chaîne : préfixe + Suffixe
 
@@ -62,9 +62,9 @@ def main():
     parser.add_argument("--batch", type=int, required=True)
     args = parser.parse_args()
 
-    name = f"batch_{args.batch:03d}"
-    items = json.loads((BATCHES_DIR / f"{name}.json").read_text(encoding="utf-8"))
-    lines = (BATCHES_DIR / f"{name}_output.jsonl").read_text(encoding="utf-8").splitlines()
+    folder = batch_dir(args.batch)
+    items = json.loads((folder / "batch.json").read_text(encoding="utf-8"))
+    lines = (folder / "output.jsonl").read_text(encoding="utf-8").splitlines()
     rows = {row["id"]: row for row in (json.loads(line) for line in lines if line.strip())}
 
     from transformers import AutoTokenizer  # import lent : seulement ici, pas dans les tests
@@ -85,7 +85,7 @@ def main():
         max_tokens = max(max_tokens, count_tokens(tokenizer.apply_chat_template(messages, tokenize=False)))
         accepted.append({"id": item["id"], "category": item["situation"]["category"], "messages": messages})
 
-    path = BATCHES_DIR / f"{name}_merged.jsonl"
+    path = folder / f"merged.jsonl"
     path.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in accepted), encoding="utf-8")
     print(f"{len(accepted)}/{len(items)} exemples acceptés -> {path}")
     print(f"Exemple le plus long : {max_tokens} tokens (max_seq_length = 4096)")

@@ -17,6 +17,9 @@ BATCHES_DIR = ROOT / "data" / "seed" / "batches"
 TEMPLATE_PATH = ROOT / "configs" / "generator_prompt.md"
 DOC_PATH = ROOT / "docs" / "prompt_format.md"
 
+def batch_dir(batch_id: int) -> Path:
+    """Dossier d'un lot : contextes, prompt, sortie du générateur, exemples fusionnés."""
+    return BATCHES_DIR / f"batch_{batch_id:03d}"
 
 def build_batch(batch_id: int, size: int, pools: dict, matrix: dict) -> list[dict]:
     rng = random.Random(batch_id)
@@ -58,12 +61,14 @@ def main():
     args = parser.parse_args()
 
     items = build_batch(args.batch, args.size, load_pools(), load_matrix())
-    BATCHES_DIR.mkdir(parents=True, exist_ok=True)
-    path = BATCHES_DIR / f"batch_{args.batch:03d}.json"
+    folder = batch_dir(args.batch)
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / "batch.json"
     path.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
 
+
     categories = [item["situation"]["category"] for item in items]
-    prompt_path = BATCHES_DIR / f"batch_{args.batch:03d}_prompt.md"
+    prompt_path = folder / f"prompt.md"
     prompt_path.write_text(build_generator_prompt(items), encoding="utf-8")
     print(f"Prompt du générateur : {prompt_path}")
     print(f"{len(items)} exemples écrits dans {path}")
