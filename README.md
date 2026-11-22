@@ -13,7 +13,7 @@ Le bot lui-même vit dans un autre repo : [dantek_bot_twitch](https://github.com
 | 0. Environnement | Terminée |
 | 1. Explorer le modèle | Terminée |
 | Format du prompt v1 | Terminé : document et module de rendu testés |
-| 2. Jeu d'évaluation | 20 cas (tag `eval-v1`), modèle de base mesuré : 1/20 |
+| 2. Jeu d'évaluation | 20 cas (tag `eval-v1`), modèle de base mesuré : 0/20 |
 | 3. Dataset de départ | En cours : chaîne de production en place, 2 lots sur 15 validés (40 exemples) |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |

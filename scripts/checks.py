@@ -1,6 +1,7 @@
 """Vérifications automatiques des réponses (critères "checks" des cas d'évaluation).
 
-Toutes les comparaisons ignorent les majuscules, regex comprises.
+Toutes les comparaisons ignorent les majuscules, regex comprises, et l'apostrophe typographique (’) vaut '.
+Le même code contrôle les exemples du dataset (scripts/merge_batch.py).
 """
 
 import re
@@ -8,15 +9,31 @@ import re
 from lingua import Language, LanguageDetectorBuilder
 
 SENTENCE_END = re.compile(r"[.!?…]+(?=\s|$)")
-MARKDOWN = re.compile(r"\*\*|__|`|^\s*(?:[-*#>]|\d+\.)\s", re.MULTILINE)
+SUSPENSION = re.compile(r"(?:\.\.\.|…)\s+(?=\w)")  # « Bon... je sais pas » : la phrase continue
+# Gras, italique (*mot* ou _mot_), code, titre, citation, liste. Sur Twitch, les astérisques s'affichent tels quels.
+# « 5* sur Steam », « m*rde », « ¯\_(ツ)_/¯ » et « -_- » ne sont pas du markdown.
+MARKDOWN = re.compile(
+    r"\*\*|\*[^*\s][^*\n]*\*|__|`|(?<!\w)_\w(?:[^_\n]*\w)?_(?!\w)|^\s*(?:[-*#>]|\d+\.)\s", re.MULTILINE
+)
 BRACKETS = re.compile(r"\[[^\]]*\]")  # [Dantek], [dantekfRage] : imitation des balises du prompt
+EMOTE_LIKE = re.compile(r"\b[a-z]{3,}[A-Z]\w*")  # forme d'une emote de chaîne : préfixe + Suffixe (kiwiHype)
+# Emotes globales de Twitch, autorisées par les règles : pas une emote de chaîne inventée, et pas de langue.
+TWITCH_GLOBAL_EMOTES = (
+    "Kappa", "LUL", "PogChamp", "SeemsGood", "NotLikeThis", "BibleThump", "Kreygasm", "ResidentSleeper",
+    "VoHiYo", "HeyGuys", "CoolCat", "DansGame", "BabyRage", "FailFish", "CoolStoryBob", "TwitchUnity",
+    "TwitchLit", "KonCha", "TehePelo", "PopCorn", "imGlitch", "bleedPurple", "twitchRaid", "panicBasket",
+)
 
 
-# Langues possibles des réponses : restreindre la liste rend la détection plus fiable.
+# Langues possibles des messages et des réponses (celles de la catégorie « langue » du dataset).
+# Restreindre la liste rend la détection plus fiable.
 LANGUAGES = {
     "fr": Language.FRENCH,
     "en": Language.ENGLISH,
     "es": Language.SPANISH,
+    "de": Language.GERMAN,
+    "it": Language.ITALIAN,
+    "pt": Language.PORTUGUESE,
 }
 CODES = {language: code for code, language in LANGUAGES.items()}
 DETECTOR = LanguageDetectorBuilder.from_languages(*LANGUAGES.values()).build()
@@ -29,12 +46,21 @@ def detect_language(text: str) -> str | None:
 
 
 LANGUAGE_MIN_CONFIDENCE = 0.5
-LANGUAGE_NOISE = re.compile(r"\[[^\]]*\]|@\w+|\*+")  # crochets, @pseudo, markdown : pas de langue
+SHORT_FRENCH_WORDS = 5  # en dessous, lingua devine au hasard (« GG ! » vu comme de l'italien)
+# Crochets, @pseudo, markdown et codes d'emote : pas de langue (lingua lit kiwiHype comme de l'anglais).
+LANGUAGE_NOISE = re.compile(
+    r"\[[^\]]*\]|@\w+|\*+|" + EMOTE_LIKE.pattern + r"|\b(?:" + "|".join(TWITCH_GLOBAL_EMOTES) + r")\b"
+)
 
 
 def language_ok(text: str, expected: str) -> bool:
-    """Échoue seulement si une autre langue que celle attendue est détectée avec assurance."""
+    """Échoue seulement si une autre langue que celle attendue est détectée avec assurance.
+
+    Une réponse française de moins de SHORT_FRENCH_WORDS mots passe toujours : trop courte pour trancher.
+    """
     cleaned = LANGUAGE_NOISE.sub(" ", text)
+    if expected == "fr" and len(re.findall(r"\w+", cleaned)) < SHORT_FRENCH_WORDS:
+        return True
     detected = detect_language(cleaned)
     if detected is None or detected == expected:
         return True
@@ -43,12 +69,14 @@ def language_ok(text: str, expected: str) -> bool:
 
 
 def count_sentences(text: str) -> int:
-    """Nombre de fins de phrase (. ! ? …), au moins 1. Une emote après le point ne compte pas."""
-    return max(1, len(SENTENCE_END.findall(text.strip())))
+    """Nombre de fins de phrase (. ! ? …), au moins 1. Une emote après le point ne compte pas,
+    ni des points de suspension suivis d'une minuscule."""
+    text = SUSPENSION.sub(lambda m: " " if m.string[m.end()].islower() else m.group(), text.strip())
+    return max(1, len(SENTENCE_END.findall(text)))
 
 
 def has_markdown(text: str) -> bool:
-    """Gras, code, titre, liste, ou réponse sur plusieurs lignes."""
+    """Gras, italique, code, titre, liste, ou réponse sur plusieurs lignes."""
     return bool(MARKDOWN.search(text)) or "\n" in text.strip()
 
 
@@ -68,7 +96,10 @@ def matches(text: str, pattern: str) -> bool:
 
 def run_checks(answer: str, checks: dict) -> dict[str, bool]:
     """Résultat de chaque critère (True = réussi). Les critères communs sont toujours appliqués."""
+    answer = answer.replace("’", "'")  # « je n’ai pas l’info » vaut « je n'ai pas l'info »
     results = {
+        # Une réponse vide, ou faite seulement d'emotes et de mentions, ne réussit rien.
+        "not_empty": re.search(r"\w", LANGUAGE_NOISE.sub(" ", answer)) is not None,
         "max_sentences": count_sentences(answer) <= checks["max_sentences"],
         "no_markdown": not has_markdown(answer),
         "no_brackets": not BRACKETS.search(answer),
@@ -89,13 +120,14 @@ def run_checks(answer: str, checks: dict) -> dict[str, bool]:
     return results
 
 
-
 def summarize(results: list[dict]) -> dict:
     """Scores globaux, par catégorie et par critère.
 
     results : un dict par cas avec "category" et "checks" (résultat de run_checks).
     Un cas est réussi si tous ses critères le sont.
     """
+    if not results:
+        raise ValueError("Aucun résultat à résumer.")
     categories: dict[str, dict] = {}
     checks: dict[str, dict] = {}
     for result in results:

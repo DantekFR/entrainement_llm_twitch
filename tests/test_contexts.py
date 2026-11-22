@@ -1,11 +1,12 @@
 import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from scripts.contexts import load_pools, sample_system, sample_context
+from scripts.contexts import PARIS_TZ, add_minutes, load_pools, sample_system, sample_context
 from scripts.prompt_format import render_category, render_emotes, render_facts, render_now
 
 POOLS = load_pools()
 SEEDS = range(300)
+CONTEXTS = [sample_context(random.Random(seed), POOLS) for seed in range(1000)]
 
 
 def test_same_seed_same_context():
@@ -95,3 +96,105 @@ def test_bot_never_speaks_first_or_twice_in_a_row():
         if statuses:
             assert statuses[0] != "bot"
         assert all(not (b == "bot" and a in ("bot", "viewer")) for a, b in zip(statuses, statuses[1:]))
+
+
+def test_every_game_family_gets_generic_titles():
+    """Bug d'indentation (live 6) : un jeu avec fiche n'avait jamais de titre générique."""
+    families = {
+        family: {c["name"] if isinstance(c, dict) else c for c in categories}
+        for family, categories in POOLS["categories"].items()
+    }
+    generic = set(POOLS["generic_titles"])
+    for family, names in families.items():
+        titles = [inputs["title"] for inputs, _ in CONTEXTS if inputs["category"] in names]
+        assert any(title in generic for title in titles), f"aucun titre générique pour {family}"
+        if family != "non_gaming":
+            assert any(title not in generic for title in titles), f"aucun titre de jeu pour {family}"
+
+
+def test_first_visit_has_no_memory():
+    """Un viewer en première visite : le bot n'a encore rien retenu de lui."""
+    for inputs, _ in CONTEXTS:
+        for profile in inputs["profiles"]:
+            if profile["last_seen"] is None:
+                assert profile["summary"] == ""
+
+
+def test_lives_follow_the_schedule():
+    """Un live tombe un jour annoncé, peu après l'heure annoncée, sauf quelques lives exceptionnels."""
+    schedules = {s["text"]: s for s in POOLS["schedules"]}
+    matching = total = 0
+    for inputs, _ in CONTEXTS:
+        drawn = [schedules[fact] for fact in inputs["facts"] if fact in schedules]
+        assert len(drawn) <= 1  # au plus un horaire
+        if drawn and inputs["stream_start"]:
+            start = datetime.fromisoformat(inputs["stream_start"])
+            hour, minute = (int(part) for part in drawn[0]["start"].split(":"))
+            announced = start.replace(hour=hour, minute=minute)
+            total += 1
+            matching += start.weekday() in drawn[0]["days"] and announced <= start <= announced + timedelta(minutes=30)
+    assert total > 50
+    assert 0.75 <= matching / total < 1  # environ 85 % à l'heure, le reste exceptionnel
+
+
+def test_history_lengths():
+    """Le plus souvent 1 à 15 messages, parfois un chat animé de 30 à 50 messages."""
+    lengths = [len(inputs["history"]) for inputs, _ in CONTEXTS]
+    assert max(lengths) <= 50
+    long_share = sum(length > 15 for length in lengths) / len(lengths)
+    assert 0.05 <= long_share <= 0.15
+    assert all(length == 0 or 1 <= length <= 15 or 30 <= length <= 50 for length in lengths)
+
+
+def test_streamer_writes_little():
+    statuses = [m["status"] for inputs, _ in CONTEXTS if inputs["stream_start"] for m in inputs["history"]]
+    assert 0 < statuses.count("streamer") / len(statuses) < 0.1
+
+
+def test_add_minutes_across_daylight_saving_time():
+    """La nuit du passage à l'heure d'été, 1 h réelle après 01h30 donne 03h30 (et non 02h30, qui n'existe pas)."""
+    start = datetime(2027, 3, 28, 1, 30, tzinfo=PARIS_TZ)
+    later = add_minutes(start, 60)
+    assert (later.hour, later.minute) == (3, 30)
+    assert later.astimezone(timezone.utc) - start.astimezone(timezone.utc) == timedelta(hours=1)
+
+
+def test_last_seen_excludes_the_current_live():
+    """Live commencé avant minuit : le dernier passage est avant le jour du début du live."""
+    for inputs, _ in CONTEXTS:
+        reference = datetime.fromisoformat(inputs["stream_start"] or inputs["now"]).date()
+        for profile in inputs["profiles"]:
+            if profile["last_seen"]:
+                assert profile["followed_at"] <= profile["last_seen"] < reference.isoformat()
+
+
+def test_scheduled_weekdays_are_balanced():
+    """Chaque jour annoncé reçoit sa part de lives (le samedi absorbait 83 % des « week-ends »)."""
+    from collections import Counter
+
+    schedules = {s["text"]: s for s in POOLS["schedules"]}
+    counts = {text: Counter() for text in schedules}
+    for seed in range(4000):
+        inputs, _ = sample_system(random.Random(seed), POOLS)
+        drawn = [fact for fact in inputs["facts"] if fact in schedules]
+        if drawn and inputs["stream_start"]:
+            weekday = datetime.fromisoformat(inputs["stream_start"]).weekday()
+            if weekday in schedules[drawn[0]]["days"]:
+                counts[drawn[0]][weekday] += 1
+    for text, counter in counts.items():
+        share = 1 / len(schedules[text]["days"])
+        for day in schedules[text]["days"]:
+            assert counter[day] / sum(counter.values()) > share * 0.6, (text, counter)
+
+
+def test_regulars_are_never_on_a_first_visit():
+    for inputs, _ in CONTEXTS:
+        for profile in inputs["profiles"]:
+            if profile["status"] in ("modo", "VIP"):
+                assert profile["last_seen"] is not None
+
+
+def test_long_histories_only_during_a_live():
+    for inputs, _ in CONTEXTS:
+        if len(inputs["history"]) > 15:
+            assert inputs["stream_start"] is not None

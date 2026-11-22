@@ -1,7 +1,7 @@
 """Construction des prompts au format prompt_format v1 (voir docs/prompt_format.md)."""
 
 from dataclasses import dataclass, replace
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from collections.abc import Callable
 
@@ -103,7 +103,10 @@ def render_now(now: datetime, stream_start: datetime | None = None, title: str =
         lines.append("Pas de live en cours")
     else:
         start = to_paris(stream_start)
-        duration = format_duration(now - start)
+        # Durée réelle calculée en UTC : deux heures de Paris se soustraient en heures murales,
+        # ce qui fausse d'une heure la nuit du changement d'heure. Jamais négative (horloge en retard).
+        elapsed = now.astimezone(timezone.utc) - start.astimezone(timezone.utc)
+        duration = format_duration(max(elapsed, timedelta(0)))
         lines.append(
             f"Live commencé {format_day(start, with_year=False)} à {format_time(start)} (il y a {duration})"
         )

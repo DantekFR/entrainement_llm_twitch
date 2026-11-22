@@ -130,7 +130,7 @@ emote_opaque_suffixes:
   - Pingouin
   - Tacos
   - Dino
-  - Fusée
+  - Cactus
 
 
 # Streamers fictifs (jamais Dantek ni Plumetis, utilisés dans l'évaluation).
@@ -153,7 +153,7 @@ streamers:
   - {name: Zélie, gender: f}
   - {name: Kitsune_Rose, gender: f}
   - {name: Mamzelle_Pixie, gender: f}
-  - {name: Ondine, gender: f}
+  - {name: Rosalie, gender: f}  # pas de nom qui commence par une voyelle : « Config de {streamer} »
   - {name: Capucine, gender: f}
 
 # Premier fait de chaque exemple, selon le genre du streamer.
@@ -161,29 +161,34 @@ streamer_intro:
   m: "Le streamer s'appelle {streamer}."
   f: "La streameuse s'appelle {streamer}."
 
+# Horaires : au plus un par contexte. days : jours annoncés (0 = lundi … 6 = dimanche),
+# start : heure de début annoncée (entre guillemets, sinon YAML lit 21:00 comme un nombre).
+# Le live tiré tombe un de ces jours, peu après cette heure, sauf live exceptionnel (contexts.py).
+schedules:
+  - {text: "Le stream a lieu le mardi, le jeudi et le dimanche à partir de 21h.", days: [1, 3, 6], start: "21:00"}
+  - {text: "Le stream a lieu tous les soirs de semaine à partir de 19h.", days: [0, 1, 2, 3, 4], start: "19:00"}
+  - {text: "Le stream a lieu le samedi et le dimanche à partir de 20h.", days: [5, 6], start: "20:00"}
+  - {text: "Le stream a lieu le lundi et le jeudi à partir de 20h.", days: [0, 3], start: "20:00"}
+  - {text: "Le stream a lieu le mercredi et le samedi à partir de 21h30.", days: [2, 5], start: "21:30"}
+
 # Groupes exclusifs : au plus un fait par groupe (sinon ils se contredisent).
+# Le prochain jeu prévu n'est jamais une catégorie du réservoir (il ne peut pas être le jeu en cours).
 exclusive_facts:
-  schedule:
-    - "Le stream a lieu le mardi, le jeudi et le dimanche à partir de 21h."
-    - "Le stream a lieu tous les soirs de semaine à partir de 19h."
-    - "Le stream a lieu le week-end, de 14h à 18h."
-    - "Le stream a lieu le lundi et le jeudi à partir de 20h."
-    - "Le stream a lieu le mercredi et le samedi à partir de 21h30."
   setup:
     - "Config de {streamer} : RTX 3070, 16 Go de RAM, Ryzen 5 5600X."
     - "Config de {streamer} : RX 7800 XT, 32 Go de RAM, Ryzen 7 7700."
     - "{streamer} streame depuis un MacBook Pro M3."
     - "Config de {streamer} : RTX 4090, 64 Go de RAM, Intel Core i9."
   favorite_games:
-    - "Jeux préférés de {streamer} : Zelda Breath of the Wild, Hades, Slay the Spire."
+    - "Jeux préférés de {streamer} : Zelda Breath of the Wild, Dead Cells, Slay the Spire."
     - "Jeux préférés de {streamer} : Minecraft, Terraria, Factorio."
     - "Jeux préférés de {streamer} : Final Fantasy IX, Chrono Trigger, Persona 5."
     - "Jeux préférés de {streamer} : Rocket League, Valorant, Fall Guys."
   next_game:
-    - "Prochain jeu prévu : Baldur's Gate 3."
-    - "Prochain jeu prévu : Disco Elysium."
-    - "Prochain jeu prévu : Stardew Valley en coop avec le chat."
-    - "Prochain jeu prévu : Resident Evil 4 Remake."
+    - "Prochain jeu prévu : Pentiment."
+    - "Prochain jeu prévu : Tunic."
+    - "Prochain jeu prévu : Overcooked 2 en coop avec le chat."
+    - "Prochain jeu prévu : Sea of Stars."
   creation:
     - "La chaîne a été créée en 2019."
     - "La chaîne a été créée en 2023."
@@ -191,32 +196,32 @@ exclusive_facts:
   goal:
     - "Objectif du mois : 2 000 followers."
     - "Objectif du mois : 50 abonnés."
-    - "Objectif du mois : finir le jeu en cours sans guide."
+    - "Objectif du mois : finir un jeu sans guide."
 
 # Faits libres : cumulables.
 facts:
   - "Les lives durent en général entre 3 et 4 heures."
-  - "Pas de stream pendant les vacances scolaires."
-  - "{streamer} joue avec une manette Xbox, même sur PC."
+  - "Les lives annulés sont annoncés sur le Discord."
+  - "{streamer} joue toujours avec une manette Xbox."
   - "{streamer} utilise un micro Shure SM7B."
   - "{streamer} ne joue jamais aux jeux d'horreur."
   - "{streamer} a fini Dark Souls sans mourir en 2024."
-  - "Le jeu de la communauté est Among Us, le dimanche soir."
-  - "La chaîne a passé les 1 000 followers en mars 2026."
+  - "Le jeu de la communauté est Among Us."
+  - "La chaîne a passé les 1 000 followers en mars 2025."
   - "Le lien du Discord est dans la description de la chaîne."
   - "Les meilleurs moments sont publiés sur TikTok."
   - "Les abonnés peuvent proposer un jeu une fois par mois."
   - "La mascotte de la chaîne est un raton laveur nommé Gaston."
-  - "Les modos sont choisis par {streamer} : ça ne se demande pas dans le chat."
+  - "Inutile de réclamer le rôle de modo dans le chat : c'est {streamer} qui le propose."
   - "Le spam de majuscules est interdit dans le chat."
   - "Les spoilers sont interdits dans le chat."
   - "La commande !planning donne les horaires de la semaine."
   - "Un giveaway est organisé à chaque palier de 500 followers."
-  - "{streamer} est développeur web le jour."
+  - "{streamer} travaille dans le développement web la journée."
   - "{streamer} vit avec deux chats, Caramel et Nuage."
   - "{streamer} parle aussi espagnol."
   - "{streamer} boit beaucoup trop de café pendant les lives."
-  - "{streamer} fait du speedrun sur Celeste."
+  - "{streamer} fait du speedrun sur Super Mario 64."
   - "Projet en cours : créer un petit jeu vidéo avec Godot."
   - "Projet en cours : un marathon caritatif en décembre."
   - "Projet en cours : finir tous les Zelda dans l'ordre de sortie."
@@ -296,7 +301,7 @@ memories:
   - "Prépare son permis de conduire."
   - "Joue de la batterie dans un groupe."
   - "N'aime pas les jeux d'horreur."
-  - "Joue surtout sur Steam Deck."
+  - "Joue surtout sur un vieux PC portable."
   - "Est fan de speedrun."
   - "Vient de déménager à Lyon."
   - "Fait de la musique électronique."
@@ -311,18 +316,18 @@ memories:
   - "Est souvent là en fin de live."
   - "Prépare un marathon."
   - "Dessine des fan arts de la chaîne."
-  - "Joue à Elden Ring en même temps que le stream."
+  - "Joue à Monster Hunter Wilds en même temps que le stream."
   - "Fait de l'escalade le week-end."
   - "Révise son bac."
   - "Organise des parties de jeux de société."
   - "Écoute le stream en fond pendant qu'il code."
   - "Dit avoir déjà gagné un tournoi de Mario Kart."
   - "Dit connaître personnellement un développeur de chez Ubisoft."
-  - "Dit avoir fini Celeste en moins d'une heure."
+  - "Dit avoir fini Super Meat Boy en moins d'une heure."
   - "Dit être le premier follower de la chaîne."
   - "Dit avoir vu un OVNI l'été dernier."
   - "Dit parler cinq langues."
-  - "Dit avoir rencontré le streamer à la Paris Games Week."
+  - "Dit avoir croisé l'équipe de la chaîne à la Paris Games Week."
   - "Dit posséder plus de 300 jeux sur Steam."
   - "Dit être champion régional d'échecs."
   - "Dit avoir codé son propre bot Discord."
@@ -432,7 +437,7 @@ categories:
 game_titles:
   - "{category} : on continue l'aventure !"
   - "On découvre {category} !"
-  - "On termine {category} ce soir"
+  - "Grosse session {category} ce soir"
   - "{category} avec le chat"
   - "{category} en chill"
   - "Premier live sur {category}"
@@ -442,6 +447,6 @@ generic_titles:
   - "Soirée tranquille, venez papoter"
   - "Live du soir !"
   - "On teste des trucs, venez voir"
-  - "Retour après une semaine de pause"
+  - "Petite session détente ce soir"
   - "Live anniversaire de la chaîne !"
   - "!planning pour les prochains lives"

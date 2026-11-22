@@ -107,7 +107,7 @@ Le fichier `eval/cases.jsonl` contient de 50 à 80 cas (20 au minimum pour comme
 | `bavardage` | Salutations, blagues, provocation, refus courtois | 10 % | 2 |
 | `emotes` | Emote de la chaîne adaptée, aucune adaptée, liste vide | 5 % | 1 |
 
-Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis. **Critères communs à tous les cas** : langue, deux phrases au maximum, pas de markdown, pas de crochets (`[Dantek]`, `[emote]` : imitation des balises du prompt). Toutes les comparaisons ignorent les majuscules, regex comprises.
+Chaque cas contient le contexte complet, la question, et des **critères vérifiables** plutôt qu'une réponse idéale : longueur maximale, langue attendue, mots interdits (un fait inventé), mots requis. **Critères communs à tous les cas** : réponse non vide (pas seulement des emotes ou des mentions), langue, deux phrases au maximum, pas de markdown, pas de crochets (`[Dantek]`, `[emote]` : imitation des balises du prompt). Toutes les comparaisons ignorent les majuscules, regex comprises, et l'apostrophe typographique `’` vaut `'`.
 
 Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inputs` (exactement les champs de `PromptInputs`, dates en ISO 8601 avec décalage, ex. `2026-11-17T21:40:00+01:00`) et `checks` (`language`, `max_sentences`, `must_include_any`, `must_not_match`…). Les noms du bot, pseudos et faits des cas ne doivent jamais être réutilisés dans le dataset.
 
@@ -115,7 +115,7 @@ Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inp
 
 **Mesures de référence :** Ministral 8B de base, et ton Qwen actuel via Ollama, avec le même script.
 
-**État (live 5) :** 20 cas écrits, jeu figé par le tag Git `eval-v1`. Modèle de base : **1/20**, surtout des échecs de forme (crochets, parenthèses en italique, réponses trop longues). La mesure du Qwen est reportée à la phase 6 : elle demande d'interroger Ollama depuis `evaluate.py`, ce qu'on écrira de toute façon pour évaluer le GGUF.
+**État (live 5, critères corrigés le 22 novembre) :** 20 cas écrits, jeu à figer par le tag Git `eval-v1`. Modèle de base : **0/20** (1/20 avant de détecter l'italique `*…*`), surtout des échecs de forme (crochets, parenthèses en italique, réponses trop longues). Critères corrigés avant le gel : réponse vide (`not_empty`), italique, apostrophe typographique, regex de `injection_001`, `bavardage_001` et `culture_actu_002`, tournures des listes `fait_absent` et `live_002`. La mesure du Qwen est reportée à la phase 6 : elle demande d'interroger Ollama depuis `evaluate.py`, ce qu'on écrira de toute façon pour évaluer le GGUF.
 
 **Critère de fin :** deux scores de référence notés dans `MODELS.md`.
 
@@ -134,9 +134,11 @@ Format d'un cas (une ligne JSON par cas) : `id`, `category`, `description`, `inp
 
 **Le nom du bot n'est jamais écrit en dur dans les exemples.** Il est injecté par `prompt_format` depuis la config (`{bot_name}`), et le dataset synthétique utilise plusieurs noms différents. Le modèle apprend ainsi à prendre son nom dans le contexte : quand le chat choisira le nouveau nom, il suffira de changer la config, sans réentraîner.
 
-**La chaîne de production d'un lot.** `scripts/export_batch.py --batch N` tire 20 contextes et situations (graine = numéro du lot) et écrit `data/seed/batches/batch_NNN/batch.json`, ainsi que `prompt.md`. Ce prompt est assemblé à partir de `configs/generator_prompt.md`, des règles système et de l'exemple du doc. La sortie du chat est enregistrée dans `output.jsonl`. `scripts/merge_batch.py --batch N` contrôle chaque exemple (structure, mentions, `run_checks`, langue, emotes inventées), rejette les mauvais avec leur raison et écrit `merged.jsonl` au format d'entraînement (messages `system` / `user` / `assistant`).
+**La chaîne de production d'un lot.** `scripts/export_batch.py --batch N` tire 20 contextes et situations (graine = numéro du lot) et écrit `data/seed/batches/batch_NNN/batch.json`, ainsi que `prompt.md`. Ce prompt est assemblé à partir de `configs/generator_prompt.md`, des règles système et de l'exemple du doc. La sortie du chat est enregistrée dans `output.jsonl`. `scripts/merge_batch.py --batch N` contrôle chaque exemple (structure, mentions exactes, textes vides, jetons de contrôle comme `[/INST]`, `run_checks`, langue de la réponse, emotes inventées ou mal écrites, nom du streamer absent des blocs), rejette les mauvais avec leur raison et écrit `merged.jsonl` au format d'entraînement (messages `system` / `user` / `assistant`). Un `output.jsonl` vide, mal formé ou venu d'un autre lot arrête la fusion sans rien écrire, et `export_batch` refuse de réexporter un lot existant.
 
 **État (live 6) :** chaîne complète en place. Lots 1 et 2 : 40/40 exemples acceptés, relus en entier, sans fait inventé. Restent les lots 3 à 15, le bilan de diversité (tics du générateur, doublons), puis le découpage train/val.
+
+**Corrections avant le lot 3 (22 novembre) :** après une revue complète, le tirage a été corrigé (titres génériques pour tous les jeux, live calé sur l'horaire des faits, pas de souvenir en première visite, faits contradictoires remplacés, 10 % d'historiques longs de 30 à 50 messages, streamer moins bavard, plus de situation impossible, dernier passage avant le live en cours, pas de modo ni de VIP en première visite). Les lots 1 et 2 gardent leur tirage d'origine : on ne les réexporte jamais.
 
 **Critère de fin :** `train.jsonl` et `val.jsonl` produits, échantillon relu, fiche rédigée.
 
@@ -168,6 +170,13 @@ Point de départ de `configs/train_v0.yaml`, à ajuster selon la VRAM observée 
 **Ce qu'on explique au chat :** la différence entre perte d'entraînement et de validation, ce que signifie une perte de validation qui remonte (surapprentissage), pourquoi LoRA n'entraîne qu'une petite fraction des paramètres.
 
 **Pièges fréquents :** mémoire insuffisante (réduire d'abord le batch, puis la longueur de séquence), perte à NaN (learning rate trop élevé), template mal appliqué (vérifier un exemple rendu avant de lancer), OBS qui perd des images pendant que le GPU est saturé.
+
+**Vérifié pendant la revue du 22 novembre (TRL 1.15, Unsloth 2026.11) :**
+
+- Le template de Ministral n'a pas de marqueurs `{% generation %}` : avec le format `messages` brut, la perte porte sur **tout** le prompt. Utiliser le format prompt/completion (`prompt = messages[:2]`, `completion = messages[2:]`), dont le masque suit la longueur du prompt. `train_on_responses_only(instruction_part="[INST]", response_part="[/INST]")` marche aussi, mais un `[/INST]` tapé par un viewer le fausserait.
+- `SFTConfig.max_length` vaut 1024 par défaut : passer `max_length=4096` à `SFTConfig` et `max_seq_length=4096` à `FastModel.from_pretrained` (sinon 2048), comme dans `evaluate.py`.
+- Avant `trainer.train()`, vérifier que le dataset a toujours N lignes et que, pour chaque exemple, les labels décodés valent exactement la réponse suivie de `</s>`.
+- `apply_chat_template(tokenize=True)` donne un seul `<s>` ; tokeniser le texte rendu avec les réglages par défaut en donnerait deux.
 
 ## Phase 5 : évaluer la v0
 

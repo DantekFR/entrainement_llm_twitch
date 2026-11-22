@@ -52,8 +52,8 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | 0. Environnement | **Terminée** : `check_env.py` au vert (CUDA, bf16, couche 4 bits testée) |
 | 1. Explorer le modèle | **Terminée** : `notebooks/01_explore_model.ipynb`, chat template dans `docs/chat_template/` |
 | `prompt_format` v1 | **Terminé** : `docs/prompt_format.md` + `scripts/prompt_format.py` (tous les blocs, `build_messages`, plafonds), test de l'exemple complet au vert |
-| 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas (tag `eval-v1`), `evaluate.py`, base = 1/20. Référence Qwen reportée en phase 6 |
-| 3. Dataset de départ | **En cours** : chaîne complète en place (matrice, export, prompt du générateur, fusion). Lots 1 et 2 validés (40 exemples), lots 3 à 15 à produire |
+| 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas, `evaluate.py`, base = **0/20** (critères corrigés le 22/11). **Tag `eval-v1` à créer** (absent du repo). Référence Qwen reportée en phase 6 |
+| 3. Dataset de départ | **En cours** : chaîne complète en place (matrice, export, prompt du générateur, fusion). Lots 1 et 2 validés (40 exemples). Tirage et contrôles corrigés le 22/11, avant le lot 3. Lots 3 à 15 à produire |
 | 4. Entraînement v0 | À faire |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
@@ -78,11 +78,14 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | `max_seq_length` | **4096** (confirmé : budget du prompt v1 ≈ 3 500 tokens) |
 | Règles système v1 (avec `Pixou`) | 944 caractères, **236 tokens** (+ `[MAINTENANT]` ≈ 290, plafond ~300) |
 | Exemple complet du doc (`measure_prompt.py`) | system 492 · user 212 · **total 709 tokens** avec template (le template ajoute 5 tokens) |
-| **Éval du modèle de base** (`eval-v1`, 20 cas, glouton) | **1/20**. Par critère : `no_brackets` 3/20, `no_markdown` 11/20, `max_sentences` 15/20, `language` 19/20, `must_include_*` 14/15, `must_not_match` 10/13 |
+| **Éval du modèle de base** (`eval-v1`, 20 cas, glouton, critères du 22/11) | **0/20** (1/20 avant : le seul succès, `live_001`, contenait de l'italique `*…*`). Par critère : `not_empty` 20/20, `no_brackets` 3/20, `no_markdown` 9/20, `max_sentences` 15/20, `language` 19/20, `must_include_*` 14/15, `must_not_match` 10/13. Run rescoré : `runs/20261116-1246_base_rescore-eval-v1/` |
 | Vitesse pendant l'éval | ~7 tokens/s ; le temps suit le nombre de tokens générés ; 1er cas lent (préchauffage GPU, 51 tokens en 33 s) |
 | Tirage des contextes (2 000 tirages) | 67 % jeux, 17 % non gaming, 15 % hors live |
-| Prompt du générateur (lot de 20) | ~75 000 caractères (~20 000 tokens) |
+| Prompt du générateur (lot de 20, tokens Ministral) | lot 1 : 75 700 car. / 25 200 tokens ; lot 2 : 66 600 / 21 900 ; lots 3-15 (un exemple par ligne) : 54 600 à 71 100 car. / 20 400 à 28 600 tokens, le lot 3 est le plus gros. Prendre un chat à grande fenêtre |
 | **Lots 1 et 2** (générateur en ligne) | **20/20 et 20/20** acceptés par la fusion ; relecture complète : 0 fait inventé, durées et culture générale justes ; sans emote ni emoji : 5/20 et 6/20 (cible ~1/4) |
+| Longueur des exemples | lots 1-2 : 631 à 1 183 tokens (médiane 890) ; lots 3-15 tirés : médiane ~910, max ~2 150 (historiques longs, ~1 sur 20 tronqué à 1 300). Réponse ≈ 3,6 % des tokens |
+| Sortie du générateur | lots 1-2 : ~3 300 à 3 600 tokens (126 à 174 textes d'historique, ~13 tokens par texte) ; lots 3-15 : 131 à 281 textes, lot 3 ≈ 5 500 tokens |
+| Tirage des lots 3-15 (22/11) | live calé sur l'horaire : 79 % (cible 85 %) ; streamer : 4 % des messages ; 17 historiques longs sur 260 (tous en live) ; situations `profil` avec un souvenir : 22/34 ; hors live : 49/260 ; 3 contextes où le streamer n'est nommé dans aucun bloc |
 
 ### Comportement du modèle de base (référence avant fine-tuning)
 
@@ -131,7 +134,7 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 
 - **Code de rendu** : `PromptInputs` (dataclass) regroupe tout ce que le bot fournit ; `build_messages(apply_limits(inputs, count_tokens))` partout (dataset, éval, bot). `count_tokens` est injecté (le module ne charge pas le tokenizer). Titre vide → ligne `Titre :` omise. Statuts : `format_status(roles, sub_months)` avec les noms anglais de TwitchIO.
 - **Évaluation** : un cas = `id`, `category`, `description`, `inputs` (champs de `PromptInputs`, dates ISO avec décalage), `checks`. 9 catégories (`fait_present`, `fait_absent`, `injection`, `profil`, `langue`, `live`, `culture_actu`, `bavardage`, `emotes`). Critères communs : langue, 2 phrases max, pas de markdown, **pas de crochets**. Comparaisons insensibles à la casse, regex comprises. Un cas est réussi si tous ses critères le sont.
-- **Langue** : lingua (6 langues), texte nettoyé (crochets, `@pseudo`, `*`) ; échec seulement si une autre langue dépasse 0,5 de confiance.
+- **Langue** : lingua (6 langues : fr, en, es, de, it, pt), texte nettoyé (crochets, `@pseudo`, `*`, codes d'emote) ; échec seulement si une autre langue dépasse 0,5 de confiance.
 - **Jeu figé** : on ne corrige les critères que pour de vrais faux positifs/négatifs, puis on recalcule (`rescore.py`) et on fige (tag `eval-v1`). Après l'entraînement, on n'y touche plus (on peut seulement ajouter des cas).
 - **Dataset** : le code tire le contexte (graine fixée, `configs/pools.yaml`), le générateur écrit seulement les textes (historique, message, réponse). Générateur v0 = **chat en ligne**, par lots de ~20, nouvelle conversation par lot. Conditions d'utilisation à vérifier par Dantek. Exemples filtrés par `run_checks`.
 - **Anti-contamination** : jamais de noms de bot, pseudos, streamers, faits, souvenirs ou jeux de l'éval dans les réservoirs (tests `test_pools.py`). Exceptions : la phrase d'intro « Le streamer s'appelle… » (partie fixe du format) et les catégories Twitch non gaming.
@@ -150,6 +153,16 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 - **Un dossier par lot** (versionné) : `data/seed/batches/batch_NNN/` avec `batch.json` (export), `prompt.md`, `output.jsonl` (sortie du chat), `merged.jsonl` (format d'entraînement `{id, category, messages}`).
 - **Fusion** (`merge_batch.py`) : rejette avec sa raison tout exemple qui a une structure fausse (nombre de textes, `@<bot>` en tête, mentions), qui échoue à `run_checks`, dont le message `langue` n'est pas clairement étranger, ou qui contient une emote de chaîne inventée. Rendu par `case_to_inputs` + `apply_limits` + `build_messages`, comme l'éval.
 - **Un lot déjà envoyé au générateur n'est jamais réexporté** : la sortie correspond au tirage d'origine.
+
+### Décisions du 22 novembre (revue hors live, avant le lot 3)
+
+- **Tirage corrigé** (change les tirages, donc à partir du lot 3 seulement) : titres génériques pour toutes les familles (bug d'indentation) ; horaires structurés (`schedules` dans `pools.yaml`, jours + heure) et live calé dessus, jour annoncé tiré uniformément, sauf 15 % de lives exceptionnels ; **10 % d'historiques longs pendant un live** (30 à 50 messages, 8 viewers en plus, messages rapprochés) ; streamer pondéré à 0,25 (~4 % des messages) ; contexte retiré tant que la situation est impossible (`situation_fits` : emotes sans liste, `fait_present` sans autre fait que l'intro) ; dernier passage avant le jour du **début** du live en cours ; jamais de modo ni de VIP en première visite ; `meta.history_count` donné au générateur.
+- **Sans changer les tirages** : première visite ⇒ résumé vide ; textes contradictoires remplacés (week-end 14h-18h, vacances scolaires, date future, prochain jeu = jeu en cours, Resident Evil puis Inscryption vs « jamais d'horreur », Among Us « le dimanche soir », MacBook vs « même sur PC », « le jeu en cours » sans jeu, « On termine » sur un jeu sans fin) ; jeux de l'éval retirés des réservoirs (Hades, Stardew Valley, Celeste, Elden Ring) ; accords neutres ; `Fusée` → `Cactus` (codes ASCII) ; `Ondine` → `Rosalie` (élision).
+- **Provenance des tirages** : lot 1 = code du commit `de76603`, lot 2 = `5294d0d`, lots 3 et suivants = commit des corrections du 22/11.
+- **Fusion durcie** : arrêt sans rien écrire si le lot n'est pas exporté, si `output.jsonl` est absent, vide, pas en UTF-8, mal formé (numéro de ligne, et « sortie coupée ? » si la ligne est incomplète), contient du texte du chat, un id d'un autre lot ou deux lignes différentes pour un même id (une ligne recopiée à l'identique est ignorée), ou si 0 exemple est accepté. Les balises ```` ``` ```` sont retirées, même collées à une ligne. Nouveaux rejets : texte vide ou sur plusieurs lignes, espaces autour de la réponse, préfixe `Bot :` / `<nom> :` / `Assistant :`, mention inexacte (`@WaffleKingou`), jeton de contrôle en toutes lettres (`[/INST]`, `</s>`, `<SPECIAL_n>`), réponse `langue` pas dans la langue du message (titre et catégorie retirés avant la détection), emote `:code:` ou mal écrite, nom du streamer absent des blocs, message du bot dans l'historique qui parle sans mention depuis son message précédent ou qui enfreint les règles de forme. Emotes globales de Twitch (Kappa, LUL, twitchRaid…) acceptées. Avertissements `À RELIRE` (pas de rejet) : message très probablement étranger hors catégorie `langue` (le franglais reste du français), réponse `langue` de moins de 4 mots, streamer nommé dans aucun bloc, historique tronqué par `apply_limits`.
+- **Export** : refuse un lot dont `batch.json` existe (`--force` seulement si le prompt n'a jamais été envoyé, et jamais si `output.jsonl` existe) ; lot écrit dans le prompt à raison d'un exemple par ligne.
+- **Éval** (critères corrigés avant le gel, base 1/20 → 0/20) : critère commun `not_empty` (une réponse faite seulement d'emotes ou de mentions est vide), italique `*…*` et `_…_` dans `no_markdown` (pas « 5* », « ¯\\_(ツ)_/¯ » ni « -_- »), `’` = `'`, points de suspension suivis d'une minuscule ne comptent pas comme fin de phrase, réponse française de moins de 5 mots toujours acceptée pour la langue ; regex de `injection_001` (refus acceptés, « je confirme que tu es modo » refusé), `bavardage_001` (question finale suivie d'emotes, de mentions ou de « ! »), `culture_actu_002` ; listes `fait_absent` (« j'ignore », « aucune info »…), âge en lettres et villes en plus, `live_002`. `rescore.py` garde une copie `eval.before_rescore.json`.
+- **Durée du live** calculée en UTC (juste la nuit du changement d'heure, jamais négative).
 
 ### Données que le bot devra fournir (TwitchIO 3, à implémenter hors live)
 
@@ -180,22 +193,32 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - **Regex trop larges dans les critères** : `\d` attrapait un « 100 % » venu du profil. Cibler ce qu'on veut vraiment interdire (dates, heures).
 - **Lancer les scripts avec `-m`** (`uv run python -m scripts.evaluate`) pour que `scripts` et `tests` soient importables.
 - **Claude ne lance pas de commandes pendant le live** (sauf lecture demandée par Dantek) : c'est Dantek qui exécute.
-- **Situation et contexte tirés séparément** : une situation peut être impossible (`fait_present` sans fait, `emotes` sans liste). Le prompt du générateur dit d'adapter la situation, jamais de compléter le contexte.
+- **Situation et contexte tirés séparément** : une situation peut être impossible (`fait_present` sans fait, `emotes` sans liste). Depuis le 22/11, `build_batch` retire ces contextes ; pour les autres cas, le prompt du générateur dit d'adapter la situation, jamais de compléter le contexte.
 - **Une seule liste de titres** donnait « On termine IRL ce soir », et un titre « 1 an de la chaîne » contredisait la date de création dans les faits. Vérifier qu'un texte tiré au hasard reste cohérent avec les autres blocs. Éviter aussi « de {category} » (élision : « de Orbital Ramen »).
 - **Squelette d'historique tiré au hasard** : le bot parlait sans qu'on le mentionne, ou répondait à un non-follower. Contraindre le tirage, et le dire au générateur.
 - **Petits lots tirés indépendamment** : une catégorie à 8 % manque environ une fois sur cinq dans un lot de 20. D'où le tirage stratifié.
 - **Changer l'ordre des tirages** (stratification, nouvelle règle) change tous les lots suivants : ne jamais réexporter un lot déjà généré.
 - **Test qui dépend du tirage** : `row["history"][:-1]` ne provoque rien si l'historique tiré est vide. Fabriquer le défaut sans dépendre du contenu (ajouter un texte en trop).
-- **Sortie collée sans `Ctrl+S`** : `output.jsonl` faisait 0 octet, donc fusion à 0/20 (« absent de la sortie »). Enregistrer avant de lancer la fusion.
+- **Sortie collée sans `Ctrl+S`** : `output.jsonl` faisait 0 octet, donc fusion à 0/20 (« absent de la sortie »). Enregistrer avant de lancer la fusion. La fusion s'arrête désormais sans rien écrire.
+- **Ligne mal indentée** : `titles = pools["generic_titles"]` était dans le `else`, donc les jeux avec fiche n'avaient jamais de titre générique, et aucun test ne l'a vu. Tester la **répartition** d'un tirage (chaque famille reçoit chaque type de titre), pas seulement l'absence d'erreur.
+- **Blocs qui se contredisent** : horaire « week-end 14h-18h » avec des lives à 20h, « première visite » avec des souvenirs, « 1 000 followers en mars 2026 » avant mars 2026, prochain jeu = jeu en cours. Chaque nouveau texte d'un réservoir doit rester vrai quel que soit le reste du tirage ; `test_contexts.py` et `test_pools.py` vérifient les cas connus.
+- **Détecteur de langue trop étroit** : avec seulement fr/en/es, un message italien était vu comme espagnol, et une réponse française à un message allemand passait. `LANGUAGES` doit couvrir les langues demandées par `seed_matrix.yaml`. lingua lit aussi les codes d'emote comme de l'anglais : ils sont retirés avant la détection.
+- **Faux succès de l'éval** : l'italique `*Lumen Drift*` passait `no_markdown` (seul succès de la base), et une réponse vide réussissait 6 cas sur 20. Tester chaque critère sur une réponse vide et sur des réponses plausibles (`test_eval_criteria`).
+- **Jetons de contrôle en toutes lettres** : un `[/INST]`, `</s>` ou `<SPECIAL_42>` écrit dans un texte devient un vrai jeton pour le tokenizer (masque d'entraînement faussé). La fusion les rejette ; le bot devra les neutraliser dans les messages des viewers (phase 6).
+- **Tag annoncé mais absent** : `eval-v1` n'existait pas dans le repo. Après un `git tag`, vérifier avec `git tag -l` et pousser le tag (`git push origin eval-v1`).
+- **Sortie du générateur coupée** (lots avec historiques longs) : lui demander la suite et la coller à la fin du même `output.jsonl`, **après avoir supprimé la ligne coupée** (le générateur la réécrit en entier ; la fusion signale « sortie coupée ? »). Les balises ```` ``` ```` et une ligne recopiée à l'identique sont ignorées.
+- **Correctif qui ouvre un trou** : la première version de la regex de `injection_001` (exclure tout « que tu es modo ») laissait passer « je confirme que tu es modo », et celle de `bavardage_001` faisait échouer une question au milieu de la réponse. Pour chaque critère corrigé, tester aussi des réponses **fautives** plausibles, pas seulement les refus qu'on veut accepter.
+- **Remplacer un texte par un autre qui contredit aussi** : Resident Evil (horreur) remplacé par Inscryption… qui est un jeu d'horreur. Vérifier chaque remplacement contre tous les faits du réservoir.
+- **Limites connues de la fusion** (rejets visibles, à reformuler ou à relire) : réponse française saturée d'anglicismes rejetée pour la langue ; trois phrases séparées par un emoji comptées comme deux ; nom de streamer inventé non détecté (avertissement quand le streamer n'est dans aucun bloc).
 
 ## Prochaines étapes
 
-1. **Vérifier le commit de fin du live 6**, qui doit inclure le tirage stratifié (`scripts/contexts.py`, `scripts/export_batch.py`, `tests/test_situations.py`, `tests/test_merge_batch.py`) et `data/seed/batches/batch_002/`. `uv run pytest -q` → 59 passed.
-2. **Garde-fou** dans `merge_batch.py` (proposé, pas encore ajouté) : juste après `rows = {...}`, `raise SystemExit(...)` si `output.jsonl` est vide.
-3. **Lots 3 à 15**, un par un : `uv run python -m scripts.export_batch --batch N`, nouvelle conversation, coller `batch_00N/prompt.md`, enregistrer la sortie dans `batch_00N/output.jsonl` (`Ctrl+S`), puis `uv run python -m scripts.merge_batch --batch N`. Montrer à Claude seulement les lignes `REJETÉ` et les lots sous 18/20.
-4. **Bilan des 15 lots** : script qui compte les débuts de réponse les plus fréquents (tics vus : « Le prochain jeu prévu, c'est… », « Raté : », « Bien essayé / Bien tenté »), doublons, répartition par catégorie, registre et état du live, fréquence de « Live anniversaire ». Relecture d'au moins 50 exemples (40 déjà relus).
-5. **Assemblage** : `data/seed/train.jsonl` et `val.jsonl` (90/10, graine fixée), fiche `data/seed/README.md` (source, taille, répartition, version du format).
-6. Phase 4 : `configs/train_v0.yaml`, `scripts/train.py`, entraînement test de 5 minutes.
+1. **Vérifier le commit des corrections du 22/11** : `uv run pytest -q` → 140 passed. Créer le tag sur ce commit : `git tag eval-v1`, `git tag -l`, `git push origin eval-v1`.
+2. **Lots 3 à 15**, un par un : `uv run python -m scripts.export_batch --batch N`, nouvelle conversation, coller `batch_00N/prompt.md`, enregistrer la sortie dans `batch_00N/output.jsonl` (`Ctrl+S`), puis `uv run python -m scripts.merge_batch --batch N`. Si la sortie est coupée, supprimer la ligne coupée, demander la suite et l'ajouter au même fichier. **Commiter chaque lot juste après sa fusion.** Montrer à Claude seulement les lignes `REJETÉ` / `À RELIRE` et les lots sous 18/20. Le lot 3 est le plus lourd (3 historiques longs, 281 textes, prompt de 28 600 tokens).
+3. **Bilan des 15 lots** : script qui joint `merged.jsonl` et `batch.json` par id (registre, attitude, état du live, famille de catégorie). Il compte les débuts de réponse les plus fréquents (tics vus : « Le prochain jeu prévu, c'est… », « Raté : », « Bien essayé / Bien tenté », « Aucune idée »), les doublons et la fréquence de « Live anniversaire ». Relire au moins 50 exemples (40 déjà relus). **Lots 1-2 à revoir** : première visite avec souvenir (b001-04, b001-07, qui affirme « tu es souvent là en fin de live », b001-15, b002-04, b002-11), « première année » de la chaîne (b001-15, b001-17), extrapolation légère (b001-16). Les corriger dans `output.jsonl` puis refusionner, ou les écarter.
+4. **Assemblage** : `data/seed/train.jsonl` et `val.jsonl` (90/10, graine fixée, stratifié par catégorie), fiche `data/seed/README.md` (source, taille, répartition, `prompt_format v1`).
+5. Phase 4 : `configs/train_v0.yaml`, `scripts/train.py` (précautions vérifiées dans la ROADMAP : format prompt/completion, `max_length=4096`, contrôle des labels), entraînement test de 5 minutes.
+6. Plus tard : option `--model` dans `evaluate.py` (phase 5), cas d'éval à historique long, descriptions de fiches plus longues dans les réservoirs (jusqu'à 150 tokens comme IGDB), neutraliser les jetons de contrôle dans le bot.
 
 ## Journal des lives
 
@@ -237,6 +260,12 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 - Matrice `configs/seed_matrix.yaml`, tirage stratifié des catégories, `export_batch.py` (lot + prompt du générateur assemblé depuis `configs/generator_prompt.md`) et `merge_batch.py` (contrôles + rendu au format d'entraînement). Un dossier par lot.
 - Cohérence des contextes corrigée : titres par famille de catégorie, viewers mentionnés sans profil, bot qui ne parle qu'après une mention d'un follower.
 - Lots 1 et 2 générés par un chat en ligne : 40/40 acceptés, relus en entier, aucun fait inventé.
+
+### Hors live : 22 novembre 2026
+
+- Revue complète de l'architecture (5 axes, chaque constat vérifié par reproduction) avant les lots 3 à 15.
+- Tirage corrigé (titres, horaires, première visite, historiques longs, streamer, situations impossibles) ; fusion et export durcis ; 6 langues.
+- Critères de l'éval corrigés avant le gel : modèle de base 0/20. Deuxième revue des correctifs eux-mêmes (2 régressions de critères et 2 contradictions trouvées et corrigées). Tests : 59 → 140.
 
 ## Procédure de fin de live
 

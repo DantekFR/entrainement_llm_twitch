@@ -1,5 +1,8 @@
 """Recalcule les scores d'un run à partir des réponses enregistrées (sans GPU).
 
+Le rapport est réécrit en place ; la toute première version est gardée dans eval.before_rescore.json
+(runs/ n'est pas versionné).
+
 Usage : uv run python -m scripts.rescore runs/<run>/eval.json
 """
 
@@ -16,7 +19,11 @@ def main():
     parser.add_argument("report", type=Path, help="chemin du fichier eval.json")
     args = parser.parse_args()
 
-    report = json.loads(args.report.read_text(encoding="utf-8"))
+    original = args.report.read_text(encoding="utf-8")
+    backup = args.report.with_name(args.report.stem + ".before_rescore.json")
+    if not backup.exists():  # on ne remplace jamais la sauvegarde d'origine
+        backup.write_text(original, encoding="utf-8")
+    report = json.loads(original)
     cases = {case["id"]: case for case in load_cases()}
     old_passed = report["summary"]["passed"]
 

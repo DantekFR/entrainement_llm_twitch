@@ -38,7 +38,7 @@ Genres : <genres, séparés par des virgules>
 Description : <résumé IGDB, 150 tokens max>
 
 [MAINTENANT]
-<jour> <date>, <heure>   (ex. mardi 4 novembre 2026, 21h12)
+<jour> <date>, <heure>   (ex. mercredi 4 novembre 2026, 21h12)
 Live commencé <jour> <date> à <heure> (il y a <durée>)
 Titre : <titre du live>
 ```
@@ -46,6 +46,8 @@ Titre : <titre du live>
 - **Catégorie** : toujours présente pendant un live (`fetch_streams()` → `.game_name`). C'est un jeu ou une catégorie non gaming (Just Chatting, IRL, Software and Game Development…).
 - **Genres et Description** : seulement si IGDB a une fiche. Sinon (catégorie non gaming, jeu trop récent), le bloc contient uniquement la ligne `Catégorie :`. La description peut rester en anglais, telle que fournie par IGDB.
 - **Hors live** : les deux dernières lignes de `[MAINTENANT]` sont remplacées par `Pas de live en cours`, et `[CATÉGORIE DU LIVE]` contient `- (aucun)`.
+- **Titre vide** : la ligne `Titre :` est omise.
+- **Durée** : calculée en temps réel (UTC), donc juste même la nuit du changement d'heure, et jamais négative.
 
 ### Message `user`
 
@@ -107,7 +109,7 @@ Le bot (TwitchIO 3) remplit chaque bloc à partir des sources suivantes. Rien ic
 | Titre du live | `[MAINTENANT]` | `fetch_streams()` → `.title` (même appel que le début du live) | — |
 | Catégorie du live | `[CATÉGORIE DU LIVE]` | Catégorie : `fetch_streams()` → `.game_name`. Genres et description : `.game_id`, puis API IGDB (mêmes identifiants que l'app Twitch), mis en cache par catégorie et surchargeables à la main dans la config du bot. Pas de fiche IGDB : ces deux lignes sont omises | — |
 - Le bot stocke les statuts en anglais et les traduit en français au moment de construire le prompt.
-- **Dernier passage** : date du dernier live où le viewer a écrit, live en cours exclu. Si le bot n'en a aucune trace (premier message enregistré), on écrit `dernier passage (première visite)`.
+- **Dernier passage** : date du dernier live où le viewer a écrit, live en cours exclu. Si le bot n'en a aucune trace (premier message enregistré), on écrit `dernier passage (première visite)`, et le résumé est forcément vide : le bot n'a encore rien retenu du viewer.
 - Au déploiement, la base de messages existante du bot sert à initialiser les résumés des viewers et leurs dates de dernier passage.
 
 ## Règles pour le dataset
@@ -117,9 +119,10 @@ Ces règles valent pour le dataset d'entraînement et pour le jeu d'évaluation.
 ### Variables tirées au hasard à chaque exemple
 
 - **`{bot_name}`** : tiré dans une liste d'une cinquantaine de noms variés (courts, longs, avec chiffres, en majuscules…).
-- **Emotes de la chaîne** : préfixe inventé (ex. `kiwi`, `zorg`) + suffixe (`Love`, `GG`, `Rage`…), entre 0 et 15 emotes. Le sens est donné dans la liste et la réponse doit le respecter.
-- **Faits de la chaîne** : entre 0 et 20, tirés d'un réservoir de faits fictifs (jeux, horaires, setup, règles…).
-- **`[MAINTENANT]`** : date et heure aléatoires, cohérentes avec les horodatages de l'historique.
+- **Emotes de la chaîne** : préfixe inventé (ex. `kiwi`, `zorg`) + suffixe (`Love`, `GG`, `Rage`…), entre 0 et 12 emotes, codes en ASCII. Le sens est donné dans la liste et la réponse doit le respecter.
+- **Faits de la chaîne** : entre 0 et 15, tirés d'un réservoir de faits fictifs (jeux, horaires, setup, règles…), sans contradiction entre eux ni avec le reste du contexte (le prochain jeu prévu n'est jamais le jeu en cours, aucune date dans le futur).
+- **`[MAINTENANT]`** : date et heure aléatoires, cohérentes avec les horodatages de l'historique. Si les faits donnent un horaire, le live tombe un jour annoncé (chacun aussi souvent), peu après l'heure annoncée (~85 %), sinon c'est un live exceptionnel. Le dernier passage d'un viewer est antérieur au jour où le live en cours a commencé ; un modo ou un VIP n'est jamais en première visite.
+- **`[HISTORIQUE DU CHAT]`** : le plus souvent 1 à 15 messages, ~10 % de chats animés de 30 à 50 messages (pour exercer le plafond de 1 300 tokens), ~10 % vides. Le streamer y écrit peu (~4 % des messages). Les historiques longs n'existent que pendant un live.
 - **`[CATÉGORIE DU LIVE]`** : jeux réels et jeux inventés (nom, genres et description fictifs), avec ou sans fiche, et catégories non gaming (~20 %). Descriptions surtout en anglais, comme sur IGDB (~80 %), et en français pour le reste (fiches réécrites à la main dans la config du bot).
 - **Pseudos et statuts** : variés, avec tous les statuts représentés.
 
@@ -127,7 +130,7 @@ Ces règles valent pour le dataset d'entraînement et pour le jeu d'évaluation.
 
 - `[FAITS DE LA CHAÎNE]`, `[EMOTES DE LA CHAÎNE]`, `[CATÉGORIE DU LIVE]` et `[HISTORIQUE DU CHAT]` sont toujours présents. S'ils sont vides, ils contiennent `- (aucun)`.
 - `[PROFILS DES VIEWERS]` n'est jamais vide : l'auteur y figure toujours.
-- Environ 10 % des exemples ont au moins un bloc vide, pour que le modèle connaisse ce cas.
+- Environ 20 % des exemples ont au moins un bloc vide parmi les faits, les emotes et l'historique (un tiers en comptant `[CATÉGORIE DU LIVE]` hors live), pour que le modèle connaisse ce cas.
 
 ### Cas à couvrir
 

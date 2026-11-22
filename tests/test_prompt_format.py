@@ -130,3 +130,13 @@ def test_apply_limits():
 
     # Avec de vrais plafonds, l'exemple du document passe sans rien perdre.
     assert apply_limits(inputs, count_lines) == inputs
+
+
+def test_duration_across_daylight_saving_time():
+    """Live commencé à 22h45 le 27 mars 2027, il est 03h48 : 4 h 03 réelles (et non 5 h 03)."""
+    from scripts.prompt_format import render_now
+
+    block = render_now(datetime(2027, 3, 28, 1, 48, tzinfo=timezone.utc),
+                       datetime(2027, 3, 27, 21, 45, tzinfo=timezone.utc))
+    assert "à 22h45 (il y a 4 h 03)" in block
+    assert "03h48" in block
