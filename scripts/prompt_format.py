@@ -144,7 +144,7 @@ def format_status(roles: set[str], sub_months: int = 0) -> str:
 
 # --- Profils des viewers ---
 
-NEW_VIEWER_SUMMARY = "(nouveau viewer, aucun souvenir)"
+EMPTY_SUMMARY = "(aucun souvenir)"  # habitué sans souvenir notable ou première visite : c'est le dernier passage qui les distingue
 FIRST_VISIT = "(première visite)"
 
 
@@ -156,7 +156,7 @@ class ViewerProfile:
     status: str                  # libellé français, voir format_status
     followed_at: date
     last_seen: date | None = None  # None : première visite
-    summary: str = ""              # vide : nouveau viewer
+    summary: str = ""              # vide : aucun souvenir
 
 
 def render_profiles(profiles: list[ViewerProfile]) -> str:
@@ -168,7 +168,7 @@ def render_profiles(profiles: list[ViewerProfile]) -> str:
             f"- {profile.name} | {profile.status} | follower depuis {profile.followed_at.isoformat()}"
             f" | dernier passage {last_seen}"
         )
-        lines.append(f"  Résumé : {profile.summary or NEW_VIEWER_SUMMARY}")
+        lines.append(f"  Résumé : {profile.summary or EMPTY_SUMMARY}")
     return render_block("PROFILS DES VIEWERS", lines)
 
 # --- Historique du chat ---

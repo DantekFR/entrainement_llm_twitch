@@ -11,6 +11,7 @@ from scripts.prompt_format import (
     fit_history,
     fit_profiles,
     apply_limits,
+    render_profiles,
 )
 
 DOC_PATH = Path(__file__).parent.parent / "docs" / "prompt_format.md"
@@ -140,3 +141,13 @@ def test_duration_across_daylight_saving_time():
                        datetime(2027, 3, 27, 21, 45, tzinfo=timezone.utc))
     assert "à 22h45 (il y a 4 h 03)" in block
     assert "03h48" in block
+
+def test_empty_summary_is_not_a_new_viewer():
+    """Un habitué sans souvenir n'est pas présenté comme nouveau : seul le dernier passage le dit."""
+    regular = ViewerProfile("Habitue_42", "abonné depuis 25 mois", date(2025, 6, 6), date(2025, 11, 26))
+    newcomer = ViewerProfile("Nouveau_42", "follower", date(2026, 11, 1))
+    block = render_profiles([regular, newcomer])
+    assert "nouveau" not in block
+    assert block.count("Résumé : (aucun souvenir)") == 2
+    assert "dernier passage 2025-11-26" in block
+    assert "dernier passage (première visite)" in block

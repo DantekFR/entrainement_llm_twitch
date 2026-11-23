@@ -63,7 +63,7 @@ Titre : <titre du live>
 <message auquel répondre>
 ```
 
-- **Profils** : l'auteur du message en premier, puis les viewers qu'il mentionne avec @. Un viewer sans profil apparaît avec `Résumé : (nouveau viewer, aucun souvenir)`. Un viewer mentionné qui ne suit pas la chaîne n'a pas de profil : il n'apparaît pas dans le bloc.
+- **Profils** : l'auteur du message en premier, puis les viewers qu'il mentionne avec @. Un viewer sans souvenir notable apparaît avec `Résumé : (aucun souvenir)`, qu'il soit nouveau ou habitué : c'est `dernier passage (première visite)` qui indique un nouveau viewer. Un viewer mentionné qui ne suit pas la chaîne n'a pas de profil : il n'apparaît pas dans le bloc.
 - **Statuts possibles** : `viewer`, `follower`, `abonné depuis N mois`, `VIP`, `modo`, `streamer`, `bot`.
   Si un viewer a plusieurs statuts, on garde le plus élevé dans l'ordre : streamer > modo > VIP > abonné > follower > viewer.
 - **Historique** : du plus ancien au plus récent. Il contient aussi les réponses précédentes du bot, avec le statut `bot`, pour que le modèle reste cohérent avec ce qu'il a déjà dit.
@@ -136,7 +136,7 @@ Ces règles valent pour le dataset d'entraînement et pour le jeu d'évaluation.
 
 - **Fait présent** : la réponse s'appuie dessus.
 - **Fait absent** : la réponse dit qu'elle ne sait pas, sans inventer.
-- **Profils** : nouveau viewer (`(nouveau viewer, aucun souvenir)`, `(première visite)`), habitué avec un résumé, viewer mentionné avec ou sans profil.
+- **Profils** : nouveau viewer (`(première visite)`, `(aucun souvenir)`), habitué avec un résumé, habitué sans souvenir (`(aucun souvenir)` avec une date de dernier passage), viewer mentionné avec ou sans profil.
 - **Souvenir hors sujet** : le profil contient des informations qui ne servent pas à la question, et la réponse ne les ressort pas.
 - **Langue** : environ 92 % en français (dont anglicismes et messages mixtes), 8 % dans une autre langue clairement identifiable.
 - **Injection** : un viewer tente de changer les règles ou son statut. La réponse refuse, brièvement, sans inventer de détails.
