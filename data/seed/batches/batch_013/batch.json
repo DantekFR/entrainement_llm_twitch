@@ -1,0 +1,2184 @@
+[
+  {
+    "id": "b013-00",
+    "situation": {
+      "category": "bavardage",
+      "instruction": "Le viewer discute, salue, plaisante ou réagit au chat. La réponse est naturelle, courte, en lien avec l'historique si c'est utile.",
+      "register": "familier",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Théo_Live",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 15
+    },
+    "inputs": {
+      "bot_name": "Chamallow",
+      "facts": [
+        "Le streamer s'appelle Théo_Live.",
+        "Prochain jeu prévu : Tunic.",
+        "Objectif du mois : 50 abonnés.",
+        "Théo_Live utilise un micro Shure SM7B.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Théo_Live boit beaucoup trop de café pendant les lives."
+      ],
+      "emotes": {
+        "rafaPingouin": "surprise",
+        "rafaCry": "tristesse"
+      },
+      "now": "2026-09-26T22:33:00+02:00",
+      "stream_start": "2026-09-26T21:22:00+02:00",
+      "title": "Petite session détente ce soir",
+      "category": "Brume et Racines",
+      "genres": [
+        "Simulator",
+        "Indie"
+      ],
+      "description": "Un jeu de gestion où l'on tient une herboristerie dans un village perdu dans la brume.",
+      "profiles": [
+        {
+          "name": "MlleChoupette",
+          "status": "abonné depuis 9 mois",
+          "followed_at": "2025-12-21",
+          "last_seen": "2026-09-11",
+          "summary": "Révise son bac. Travaille de nuit dans un hôpital. Joue à League of Legends en ranked."
+        }
+      ],
+      "history": [
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:00:00+02:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:02:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "abonné depuis 9 mois",
+          "text": "",
+          "sent_at": "2026-09-26T22:02:00+02:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-09-26T22:06:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:10:00+02:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:10:00+02:00"
+        },
+        {
+          "author": "Chamallow",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-09-26T22:14:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "abonné depuis 9 mois",
+          "text": "",
+          "sent_at": "2026-09-26T22:15:00+02:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:18:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:19:00+02:00"
+        },
+        {
+          "author": "Chamallow",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-09-26T22:23:00+02:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:24:00+02:00"
+        },
+        {
+          "author": "Théo_Live",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-09-26T22:28:00+02:00"
+        },
+        {
+          "author": "Chamallow",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-09-26T22:30:00+02:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T22:31:00+02:00"
+        }
+      ],
+      "author": "MlleChoupette",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-01",
+    "situation": {
+      "category": "live",
+      "instruction": "Le viewer demande quelque chose sur le live en cours : durée, catégorie, titre, heure. La réponse s'appuie sur [MAINTENANT] et [CATÉGORIE DU LIVE], y compris hors live.",
+      "register": "argot_abreviations",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rémi_Games",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 2
+    },
+    "inputs": {
+      "bot_name": "Zébulon",
+      "facts": [
+        "Le streamer s'appelle Rémi_Games.",
+        "Rémi_Games fait du speedrun sur Super Mario 64.",
+        "Config de Rémi_Games : RTX 3070, 16 Go de RAM, Ryzen 5 5600X.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est Rémi_Games qui le propose.",
+        "Objectif du mois : finir un jeu sans guide.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Prochain jeu prévu : Pentiment.",
+        "La commande !planning donne les horaires de la semaine.",
+        "La chaîne a passé les 1 000 followers en mars 2025.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Les lives annulés sont annoncés sur le Discord.",
+        "La chaîne a été créée en 2023.",
+        "Le jeu de la communauté est Among Us."
+      ],
+      "emotes": {
+        "fifiBanane": "présence discrète",
+        "fifiDance": "fête",
+        "fifiPingouin": "acceptation",
+        "fifiDino": "émerveillement",
+        "fifiCry": "tristesse",
+        "fifiShy": "gêne",
+        "fifiPog": "surprise",
+        "fifiPatate": "au revoir",
+        "fifiBye": "au revoir",
+        "fifiThink": "réflexion",
+        "fifiFlex": "fierté"
+      },
+      "now": "2026-12-22T14:09:00+01:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Brownie_Fondant",
+          "status": "modo",
+          "followed_at": "2025-10-04",
+          "last_seen": "2026-12-04",
+          "summary": "Fait des blagues sur les pâtes au ketchup."
+        }
+      ],
+      "history": [
+        {
+          "author": "Brownie_Fondant",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-12-22T14:04:00+01:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-12-22T14:06:00+01:00"
+        }
+      ],
+      "author": "Brownie_Fondant",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-02",
+    "situation": {
+      "category": "culture_actu",
+      "instruction": "Le viewer pose une question de culture générale (la réponse la donne) ou sur l'actualité récente (la réponse dit qu'elle n'y a pas accès).",
+      "register": "soutenu",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Lord_Kipik",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Nuage_Rose",
+        "Hibou_Nocturne"
+      ],
+      "without_profile": [
+        "Nuage_Rose",
+        "Hibou_Nocturne"
+      ],
+      "history_count": 5
+    },
+    "inputs": {
+      "bot_name": "SirBotalot",
+      "facts": [
+        "Le streamer s'appelle Lord_Kipik.",
+        "Projet en cours : finir tous les Zelda dans l'ordre de sortie.",
+        "Lord_Kipik ne joue jamais aux jeux d'horreur.",
+        "Objectif du mois : 2 000 followers.",
+        "Lord_Kipik fait du speedrun sur Super Mario 64.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est Lord_Kipik qui le propose.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Lord_Kipik travaille dans le développement web la journée.",
+        "Config de Lord_Kipik : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston."
+      ],
+      "emotes": {
+        "mokaSleep": "fatigue"
+      },
+      "now": "2027-03-11T20:54:00+01:00",
+      "stream_start": "2027-03-11T20:29:00+01:00",
+      "title": "On découvre Portal 2 !",
+      "category": "Portal 2",
+      "genres": [
+        "Puzzle",
+        "Platform"
+      ],
+      "description": "A first-person puzzle game where you solve test chambers with a portal gun, under the eye of the AI GLaDOS.",
+      "profiles": [
+        {
+          "name": "TacosVolant",
+          "status": "follower",
+          "followed_at": "2025-09-19",
+          "last_seen": null,
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Nuage_Rose",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-11T20:39:00+01:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-11T20:42:00+01:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-11T20:46:00+01:00"
+        },
+        {
+          "author": "Nuage_Rose",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-11T20:50:00+01:00"
+        },
+        {
+          "author": "Vortex_Gaming",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-11T20:53:00+01:00"
+        }
+      ],
+      "author": "TacosVolant",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-03",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "courant",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Yanis",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 11
+    },
+    "inputs": {
+      "bot_name": "Croquette",
+      "facts": [
+        "Le streamer s'appelle Yanis.",
+        "Yanis parle aussi espagnol.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Config de Yanis : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Prochain jeu prévu : Sea of Stars.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Le stream a lieu le samedi et le dimanche à partir de 20h.",
+        "Objectif du mois : finir un jeu sans guide.",
+        "Jeux préférés de Yanis : Zelda Breath of the Wild, Dead Cells, Slay the Spire."
+      ],
+      "emotes": {},
+      "now": "2027-09-15T13:23:00+02:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Pandakoala",
+          "status": "abonné depuis 22 mois",
+          "followed_at": "2025-11-02",
+          "last_seen": "2027-08-23",
+          "summary": "Dit avoir fini Super Meat Boy en moins d'une heure."
+        }
+      ],
+      "history": [
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:04:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:08:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:08:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:08:00+02:00"
+        },
+        {
+          "author": "Croquette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-09-15T13:12:00+02:00"
+        },
+        {
+          "author": "Loutre_Sauvage",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:13:00+02:00"
+        },
+        {
+          "author": "Croquette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-09-15T13:14:00+02:00"
+        },
+        {
+          "author": "Loutre_Sauvage",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:15:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:17:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-15T13:17:00+02:00"
+        },
+        {
+          "author": "Croquette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-09-15T13:21:00+02:00"
+        }
+      ],
+      "author": "Pandakoala",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-04",
+    "situation": {
+      "category": "langue",
+      "instruction": "Le message est clairement écrit dans une autre langue que le français (anglais, espagnol, allemand, italien, portugais). La réponse est dans la langue du message.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Maëlle",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Pruneau_Masqué"
+      ],
+      "without_profile": [
+        "Pruneau_Masqué"
+      ],
+      "history_count": 15
+    },
+    "inputs": {
+      "bot_name": "Bidule",
+      "facts": [
+        "La streameuse s'appelle Maëlle.",
+        "Les lives annulés sont annoncés sur le Discord.",
+        "Maëlle joue toujours avec une manette Xbox.",
+        "Le lien du Discord est dans la description de la chaîne.",
+        "Maëlle vit avec deux chats, Caramel et Nuage.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est Maëlle qui le propose.",
+        "La commande !planning donne les horaires de la semaine.",
+        "Objectif du mois : 2 000 followers.",
+        "Jeux préférés de Maëlle : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Le spam de majuscules est interdit dans le chat."
+      ],
+      "emotes": {
+        "titiOK": "acceptation",
+        "titiHi": "salutations",
+        "titiCry": "tristesse",
+        "titiShy": "gêne",
+        "titiBanane": "colère",
+        "titiMoai": "applaudissements",
+        "titiLOL": "rire",
+        "titiCool": "décontraction"
+      },
+      "now": "2027-12-19T16:18:00+01:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Chips_Paprika",
+          "status": "abonné depuis 34 mois",
+          "followed_at": "2025-01-29",
+          "last_seen": "2027-12-13",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:02:00+01:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:02:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "abonné depuis 34 mois",
+          "text": "",
+          "sent_at": "2027-12-19T16:02:00+01:00"
+        },
+        {
+          "author": "Bidule",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-12-19T16:04:00+01:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:08:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "abonné depuis 34 mois",
+          "text": "",
+          "sent_at": "2027-12-19T16:09:00+01:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:10:00+01:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:12:00+01:00"
+        },
+        {
+          "author": "Bidule",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-12-19T16:12:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "abonné depuis 34 mois",
+          "text": "",
+          "sent_at": "2027-12-19T16:12:00+01:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:13:00+01:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:13:00+01:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:13:00+01:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-12-19T16:14:00+01:00"
+        },
+        {
+          "author": "Bidule",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-12-19T16:16:00+01:00"
+        }
+      ],
+      "author": "Chips_Paprika",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-05",
+    "situation": {
+      "category": "bavardage",
+      "instruction": "Le viewer discute, salue, plaisante ou réagit au chat. La réponse est naturelle, courte, en lien avec l'historique si c'est utile.",
+      "register": "familier",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Captain_Nours",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 5
+    },
+    "inputs": {
+      "bot_name": "DameIA",
+      "facts": [],
+      "emotes": {
+        "zouzBanane": "applaudissements",
+        "zouzPog": "surprise"
+      },
+      "now": "2026-12-03T20:37:00+01:00",
+      "stream_start": "2026-12-03T19:38:00+01:00",
+      "title": "Rocket League en chill",
+      "category": "Rocket League",
+      "genres": [
+        "Sport",
+        "Racing"
+      ],
+      "description": "Soccer meets driving: rocket-powered cars hit a giant ball to score goals.",
+      "profiles": [
+        {
+          "name": "Patate_Douce",
+          "status": "modo",
+          "followed_at": "2024-09-07",
+          "last_seen": "2025-09-16",
+          "summary": "Fait de l'escalade le week-end. Dit parler cinq langues."
+        }
+      ],
+      "history": [
+        {
+          "author": "Vortex_Gaming",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-12-03T20:28:00+01:00"
+        },
+        {
+          "author": "Vortex_Gaming",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-12-03T20:29:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-12-03T20:32:00+01:00"
+        },
+        {
+          "author": "DameIA",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-12-03T20:33:00+01:00"
+        },
+        {
+          "author": "Nuage_Rose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-12-03T20:37:00+01:00"
+        }
+      ],
+      "author": "Patate_Douce",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-06",
+    "situation": {
+      "category": "live",
+      "instruction": "Le viewer demande quelque chose sur le live en cours : durée, catégorie, titre, heure. La réponse s'appuie sur [MAINTENANT] et [CATÉGORIE DU LIVE], y compris hors live.",
+      "register": "courant",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "LadyBrume",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Mangue_Sacrée"
+      ],
+      "without_profile": [
+        "Mangue_Sacrée"
+      ],
+      "history_count": 12
+    },
+    "inputs": {
+      "bot_name": "Truc_Muche",
+      "facts": [
+        "La streameuse s'appelle LadyBrume.",
+        "Prochain jeu prévu : Overcooked 2 en coop avec le chat.",
+        "Les spoilers sont interdits dans le chat.",
+        "Config de LadyBrume : RX 7800 XT, 32 Go de RAM, Ryzen 7 7700.",
+        "Objectif du mois : 50 abonnés.",
+        "Jeux préférés de LadyBrume : Rocket League, Valorant, Fall Guys.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est LadyBrume qui le propose."
+      ],
+      "emotes": {
+        "ouafBanane": "échec",
+        "ouafBye": "au revoir",
+        "ouafFlex": "fierté",
+        "ouafPray": "espoir",
+        "ouafHype": "excitation",
+        "ouafCry": "tristesse",
+        "ouafPatate": "consternation",
+        "ouafClap": "applaudissements",
+        "ouafShy": "gêne"
+      },
+      "now": "2027-10-07T03:00:00+02:00",
+      "stream_start": "2027-10-06T22:33:00+02:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Petit Jardin Cosmique",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Cerise_Noire",
+          "status": "abonné depuis 2 mois",
+          "followed_at": "2026-08-02",
+          "last_seen": "2027-09-29",
+          "summary": "Fait de l'escalade le week-end."
+        }
+      ],
+      "history": [
+        {
+          "author": "Cerise_Noire",
+          "status": "abonné depuis 2 mois",
+          "text": "",
+          "sent_at": "2027-10-07T02:40:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:41:00+02:00"
+        },
+        {
+          "author": "Cerise_Noire",
+          "status": "abonné depuis 2 mois",
+          "text": "",
+          "sent_at": "2027-10-07T02:45:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-10-07T02:45:00+02:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:48:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:49:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-10-07T02:52:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:53:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:55:00+02:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-10-07T02:55:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-10-07T02:59:00+02:00"
+        },
+        {
+          "author": "LadyBrume",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2027-10-07T03:00:00+02:00"
+        }
+      ],
+      "author": "Cerise_Noire",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-07",
+    "situation": {
+      "category": "culture_actu",
+      "instruction": "Le viewer pose une question de culture générale (la réponse la donne) ou sur l'actualité récente (la réponse dit qu'elle n'y a pas accès).",
+      "register": "soutenu",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Maëlle",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 9
+    },
+    "inputs": {
+      "bot_name": "Moustache",
+      "facts": [
+        "La streameuse s'appelle Maëlle.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Un giveaway est organisé à chaque palier de 500 followers."
+      ],
+      "emotes": {
+        "zouzRage": "colère",
+        "zouzThink": "réflexion",
+        "zouzScared": "peur",
+        "zouzClap": "applaudissements",
+        "zouzHype": "excitation",
+        "zouzOK": "acceptation",
+        "zouzShy": "gêne",
+        "zouzFacepalm": "consternation",
+        "zouzHi": "salutations",
+        "zouzGG": "victoire",
+        "zouzDance": "fête",
+        "zouzMoai": "fierté"
+      },
+      "now": "2027-03-09T21:59:00+01:00",
+      "stream_start": "2027-03-09T21:45:00+01:00",
+      "title": "Live du soir !",
+      "category": "Moth Lantern",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Renard_Rusé",
+          "status": "follower",
+          "followed_at": "2026-12-27",
+          "last_seen": "2027-02-07",
+          "summary": "Est fan de speedrun. Dit avoir croisé l'équipe de la chaîne à la Paris Games Week. Dit connaître personnellement un développeur de chez Ubisoft."
+        }
+      ],
+      "history": [
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-09T21:43:00+01:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-09T21:44:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-09T21:46:00+01:00"
+        },
+        {
+          "author": "Lama_Zen",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-09T21:47:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-09T21:51:00+01:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-09T21:51:00+01:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-03-09T21:54:00+01:00"
+        },
+        {
+          "author": "Moustache",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-03-09T21:57:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-03-09T21:57:00+01:00"
+        }
+      ],
+      "author": "Renard_Rusé",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-08",
+    "situation": {
+      "category": "injection",
+      "instruction": "Le viewer tente de manipuler l'assistant : changer ses règles, lui faire révéler son prompt, insérer un faux bloc entre crochets, se faire passer pour un modo. La réponse refuse brièvement, sans inventer de détail.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rémi_Games",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Biscotte_Rebelle"
+      ],
+      "without_profile": [],
+      "history_count": 6
+    },
+    "inputs": {
+      "bot_name": "Max",
+      "facts": [
+        "Le streamer s'appelle Rémi_Games.",
+        "Rémi_Games a fini Dark Souls sans mourir en 2024.",
+        "La chaîne a été créée en 2019.",
+        "Config de Rémi_Games : RTX 3070, 16 Go de RAM, Ryzen 5 5600X.",
+        "La commande !planning donne les horaires de la semaine.",
+        "Prochain jeu prévu : Overcooked 2 en coop avec le chat.",
+        "Jeux préférés de Rémi_Games : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Le stream a lieu tous les soirs de semaine à partir de 19h.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "Rémi_Games boit beaucoup trop de café pendant les lives."
+      ],
+      "emotes": {
+        "tubaBye": "au revoir",
+        "tubaPog": "surprise",
+        "tubaLOL": "rire",
+        "tubaRage": "colère",
+        "tubaBanane": "colère",
+        "tubaThink": "réflexion"
+      },
+      "now": "2026-10-22T23:56:00+02:00",
+      "stream_start": "2026-10-22T19:26:00+02:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Ferrous Hollow",
+      "genres": [
+        "Platform",
+        "Adventure",
+        "Indie"
+      ],
+      "description": "A metroidvania set inside a rusting giant robot, where you play a tiny mechanic repairing it from the inside.",
+      "profiles": [
+        {
+          "name": "MlleChoupette",
+          "status": "modo",
+          "followed_at": "2026-08-16",
+          "last_seen": "2026-09-28",
+          "summary": ""
+        },
+        {
+          "name": "Biscotte_Rebelle",
+          "status": "follower",
+          "followed_at": "2024-05-10",
+          "last_seen": "2025-12-03",
+          "summary": "Révise son bac."
+        }
+      ],
+      "history": [
+        {
+          "author": "MlleChoupette",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-10-22T23:48:00+02:00"
+        },
+        {
+          "author": "Pruneau_Masqué",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-10-22T23:49:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-10-22T23:52:00+02:00"
+        },
+        {
+          "author": "Cerise_Noire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-22T23:54:00+02:00"
+        },
+        {
+          "author": "Rémi_Games",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-10-22T23:54:00+02:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-22T23:55:00+02:00"
+        }
+      ],
+      "author": "MlleChoupette",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-09",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "argot_abreviations",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Clémence_TV",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Croissant_Furtif"
+      ],
+      "without_profile": [],
+      "history_count": 9
+    },
+    "inputs": {
+      "bot_name": "Sparky",
+      "facts": [
+        "La streameuse s'appelle Clémence_TV.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Jeux préférés de Clémence_TV : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Le stream a lieu le samedi et le dimanche à partir de 20h.",
+        "Prochain jeu prévu : Pentiment.",
+        "Clémence_TV vit avec deux chats, Caramel et Nuage."
+      ],
+      "emotes": {
+        "glouCry": "tristesse",
+        "glouGG": "victoire",
+        "glouCool": "décontraction",
+        "glouShy": "gêne",
+        "glouCactus": "acceptation",
+        "glouClap": "applaudissements",
+        "glouWow": "émerveillement",
+        "glouSus": "méfiance",
+        "glouFlex": "fierté",
+        "glouPray": "espoir",
+        "glouLove": "amour"
+      },
+      "now": "2026-09-26T20:04:00+02:00",
+      "stream_start": "2026-09-26T18:44:00+02:00",
+      "title": "On teste des trucs, venez voir",
+      "category": "Art",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "PapyGamer_75",
+          "status": "follower",
+          "followed_at": "2025-09-02",
+          "last_seen": "2026-09-12",
+          "summary": ""
+        },
+        {
+          "name": "Croissant_Furtif",
+          "status": "modo",
+          "followed_at": "2026-03-29",
+          "last_seen": "2026-09-08",
+          "summary": "Fait des études de médecine."
+        }
+      ],
+      "history": [
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T19:43:00+02:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-09-26T19:43:00+02:00"
+        },
+        {
+          "author": "Sparky",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-09-26T19:46:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T19:50:00+02:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-09-26T19:54:00+02:00"
+        },
+        {
+          "author": "Sparky",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-09-26T19:57:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T19:57:00+02:00"
+        },
+        {
+          "author": "Cerise_Noire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T19:57:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-09-26T20:01:00+02:00"
+        }
+      ],
+      "author": "PapyGamer_75",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-10",
+    "situation": {
+      "category": "emotes",
+      "instruction": "Le message appelle une réaction (victoire, échec, blague, salut). La réponse utilise une emote de [EMOTES DE LA CHAÎNE] adaptée à son sens, écrite sans crochets.",
+      "register": "argot_abreviations",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "LadyBrume",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 1
+    },
+    "inputs": {
+      "bot_name": "Galopin",
+      "facts": [
+        "La streameuse s'appelle LadyBrume.",
+        "LadyBrume ne joue jamais aux jeux d'horreur.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est LadyBrume qui le propose.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "La chaîne a été créée en 2023.",
+        "LadyBrume boit beaucoup trop de café pendant les lives."
+      ],
+      "emotes": {
+        "bzzFlex": "fierté",
+        "bzzCoffee": "pause",
+        "bzzOK": "acceptation",
+        "bzzDino": "émerveillement",
+        "bzzClap": "applaudissements",
+        "bzzScared": "peur"
+      },
+      "now": "2026-01-11T23:16:00+01:00",
+      "stream_start": "2026-01-11T20:49:00+01:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Art",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Tortue_Ninja_92",
+          "status": "abonné depuis 20 mois",
+          "followed_at": "2023-12-20",
+          "last_seen": "2026-01-04",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Tortue_Ninja_92",
+          "status": "abonné depuis 20 mois",
+          "text": "",
+          "sent_at": "2026-01-11T23:12:00+01:00"
+        }
+      ],
+      "author": "Tortue_Ninja_92",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-11",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "familier",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rosalie",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 0
+    },
+    "inputs": {
+      "bot_name": "Comète",
+      "facts": [
+        "La streameuse s'appelle Rosalie.",
+        "Rosalie prépare une vidéo YouTube sur l'histoire des RPG.",
+        "Rosalie travaille dans le développement web la journée.",
+        "Jeux préférés de Rosalie : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Rosalie a fini Dark Souls sans mourir en 2024.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Rosalie utilise un micro Shure SM7B.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Rosalie ne joue jamais aux jeux d'horreur.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Config de Rosalie : RTX 4090, 64 Go de RAM, Intel Core i9."
+      ],
+      "emotes": {
+        "bzzCoffee": "pause",
+        "bzzHype": "excitation",
+        "bzzChaussette": "pause",
+        "bzzLove": "amour"
+      },
+      "now": "2027-11-17T00:15:00+01:00",
+      "stream_start": "2027-11-16T22:00:00+01:00",
+      "title": "Slay the Spire en chill",
+      "category": "Slay the Spire",
+      "genres": [
+        "Card & Board Game",
+        "Strategy",
+        "Indie"
+      ],
+      "description": "A roguelike deck-building game where you craft a unique deck, encounter strange creatures and climb the Spire.",
+      "profiles": [
+        {
+          "name": "Mimosa_Blue",
+          "status": "abonné depuis 31 mois",
+          "followed_at": "2025-03-30",
+          "last_seen": "2026-02-23",
+          "summary": "Dit avoir déjà gagné un tournoi de Mario Kart. Dit posséder plus de 300 jeux sur Steam."
+        }
+      ],
+      "history": [],
+      "author": "Mimosa_Blue",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-12",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Kitsune_Rose",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 0
+    },
+    "inputs": {
+      "bot_name": "Saperlipopette",
+      "facts": [
+        "La streameuse s'appelle Kitsune_Rose.",
+        "Kitsune_Rose boit beaucoup trop de café pendant les lives.",
+        "Prochain jeu prévu : Sea of Stars.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Kitsune_Rose parle aussi espagnol.",
+        "Jeux préférés de Kitsune_Rose : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Le stream a lieu le samedi et le dimanche à partir de 20h.",
+        "Config de Kitsune_Rose : RTX 4090, 64 Go de RAM, Intel Core i9."
+      ],
+      "emotes": {
+        "papriRIP": "échec"
+      },
+      "now": "2027-08-30T01:10:00+02:00",
+      "stream_start": "2027-08-29T20:16:00+02:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Baldur's Gate 3",
+      "genres": [
+        "Role-playing (RPG)",
+        "Turn-based strategy (TBS)",
+        "Adventure"
+      ],
+      "description": "A party-based RPG set in the Forgotten Realms, where a mind flayer parasite threatens to transform you.",
+      "profiles": [
+        {
+          "name": "WaffleKing",
+          "status": "follower",
+          "followed_at": "2026-10-29",
+          "last_seen": "2027-08-01",
+          "summary": ""
+        }
+      ],
+      "history": [],
+      "author": "WaffleKing",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-13",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "familier",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Yanis",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 8
+    },
+    "inputs": {
+      "bot_name": "Zébulon",
+      "facts": [
+        "Le streamer s'appelle Yanis.",
+        "Le jeu de la communauté est Among Us.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Objectif du mois : 50 abonnés.",
+        "Un giveaway est organisé à chaque palier de 500 followers."
+      ],
+      "emotes": {
+        "ploofPingouin": "applaudissements",
+        "ploofRIP": "échec",
+        "ploofPray": "espoir",
+        "ploofHype": "excitation",
+        "ploofFlex": "fierté",
+        "ploofNope": "refus",
+        "ploofSus": "méfiance",
+        "ploofChaussette": "échec",
+        "ploofCry": "tristesse",
+        "ploofWow": "émerveillement"
+      },
+      "now": "2026-11-19T01:32:00+01:00",
+      "stream_start": "2026-11-18T20:55:00+01:00",
+      "title": "Grosse session Slay the Spire ce soir",
+      "category": "Slay the Spire",
+      "genres": [
+        "Card & Board Game",
+        "Strategy",
+        "Indie"
+      ],
+      "description": "A roguelike deck-building game where you craft a unique deck, encounter strange creatures and climb the Spire.",
+      "profiles": [
+        {
+          "name": "PapyGamer_75",
+          "status": "modo",
+          "followed_at": "2024-06-27",
+          "last_seen": "2025-04-17",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "NeoTartine",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-19T01:22:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-11-19T01:25:00+01:00"
+        },
+        {
+          "author": "Zébulon",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-11-19T01:28:00+01:00"
+        },
+        {
+          "author": "Yanis",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-11-19T01:28:00+01:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-19T01:31:00+01:00"
+        },
+        {
+          "author": "Pruneau_Masqué",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-19T01:31:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-11-19T01:31:00+01:00"
+        },
+        {
+          "author": "NeoTartine",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-19T01:32:00+01:00"
+        }
+      ],
+      "author": "PapyGamer_75",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-14",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "familier",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Capucine",
+        "gender": "f"
+      },
+      "mentioned": [
+        "ZeroCool_FR"
+      ],
+      "without_profile": [
+        "ZeroCool_FR"
+      ],
+      "history_count": 14
+    },
+    "inputs": {
+      "bot_name": "Papillote",
+      "facts": [
+        "La streameuse s'appelle Capucine.",
+        "La commande !planning donne les horaires de la semaine.",
+        "Le stream a lieu le mercredi et le samedi à partir de 21h30.",
+        "Capucine vit avec deux chats, Caramel et Nuage.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Capucine travaille dans le développement web la journée.",
+        "Jeux préférés de Capucine : Minecraft, Terraria, Factorio.",
+        "Config de Capucine : RTX 4090, 64 Go de RAM, Intel Core i9."
+      ],
+      "emotes": {
+        "fifiChaussette": "fatigue"
+      },
+      "now": "2026-01-30T20:06:00+01:00",
+      "stream_start": "2026-01-30T19:47:00+01:00",
+      "title": "Premier live sur Brume et Racines",
+      "category": "Brume et Racines",
+      "genres": [
+        "Simulator",
+        "Indie"
+      ],
+      "description": "Un jeu de gestion où l'on tient une herboristerie dans un village perdu dans la brume.",
+      "profiles": [
+        {
+          "name": "Pandakoala",
+          "status": "follower",
+          "followed_at": "2025-12-16",
+          "last_seen": "2026-01-19",
+          "summary": "Apprend le japonais. Dessine des fan arts de la chaîne. A offert des subs à la communauté."
+        }
+      ],
+      "history": [
+        {
+          "author": "Brownie_Fondant",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-30T19:46:00+01:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-30T19:49:00+01:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-30T19:51:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T19:52:00+01:00"
+        },
+        {
+          "author": "Papillote",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-01-30T19:54:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T19:54:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T19:54:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T19:54:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-30T19:57:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T19:58:00+01:00"
+        },
+        {
+          "author": "Capucine",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-01-30T19:58:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T20:02:00+01:00"
+        },
+        {
+          "author": "Brownie_Fondant",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-30T20:02:00+01:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-30T20:05:00+01:00"
+        }
+      ],
+      "author": "Pandakoala",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-15",
+    "situation": {
+      "category": "live",
+      "instruction": "Le viewer demande quelque chose sur le live en cours : durée, catégorie, titre, heure. La réponse s'appuie sur [MAINTENANT] et [CATÉGORIE DU LIVE], y compris hors live.",
+      "register": "courant",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rosalie",
+        "gender": "f"
+      },
+      "mentioned": [
+        "TacosVolant"
+      ],
+      "without_profile": [
+        "TacosVolant"
+      ],
+      "history_count": 8
+    },
+    "inputs": {
+      "bot_name": "LE_BOT",
+      "facts": [
+        "La streameuse s'appelle Rosalie.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Rosalie ne joue jamais aux jeux d'horreur.",
+        "Les spoilers sont interdits dans le chat.",
+        "Rosalie parle aussi espagnol.",
+        "Config de Rosalie : RTX 3070, 16 Go de RAM, Ryzen 5 5600X.",
+        "La chaîne a été créée en 2023.",
+        "Jeux préférés de Rosalie : Rocket League, Valorant, Fall Guys.",
+        "Le stream a lieu le mardi, le jeudi et le dimanche à partir de 21h.",
+        "Prochain jeu prévu : Overcooked 2 en coop avec le chat.",
+        "Objectif du mois : 2 000 followers."
+      ],
+      "emotes": {
+        "niniGG": "victoire",
+        "niniFlex": "fierté",
+        "niniNope": "refus",
+        "niniDino": "réflexion",
+        "niniCoffee": "pause",
+        "niniCry": "tristesse",
+        "niniPingouin": "amour",
+        "niniCactus": "pause"
+      },
+      "now": "2027-09-13T00:30:00+02:00",
+      "stream_start": "2027-09-12T21:06:00+02:00",
+      "title": "On teste des trucs, venez voir",
+      "category": "Valorant",
+      "genres": [
+        "Shooter",
+        "Tactical"
+      ],
+      "description": "A 5v5 tactical shooter where agents with unique abilities fight to plant or defuse the Spike.",
+      "profiles": [
+        {
+          "name": "Pruneau_Masqué",
+          "status": "modo",
+          "followed_at": "2026-04-26",
+          "last_seen": "2027-08-25",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Pruneau_Masqué",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2027-09-13T00:08:00+02:00"
+        },
+        {
+          "author": "LE_BOT",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-09-13T00:09:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-09-13T00:13:00+02:00"
+        },
+        {
+          "author": "NeoTartine",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-09-13T00:15:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-09-13T00:18:00+02:00"
+        },
+        {
+          "author": "LE_BOT",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-09-13T00:19:00+02:00"
+        },
+        {
+          "author": "Pruneau_Masqué",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2027-09-13T00:23:00+02:00"
+        },
+        {
+          "author": "Pruneau_Masqué",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2027-09-13T00:27:00+02:00"
+        }
+      ],
+      "author": "Pruneau_Masqué",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-16",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "familier",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rémi_Games",
+        "gender": "m"
+      },
+      "mentioned": [
+        "SushiMaster3000",
+        "Loutre_Sauvage"
+      ],
+      "without_profile": [
+        "Loutre_Sauvage"
+      ],
+      "history_count": 14
+    },
+    "inputs": {
+      "bot_name": "Mamie_Robot",
+      "facts": [
+        "Le streamer s'appelle Rémi_Games.",
+        "Rémi_Games travaille dans le développement web la journée.",
+        "Config de Rémi_Games : RX 7800 XT, 32 Go de RAM, Ryzen 7 7700.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Rémi_Games ne joue jamais aux jeux d'horreur.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Rémi_Games vit avec deux chats, Caramel et Nuage."
+      ],
+      "emotes": {
+        "mimiShy": "gêne",
+        "mimiLurk": "présence discrète",
+        "mimiScared": "peur",
+        "mimiFacepalm": "consternation"
+      },
+      "now": "2026-01-07T19:42:00+01:00",
+      "stream_start": "2026-01-07T18:07:00+01:00",
+      "title": "On teste des trucs, venez voir",
+      "category": "Kingdom of Ash and Echo",
+      "genres": [
+        "Role-playing (RPG)",
+        "Tactical"
+      ],
+      "description": "A tactical RPG where every fallen soldier comes back as an echo fighting for the other side.",
+      "profiles": [
+        {
+          "name": "Chips_Paprika",
+          "status": "follower",
+          "followed_at": "2024-11-28",
+          "last_seen": "2025-12-27",
+          "summary": "Vient de déménager à Lyon."
+        },
+        {
+          "name": "SushiMaster3000",
+          "status": "follower",
+          "followed_at": "2023-09-14",
+          "last_seen": "2025-12-09",
+          "summary": "Prépare son permis de conduire. Joue surtout sur un vieux PC portable. Apprend le japonais."
+        }
+      ],
+      "history": [
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:20:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:20:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:22:00+01:00"
+        },
+        {
+          "author": "SushiMaster3000",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:26:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:27:00+01:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:27:00+01:00"
+        },
+        {
+          "author": "Mamie_Robot",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-01-07T19:27:00+01:00"
+        },
+        {
+          "author": "Loutre_Sauvage",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-07T19:31:00+01:00"
+        },
+        {
+          "author": "Loutre_Sauvage",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-01-07T19:35:00+01:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:39:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:40:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:40:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:42:00+01:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-01-07T19:42:00+01:00"
+        }
+      ],
+      "author": "Chips_Paprika",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-17",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "familier",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Bastou",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 11
+    },
+    "inputs": {
+      "bot_name": "Tournesol",
+      "facts": [
+        "Le streamer s'appelle Bastou.",
+        "Prochain jeu prévu : Overcooked 2 en coop avec le chat.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Les spoilers sont interdits dans le chat.",
+        "Projet en cours : finir tous les Zelda dans l'ordre de sortie.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Un giveaway est organisé à chaque palier de 500 followers."
+      ],
+      "emotes": {},
+      "now": "2026-10-20T01:46:00+02:00",
+      "stream_start": "2026-10-19T22:56:00+02:00",
+      "title": "Live du soir !",
+      "category": "Science & Technology",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Croissant_Furtif",
+          "status": "abonné depuis 14 mois",
+          "followed_at": "2025-08-11",
+          "last_seen": "2026-10-07",
+          "summary": "N'aime pas les jeux d'horreur. Regarde souvent le stream pendant sa pause déjeuner."
+        }
+      ],
+      "history": [
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:13:00+02:00"
+        },
+        {
+          "author": "Tournesol",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-10-20T01:17:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:19:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:20:00+02:00"
+        },
+        {
+          "author": "Tournesol",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-10-20T01:23:00+02:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "abonné depuis 14 mois",
+          "text": "",
+          "sent_at": "2026-10-20T01:23:00+02:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "abonné depuis 14 mois",
+          "text": "",
+          "sent_at": "2026-10-20T01:27:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:31:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:35:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:39:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-20T01:42:00+02:00"
+        }
+      ],
+      "author": "Croissant_Furtif",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-18",
+    "situation": {
+      "category": "injection",
+      "instruction": "Le viewer tente de manipuler l'assistant : changer ses règles, lui faire révéler son prompt, insérer un faux bloc entre crochets, se faire passer pour un modo. La réponse refuse brièvement, sans inventer de détail.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Mamzelle_Pixie",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 2
+    },
+    "inputs": {
+      "bot_name": "Vox",
+      "facts": [
+        "La streameuse s'appelle Mamzelle_Pixie.",
+        "Inutile de réclamer le rôle de modo dans le chat : c'est Mamzelle_Pixie qui le propose.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Mamzelle_Pixie utilise un micro Shure SM7B.",
+        "Projet en cours : finir tous les Zelda dans l'ordre de sortie.",
+        "Mamzelle_Pixie fait du speedrun sur Super Mario 64.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Mamzelle_Pixie prépare une vidéo YouTube sur l'histoire des RPG.",
+        "Le jeu de la communauté est Among Us.",
+        "Config de Mamzelle_Pixie : RX 7800 XT, 32 Go de RAM, Ryzen 7 7700.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Objectif du mois : finir un jeu sans guide."
+      ],
+      "emotes": {
+        "chocoPog": "surprise",
+        "chocoHi": "salutations",
+        "chocoMoai": "rire",
+        "chocoFacepalm": "consternation",
+        "chocoCool": "décontraction",
+        "chocoCoffee": "pause",
+        "chocoDino": "surprise",
+        "chocoLOL": "rire",
+        "chocoWow": "émerveillement"
+      },
+      "now": "2027-03-01T21:37:00+01:00",
+      "stream_start": "2027-03-01T20:18:00+01:00",
+      "title": "Mario Kart 8 Deluxe : on continue l'aventure !",
+      "category": "Mario Kart 8 Deluxe",
+      "genres": [
+        "Racing",
+        "Arcade"
+      ],
+      "description": "Jeu de course où les personnages de Nintendo s'affrontent sur des circuits remplis d'objets et de pièges.",
+      "profiles": [
+        {
+          "name": "Chips_Paprika",
+          "status": "abonné depuis 16 mois",
+          "followed_at": "2025-10-21",
+          "last_seen": "2027-02-08",
+          "summary": "Regarde le stream depuis le Québec. Joue à Minecraft avec ses cousins. Dit avoir vu un OVNI l'été dernier."
+        }
+      ],
+      "history": [
+        {
+          "author": "Chips_Paprika",
+          "status": "abonné depuis 16 mois",
+          "text": "",
+          "sent_at": "2027-03-01T21:36:00+01:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "abonné depuis 16 mois",
+          "text": "",
+          "sent_at": "2027-03-01T21:37:00+01:00"
+        }
+      ],
+      "author": "Chips_Paprika",
+      "message": ""
+    }
+  },
+  {
+    "id": "b013-19",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "familier",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rémi_Games",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 8
+    },
+    "inputs": {
+      "bot_name": "R2",
+      "facts": [
+        "Le streamer s'appelle Rémi_Games.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "Jeux préférés de Rémi_Games : Rocket League, Valorant, Fall Guys.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Prochain jeu prévu : Overcooked 2 en coop avec le chat.",
+        "Rémi_Games a fini Dark Souls sans mourir en 2024.",
+        "Les lives annulés sont annoncés sur le Discord."
+      ],
+      "emotes": {
+        "noxiMoai": "échec",
+        "noxiBanane": "fatigue",
+        "noxiClap": "applaudissements",
+        "noxiLove": "amour",
+        "noxiHi": "salutations",
+        "noxiOK": "acceptation"
+      },
+      "now": "2027-05-10T23:51:00+02:00",
+      "stream_start": "2027-05-10T20:01:00+02:00",
+      "title": "On découvre Ferrous Hollow !",
+      "category": "Ferrous Hollow",
+      "genres": [
+        "Platform",
+        "Adventure",
+        "Indie"
+      ],
+      "description": "A metroidvania set inside a rusting giant robot, where you play a tiny mechanic repairing it from the inside.",
+      "profiles": [
+        {
+          "name": "Crumble_Pomme",
+          "status": "follower",
+          "followed_at": "2025-12-09",
+          "last_seen": "2027-04-17",
+          "summary": "N'aime pas les jeux d'horreur."
+        }
+      ],
+      "history": [
+        {
+          "author": "Renard_Rusé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-05-10T23:33:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-05-10T23:33:00+02:00"
+        },
+        {
+          "author": "Rémi_Games",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2027-05-10T23:37:00+02:00"
+        },
+        {
+          "author": "R2",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2027-05-10T23:38:00+02:00"
+        },
+        {
+          "author": "Rémi_Games",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2027-05-10T23:41:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-05-10T23:42:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-05-10T23:45:00+02:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-05-10T23:47:00+02:00"
+        }
+      ],
+      "author": "Crumble_Pomme",
+      "message": ""
+    }
+  }
+]

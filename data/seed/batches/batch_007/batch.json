@@ -1,0 +1,2777 @@
+[
+  {
+    "id": "b007-00",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "courant",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Lord_Kipik",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 0
+    },
+    "inputs": {
+      "bot_name": "Tofu",
+      "facts": [
+        "Le streamer s'appelle Lord_Kipik.",
+        "Jeux préférés de Lord_Kipik : Minecraft, Terraria, Factorio.",
+        "Lord_Kipik utilise un micro Shure SM7B.",
+        "Prochain jeu prévu : Tunic.",
+        "Lord_Kipik a fini Dark Souls sans mourir en 2024.",
+        "Lord_Kipik fait du speedrun sur Super Mario 64.",
+        "Objectif du mois : finir un jeu sans guide.",
+        "Config de Lord_Kipik : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Lord_Kipik travaille dans le développement web la journée.",
+        "La chaîne a été créée en 2019."
+      ],
+      "emotes": {
+        "pakoCoffee": "pause",
+        "pakoClap": "applaudissements",
+        "pakoSleep": "fatigue",
+        "pakoFacepalm": "consternation",
+        "pakoDance": "fête",
+        "pakoRIP": "échec",
+        "pakoPog": "surprise",
+        "pakoOK": "acceptation",
+        "pakoMoai": "applaudissements",
+        "pakoRage": "colère"
+      },
+      "now": "2026-06-05T22:00:00+02:00",
+      "stream_start": "2026-06-05T21:35:00+02:00",
+      "title": "Live anniversaire de la chaîne !",
+      "category": "IRL",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Pastèque_Joyeuse",
+          "status": "follower",
+          "followed_at": "2025-06-12",
+          "last_seen": "2026-05-21",
+          "summary": ""
+        }
+      ],
+      "history": [],
+      "author": "Pastèque_Joyeuse",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-01",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "soutenu",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Théo_Live",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 12
+    },
+    "inputs": {
+      "bot_name": "Ève",
+      "facts": [
+        "Le streamer s'appelle Théo_Live.",
+        "Le stream a lieu le mercredi et le samedi à partir de 21h30.",
+        "Théo_Live utilise un micro Shure SM7B.",
+        "Les lives annulés sont annoncés sur le Discord.",
+        "Théo_Live parle aussi espagnol.",
+        "Prochain jeu prévu : Sea of Stars.",
+        "Objectif du mois : 50 abonnés.",
+        "La commande !planning donne les horaires de la semaine.",
+        "Théo_Live a fini Dark Souls sans mourir en 2024."
+      ],
+      "emotes": {
+        "yuzuLove": "amour",
+        "yuzuRage": "colère",
+        "yuzuFacepalm": "consternation",
+        "yuzuThink": "réflexion",
+        "yuzuCoffee": "pause",
+        "yuzuNope": "refus",
+        "yuzuLOL": "rire"
+      },
+      "now": "2026-06-04T10:34:00+02:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Paupiette_59",
+          "status": "follower",
+          "followed_at": "2024-02-04",
+          "last_seen": "2026-06-03",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:08:00+02:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:09:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:09:00+02:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:12:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:15:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:15:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:18:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:21:00+02:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:24:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:27:00+02:00"
+        },
+        {
+          "author": "Ève",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-06-04T10:31:00+02:00"
+        },
+        {
+          "author": "SushiMaster3000",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-04T10:34:00+02:00"
+        }
+      ],
+      "author": "Paupiette_59",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-02",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Clémence_TV",
+        "gender": "f"
+      },
+      "mentioned": [
+        "GeekDuDimanche"
+      ],
+      "without_profile": [
+        "GeekDuDimanche"
+      ],
+      "history_count": 8
+    },
+    "inputs": {
+      "bot_name": "Glitch",
+      "facts": [
+        "La streameuse s'appelle Clémence_TV.",
+        "La chaîne a été créée en 2023.",
+        "Jeux préférés de Clémence_TV : Rocket League, Valorant, Fall Guys.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Clémence_TV a fini Dark Souls sans mourir en 2024.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Le jeu de la communauté est Among Us.",
+        "Prochain jeu prévu : Tunic."
+      ],
+      "emotes": {
+        "ouafCoffee": "pause",
+        "ouafLurk": "présence discrète",
+        "ouafSus": "méfiance"
+      },
+      "now": "2026-07-21T00:36:00+02:00",
+      "stream_start": "2026-07-20T20:06:00+02:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Minecraft",
+      "genres": [
+        "Simulator",
+        "Adventure"
+      ],
+      "description": "A sandbox game about placing blocks and going on adventures: explore randomly generated worlds, gather resources and build anything you can imagine.",
+      "profiles": [
+        {
+          "name": "TacosVolant",
+          "status": "abonné depuis 23 mois",
+          "followed_at": "2024-08-06",
+          "last_seen": "2026-07-08",
+          "summary": "Apprend le japonais. Joue à League of Legends en ranked."
+        }
+      ],
+      "history": [
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-21T00:23:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-21T00:26:00+02:00"
+        },
+        {
+          "author": "Glitch",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-21T00:27:00+02:00"
+        },
+        {
+          "author": "Clémence_TV",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-07-21T00:30:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-21T00:31:00+02:00"
+        },
+        {
+          "author": "Quiche_Lorraine",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-21T00:34:00+02:00"
+        },
+        {
+          "author": "Glitch",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-21T00:34:00+02:00"
+        },
+        {
+          "author": "BigBossBaba",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-21T00:34:00+02:00"
+        }
+      ],
+      "author": "TacosVolant",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-03",
+    "situation": {
+      "category": "bavardage",
+      "instruction": "Le viewer discute, salue, plaisante ou réagit au chat. La réponse est naturelle, courte, en lien avec l'historique si c'est utile.",
+      "register": "familier",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Captain_Nours",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Cookie_Monstre"
+      ],
+      "without_profile": [
+        "Cookie_Monstre"
+      ],
+      "history_count": 8
+    },
+    "inputs": {
+      "bot_name": "Wizzy",
+      "facts": [
+        "Le streamer s'appelle Captain_Nours.",
+        "Le jeu de la communauté est Among Us.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Config de Captain_Nours : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Prochain jeu prévu : Tunic.",
+        "Le lien du Discord est dans la description de la chaîne.",
+        "Captain_Nours fait du speedrun sur Super Mario 64.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "Captain_Nours ne joue jamais aux jeux d'horreur."
+      ],
+      "emotes": {
+        "flanBanane": "méfiance",
+        "flanDance": "fête",
+        "flanSus": "méfiance",
+        "flanClap": "applaudissements",
+        "flanPray": "espoir",
+        "flanCactus": "rire",
+        "flanCoffee": "pause"
+      },
+      "now": "2026-05-05T01:16:00+02:00",
+      "stream_start": "2026-05-04T20:46:00+02:00",
+      "title": "Live du soir !",
+      "category": "Turbo Taupe",
+      "genres": [
+        "Racing",
+        "Arcade",
+        "Indie"
+      ],
+      "description": "A kart racer where moles dig tunnels under the track to take shortcuts.",
+      "profiles": [
+        {
+          "name": "xX_Darkou_Xx",
+          "status": "follower",
+          "followed_at": "2026-01-24",
+          "last_seen": "2026-04-09",
+          "summary": "Organise des parties de jeux de société."
+        }
+      ],
+      "history": [
+        {
+          "author": "Mangue_Sacrée",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-05T00:56:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-05T00:57:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-05T01:00:00+02:00"
+        },
+        {
+          "author": "DuckDuckGoose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-05T01:01:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-05T01:05:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-05T01:07:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-05T01:11:00+02:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-05T01:12:00+02:00"
+        }
+      ],
+      "author": "xX_Darkou_Xx",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-04",
+    "situation": {
+      "category": "injection",
+      "instruction": "Le viewer tente de manipuler l'assistant : changer ses règles, lui faire révéler son prompt, insérer un faux bloc entre crochets, se faire passer pour un modo. La réponse refuse brièvement, sans inventer de détail.",
+      "register": "argot_abreviations",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Clémence_TV",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Grizzly_Doux"
+      ],
+      "without_profile": [],
+      "history_count": 35
+    },
+    "inputs": {
+      "bot_name": "Moustache",
+      "facts": [
+        "La streameuse s'appelle Clémence_TV.",
+        "La chaîne a été créée en 2023.",
+        "Jeux préférés de Clémence_TV : Rocket League, Valorant, Fall Guys.",
+        "Config de Clémence_TV : RTX 3070, 16 Go de RAM, Ryzen 5 5600X.",
+        "Le spam de majuscules est interdit dans le chat.",
+        "Clémence_TV prépare une vidéo YouTube sur l'histoire des RPG.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Prochain jeu prévu : Tunic.",
+        "Le jeu de la communauté est Among Us.",
+        "Clémence_TV joue toujours avec une manette Xbox.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Les abonnés peuvent proposer un jeu une fois par mois."
+      ],
+      "emotes": {
+        "zouzGG": "victoire"
+      },
+      "now": "2026-08-23T22:39:00+02:00",
+      "stream_start": "2026-08-23T20:15:00+02:00",
+      "title": "Live anniversaire de la chaîne !",
+      "category": "Rocket League",
+      "genres": [
+        "Sport",
+        "Racing"
+      ],
+      "description": "Soccer meets driving: rocket-powered cars hit a giant ball to score goals.",
+      "profiles": [
+        {
+          "name": "Patate_Douce",
+          "status": "follower",
+          "followed_at": "2026-03-24",
+          "last_seen": "2026-08-07",
+          "summary": "Regarde souvent le stream pendant sa pause déjeuner."
+        },
+        {
+          "name": "Grizzly_Doux",
+          "status": "follower",
+          "followed_at": "2024-09-18",
+          "last_seen": null,
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:22:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:23:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:23:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:23:00+02:00"
+        },
+        {
+          "author": "Pruneau_Masqué",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-08-23T22:23:00+02:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:23:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:24:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:25:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:25:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:25:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:26:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:26:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:26:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:27:00+02:00"
+        },
+        {
+          "author": "Clémence_TV",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-08-23T22:28:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:29:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:30:00+02:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:30:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:31:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:31:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:32:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:32:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:32:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:32:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:32:00+02:00"
+        },
+        {
+          "author": "Renard_Rusé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:33:00+02:00"
+        },
+        {
+          "author": "Grizzly_Doux",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:33:00+02:00"
+        },
+        {
+          "author": "Zigouigoui",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:34:00+02:00"
+        },
+        {
+          "author": "Grizzly_Doux",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:35:00+02:00"
+        },
+        {
+          "author": "TacosVolant",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:35:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:36:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:37:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:37:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-08-23T22:38:00+02:00"
+        },
+        {
+          "author": "Moustache",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-08-23T22:39:00+02:00"
+        }
+      ],
+      "author": "Patate_Douce",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-05",
+    "situation": {
+      "category": "culture_actu",
+      "instruction": "Le viewer pose une question de culture générale (la réponse la donne) ou sur l'actualité récente (la réponse dit qu'elle n'y a pas accès).",
+      "register": "courant",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Capucine",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 7
+    },
+    "inputs": {
+      "bot_name": "Bidule",
+      "facts": [
+        "La streameuse s'appelle Capucine.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "Capucine fait du speedrun sur Super Mario 64.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Capucine ne joue jamais aux jeux d'horreur.",
+        "Capucine prépare une vidéo YouTube sur l'histoire des RPG.",
+        "Capucine streame depuis un MacBook Pro M3."
+      ],
+      "emotes": {
+        "miaouShy": "gêne",
+        "miaouPog": "surprise"
+      },
+      "now": "2027-04-08T22:46:00+02:00",
+      "stream_start": "2027-04-08T18:09:00+02:00",
+      "title": "Live anniversaire de la chaîne !",
+      "category": "Les Chroniques de Bidonville",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Mimosa_Blue",
+          "status": "abonné depuis 33 mois",
+          "followed_at": "2024-06-19",
+          "last_seen": null,
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:36:00+02:00"
+        },
+        {
+          "author": "Tonton_Flingueur",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:36:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:37:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:41:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:41:00+02:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "abonné depuis 33 mois",
+          "text": "",
+          "sent_at": "2027-04-08T22:43:00+02:00"
+        },
+        {
+          "author": "Paupiette_59",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-04-08T22:46:00+02:00"
+        }
+      ],
+      "author": "Mimosa_Blue",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-06",
+    "situation": {
+      "category": "langue",
+      "instruction": "Le message est clairement écrit dans une autre langue que le français (anglais, espagnol, allemand, italien, portugais). La réponse est dans la langue du message.",
+      "register": "soutenu",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Grominou",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 13
+    },
+    "inputs": {
+      "bot_name": "Nébuleuse",
+      "facts": [
+        "Le streamer s'appelle Grominou.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Le lien du Discord est dans la description de la chaîne.",
+        "Jeux préférés de Grominou : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Grominou joue toujours avec une manette Xbox.",
+        "Le stream a lieu le mercredi et le samedi à partir de 21h30.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "Config de Grominou : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "La chaîne a été créée en 2023.",
+        "Les spoilers sont interdits dans le chat."
+      ],
+      "emotes": {
+        "glouCactus": "émerveillement",
+        "glouNope": "refus",
+        "glouGG": "victoire",
+        "glouRIP": "échec",
+        "glouPog": "surprise",
+        "glouBanane": "fatigue",
+        "glouWow": "émerveillement",
+        "glouScared": "peur",
+        "glouThink": "réflexion",
+        "glouHi": "salutations"
+      },
+      "now": "2026-07-26T00:53:00+02:00",
+      "stream_start": "2026-07-25T21:38:00+02:00",
+      "title": "Animal Crossing: New Horizons avec le chat",
+      "category": "Animal Crossing: New Horizons",
+      "genres": [
+        "Simulator"
+      ],
+      "description": "Move to a deserted island, gather resources, craft tools and build a community with animal villagers.",
+      "profiles": [
+        {
+          "name": "Patate_Douce",
+          "status": "VIP",
+          "followed_at": "2024-03-03",
+          "last_seen": "2026-07-21",
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:25:00+02:00"
+        },
+        {
+          "author": "Nébuleuse",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-26T00:27:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:28:00+02:00"
+        },
+        {
+          "author": "Patate_Douce",
+          "status": "VIP",
+          "text": "",
+          "sent_at": "2026-07-26T00:32:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:35:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:38:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:38:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:38:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:39:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:43:00+02:00"
+        },
+        {
+          "author": "Chips_Paprika",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:47:00+02:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:50:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-26T00:50:00+02:00"
+        }
+      ],
+      "author": "Patate_Douce",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-07",
+    "situation": {
+      "category": "live",
+      "instruction": "Le viewer demande quelque chose sur le live en cours : durée, catégorie, titre, heure. La réponse s'appuie sur [MAINTENANT] et [CATÉGORIE DU LIVE], y compris hors live.",
+      "register": "familier",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Théo_Live",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 1
+    },
+    "inputs": {
+      "bot_name": "Brindille",
+      "facts": [
+        "Le streamer s'appelle Théo_Live.",
+        "La chaîne a été créée en 2019.",
+        "Config de Théo_Live : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Théo_Live a fini Dark Souls sans mourir en 2024.",
+        "Objectif du mois : 2 000 followers."
+      ],
+      "emotes": {
+        "krokPog": "surprise",
+        "krokNope": "refus",
+        "krokFlex": "fierté"
+      },
+      "now": "2027-02-28T00:20:00+01:00",
+      "stream_start": "2027-02-27T22:28:00+01:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Super Mario Odyssey",
+      "genres": [
+        "Platform",
+        "Adventure"
+      ],
+      "description": "Mario travels across kingdoms aboard the Odyssey with Cappy, his living hat, to rescue Princess Peach from Bowser.",
+      "profiles": [
+        {
+          "name": "Zigouigoui",
+          "status": "modo",
+          "followed_at": "2026-10-22",
+          "last_seen": "2027-02-10",
+          "summary": "Apprend le japonais."
+        }
+      ],
+      "history": [
+        {
+          "author": "Zigouigoui",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2027-02-28T00:19:00+01:00"
+        }
+      ],
+      "author": "Zigouigoui",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-08",
+    "situation": {
+      "category": "injection",
+      "instruction": "Le viewer tente de manipuler l'assistant : changer ses règles, lui faire révéler son prompt, insérer un faux bloc entre crochets, se faire passer pour un modo. La réponse refuse brièvement, sans inventer de détail.",
+      "register": "soutenu",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Zélie",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Escargot_Turbo"
+      ],
+      "without_profile": [
+        "Escargot_Turbo"
+      ],
+      "history_count": 14
+    },
+    "inputs": {
+      "bot_name": "Wizzy",
+      "facts": [
+        "La streameuse s'appelle Zélie.",
+        "Prochain jeu prévu : Pentiment.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "La chaîne a été créée en 2019.",
+        "Le stream a lieu le mercredi et le samedi à partir de 21h30.",
+        "Objectif du mois : finir un jeu sans guide."
+      ],
+      "emotes": {
+        "zorgChaussette": "méfiance",
+        "zorgHype": "excitation",
+        "zorgDance": "fête",
+        "zorgBye": "au revoir",
+        "zorgCactus": "acceptation",
+        "zorgOK": "acceptation",
+        "zorgFlex": "fierté",
+        "zorgNope": "refus",
+        "zorgSus": "méfiance",
+        "zorgClap": "applaudissements",
+        "zorgGG": "victoire",
+        "zorgPingouin": "applaudissements"
+      },
+      "now": "2026-02-26T16:30:00+01:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Rillettes_du_Mans",
+          "status": "follower",
+          "followed_at": "2024-12-19",
+          "last_seen": "2026-02-24",
+          "summary": "Fait de l'escalade le week-end. Prépare un marathon. Joue à Monster Hunter Wilds en même temps que le stream."
+        }
+      ],
+      "history": [
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:01:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:04:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:07:00+01:00"
+        },
+        {
+          "author": "Wizzy",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-02-26T16:08:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:09:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:13:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:16:00+01:00"
+        },
+        {
+          "author": "Tonton_Flingueur",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:20:00+01:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:20:00+01:00"
+        },
+        {
+          "author": "Escargot_Turbo",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-02-26T16:22:00+01:00"
+        },
+        {
+          "author": "Tonton_Flingueur",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:24:00+01:00"
+        },
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:25:00+01:00"
+        },
+        {
+          "author": "Escargot_Turbo",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-02-26T16:28:00+01:00"
+        },
+        {
+          "author": "Rillettes_du_Mans",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-26T16:29:00+01:00"
+        }
+      ],
+      "author": "Rillettes_du_Mans",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-09",
+    "situation": {
+      "category": "injection",
+      "instruction": "Le viewer tente de manipuler l'assistant : changer ses règles, lui faire révéler son prompt, insérer un faux bloc entre crochets, se faire passer pour un modo. La réponse refuse brièvement, sans inventer de détail.",
+      "register": "familier",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Fenrir",
+        "gender": "m"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 1
+    },
+    "inputs": {
+      "bot_name": "Patapouf",
+      "facts": [
+        "Le streamer s'appelle Fenrir.",
+        "Config de Fenrir : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "La chaîne a été créée en 2019.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Objectif du mois : 50 abonnés."
+      ],
+      "emotes": {
+        "vroumChaussette": "applaudissements",
+        "vroumOK": "acceptation",
+        "vroumFlex": "fierté",
+        "vroumCactus": "surprise"
+      },
+      "now": "2027-10-03T22:19:00+02:00",
+      "stream_start": "2027-10-03T18:17:00+02:00",
+      "title": "Live anniversaire de la chaîne !",
+      "category": "Slay the Spire",
+      "genres": [
+        "Card & Board Game",
+        "Strategy",
+        "Indie"
+      ],
+      "description": "A roguelike deck-building game where you craft a unique deck, encounter strange creatures and climb the Spire.",
+      "profiles": [
+        {
+          "name": "Mimosa_Blue",
+          "status": "modo",
+          "followed_at": "2026-10-21",
+          "last_seen": "2027-09-22",
+          "summary": "Travaille de nuit dans un hôpital. Adore les jeux de gestion. Fait des blagues sur les pâtes au ketchup."
+        }
+      ],
+      "history": [
+        {
+          "author": "Mimosa_Blue",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2027-10-03T22:18:00+02:00"
+        }
+      ],
+      "author": "Mimosa_Blue",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-10",
+    "situation": {
+      "category": "culture_actu",
+      "instruction": "Le viewer pose une question de culture générale (la réponse la donne) ou sur l'actualité récente (la réponse dit qu'elle n'y a pas accès).",
+      "register": "soutenu",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Nymeria",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 3
+    },
+    "inputs": {
+      "bot_name": "Chamallow",
+      "facts": [
+        "La streameuse s'appelle Nymeria.",
+        "Nymeria prépare une vidéo YouTube sur l'histoire des RPG.",
+        "Les abonnés peuvent proposer un jeu une fois par mois.",
+        "Nymeria parle aussi espagnol.",
+        "Les spoilers sont interdits dans le chat.",
+        "Jeux préférés de Nymeria : Final Fantasy IX, Chrono Trigger, Persona 5.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Config de Nymeria : RTX 4090, 64 Go de RAM, Intel Core i9."
+      ],
+      "emotes": {
+        "titiTacos": "pause"
+      },
+      "now": "2026-06-14T19:34:00+02:00",
+      "stream_start": "2026-06-14T18:53:00+02:00",
+      "title": "Petite session détente ce soir",
+      "category": "Factorio",
+      "genres": [
+        "Simulator",
+        "Strategy",
+        "Indie"
+      ],
+      "description": "Build and maintain ever-growing factories on an alien planet, automating mining, production and logistics.",
+      "profiles": [
+        {
+          "name": "Cerise_Noire",
+          "status": "modo",
+          "followed_at": "2025-03-14",
+          "last_seen": "2026-06-09",
+          "summary": "Débute en programmation Python. Dit avoir vu un OVNI l'été dernier. Prépare son permis de conduire."
+        }
+      ],
+      "history": [
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-06-14T19:31:00+02:00"
+        },
+        {
+          "author": "Chamallow",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-06-14T19:32:00+02:00"
+        },
+        {
+          "author": "Cerise_Noire",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-06-14T19:33:00+02:00"
+        }
+      ],
+      "author": "Cerise_Noire",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-11",
+    "situation": {
+      "category": "bavardage",
+      "instruction": "Le viewer discute, salue, plaisante ou réagit au chat. La réponse est naturelle, courte, en lien avec l'historique si c'est utile.",
+      "register": "soutenu",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Lord_Kipik",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Petit_Scarabée",
+        "Escargot_Turbo"
+      ],
+      "without_profile": [],
+      "history_count": 0
+    },
+    "inputs": {
+      "bot_name": "MONSIEUR_ROBOT",
+      "facts": [
+        "Le streamer s'appelle Lord_Kipik.",
+        "Lord_Kipik utilise un micro Shure SM7B.",
+        "La chaîne a passé les 1 000 followers en mars 2025.",
+        "Le jeu de la communauté est Among Us.",
+        "Prochain jeu prévu : Sea of Stars.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Objectif du mois : 50 abonnés.",
+        "Config de Lord_Kipik : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Les lives annulés sont annoncés sur le Discord."
+      ],
+      "emotes": {
+        "ouafBanane": "refus",
+        "ouafHi": "salutations",
+        "ouafGG": "victoire",
+        "ouafShy": "gêne",
+        "ouafDino": "victoire",
+        "ouafFlex": "fierté",
+        "ouafPatate": "acceptation",
+        "ouafCry": "tristesse",
+        "ouafBye": "au revoir",
+        "ouafRIP": "échec",
+        "ouafLove": "amour"
+      },
+      "now": "2026-06-08T20:14:00+02:00",
+      "stream_start": "2026-06-08T18:46:00+02:00",
+      "title": "Disco Elysium : on continue l'aventure !",
+      "category": "Disco Elysium",
+      "genres": [
+        "Role-playing (RPG)",
+        "Adventure",
+        "Indie"
+      ],
+      "description": "A detective RPG where an amnesiac cop investigates a murder in the city of Revachol, through dialogue and skill checks.",
+      "profiles": [
+        {
+          "name": "Chouquette",
+          "status": "abonné depuis 23 mois",
+          "followed_at": "2024-06-25",
+          "last_seen": "2025-05-31",
+          "summary": "Joue à Monster Hunter Wilds en même temps que le stream. Fait de la musique électronique."
+        },
+        {
+          "name": "Petit_Scarabée",
+          "status": "modo",
+          "followed_at": "2025-03-21",
+          "last_seen": "2025-11-03",
+          "summary": ""
+        },
+        {
+          "name": "Escargot_Turbo",
+          "status": "follower",
+          "followed_at": "2024-10-25",
+          "last_seen": "2026-06-02",
+          "summary": ""
+        }
+      ],
+      "history": [],
+      "author": "Chouquette",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-12",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "courant",
+      "attitude": "provocateur"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Nymeria",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 50
+    },
+    "inputs": {
+      "bot_name": "Kaz",
+      "facts": [
+        "La streameuse s'appelle Nymeria.",
+        "Les lives annulés sont annoncés sur le Discord.",
+        "Prochain jeu prévu : Tunic.",
+        "Nymeria ne joue jamais aux jeux d'horreur.",
+        "Jeux préférés de Nymeria : Final Fantasy IX, Chrono Trigger, Persona 5.",
+        "Objectif du mois : 50 abonnés.",
+        "Les meilleurs moments sont publiés sur TikTok."
+      ],
+      "emotes": {
+        "blobMoai": "méfiance",
+        "blobRIP": "échec",
+        "blobChaussette": "excitation",
+        "blobBanane": "pause",
+        "blobHype": "excitation",
+        "blobFlex": "fierté",
+        "blobThink": "réflexion",
+        "blobCry": "tristesse",
+        "blobWow": "émerveillement",
+        "blobPray": "espoir",
+        "blobDance": "fête"
+      },
+      "now": "2026-11-13T01:01:00+01:00",
+      "stream_start": "2026-11-12T21:37:00+01:00",
+      "title": "Grosse session Les Chroniques de Bidonville ce soir",
+      "category": "Les Chroniques de Bidonville",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Croissant_Furtif",
+          "status": "follower",
+          "followed_at": "2025-06-29",
+          "last_seen": "2026-10-23",
+          "summary": "Est fan de speedrun. Dit avoir déjà gagné un tournoi de Mario Kart."
+        }
+      ],
+      "history": [
+        {
+          "author": "Le_Grand_Mamouth",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:34:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:34:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:35:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:36:00+01:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:36:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:37:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:38:00+01:00"
+        },
+        {
+          "author": "Nymeria",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-11-13T00:39:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:40:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:41:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:42:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:42:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:43:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:44:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:44:00+01:00"
+        },
+        {
+          "author": "Le_Grand_Mamouth",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:44:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:45:00+01:00"
+        },
+        {
+          "author": "Kaz",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-11-13T00:45:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:46:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:47:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:48:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:48:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:49:00+01:00"
+        },
+        {
+          "author": "Nuage_Rose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:49:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:49:00+01:00"
+        },
+        {
+          "author": "Nuage_Rose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:49:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:50:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:51:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:51:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:52:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:52:00+01:00"
+        },
+        {
+          "author": "Le_Grand_Mamouth",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:53:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:54:00+01:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:54:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:55:00+01:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:56:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:57:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:57:00+01:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:58:00+01:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:59:00+01:00"
+        },
+        {
+          "author": "Le_Grand_Mamouth",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:59:00+01:00"
+        },
+        {
+          "author": "Crumble_Pomme",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T00:59:00+01:00"
+        },
+        {
+          "author": "Croissant_Furtif",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T00:59:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T01:00:00+01:00"
+        },
+        {
+          "author": "L3g3nd4ry",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        },
+        {
+          "author": "Nuage_Rose",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        },
+        {
+          "author": "Le_Grand_Mamouth",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        },
+        {
+          "author": "Kaz",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-11-13T01:01:00+01:00"
+        }
+      ],
+      "author": "Croissant_Furtif",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-13",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "courant",
+      "attitude": "taquin"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Bastou",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Loutre_Sauvage"
+      ],
+      "without_profile": [],
+      "history_count": 10
+    },
+    "inputs": {
+      "bot_name": "Ève",
+      "facts": [
+        "Le streamer s'appelle Bastou.",
+        "La chaîne a été créée en 2017, d'abord sur YouTube.",
+        "Config de Bastou : RTX 3070, 16 Go de RAM, Ryzen 5 5600X.",
+        "Jeux préférés de Bastou : Minecraft, Terraria, Factorio.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "Objectif du mois : finir un jeu sans guide.",
+        "Bastou parle aussi espagnol.",
+        "Prochain jeu prévu : Tunic.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "Bastou a fini Dark Souls sans mourir en 2024.",
+        "Le stream a lieu tous les soirs de semaine à partir de 19h.",
+        "Bastou joue toujours avec une manette Xbox."
+      ],
+      "emotes": {
+        "lumiGG": "victoire",
+        "lumiPingouin": "espoir",
+        "lumiHype": "excitation"
+      },
+      "now": "2026-10-02T21:44:00+02:00",
+      "stream_start": "2026-10-02T19:08:00+02:00",
+      "title": "Live du soir !",
+      "category": "Orbital Ramen",
+      "genres": [
+        "Simulator",
+        "Arcade",
+        "Indie"
+      ],
+      "description": "Run a noodle stand on a space station and serve picky aliens before their shuttle leaves.",
+      "profiles": [
+        {
+          "name": "Pandakoala",
+          "status": "follower",
+          "followed_at": "2024-09-01",
+          "last_seen": "2026-09-02",
+          "summary": "A offert des subs à la communauté. Dit être champion régional d'échecs."
+        },
+        {
+          "name": "Loutre_Sauvage",
+          "status": "follower",
+          "followed_at": "2024-05-13",
+          "last_seen": "2026-09-10",
+          "summary": "Dit avoir déjà gagné un tournoi de Mario Kart. Dit être le premier follower de la chaîne. Joue à Minecraft avec ses cousins."
+        }
+      ],
+      "history": [
+        {
+          "author": "Loutre_Sauvage",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:33:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:34:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:38:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:38:00+02:00"
+        },
+        {
+          "author": "Kiki_la_Frite",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:38:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:38:00+02:00"
+        },
+        {
+          "author": "Kiki_la_Frite",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:38:00+02:00"
+        },
+        {
+          "author": "Kiki_la_Frite",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:39:00+02:00"
+        },
+        {
+          "author": "Pandakoala",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:40:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-10-02T21:44:00+02:00"
+        }
+      ],
+      "author": "Pandakoala",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-14",
+    "situation": {
+      "category": "profil",
+      "instruction": "Le message concerne l'auteur ou un viewer mentionné. La réponse utilise le profil seulement s'il est pertinent, et n'en ressort pas un souvenir hors sujet.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Mamzelle_Pixie",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Speedy_Gonzague",
+        "Biscotte_Rebelle"
+      ],
+      "without_profile": [],
+      "history_count": 47
+    },
+    "inputs": {
+      "bot_name": "SirBotalot",
+      "facts": [
+        "La streameuse s'appelle Mamzelle_Pixie.",
+        "Projet en cours : finir tous les Zelda dans l'ordre de sortie.",
+        "Prochain jeu prévu : Tunic.",
+        "La chaîne a été créée en 2019.",
+        "Objectif du mois : finir un jeu sans guide."
+      ],
+      "emotes": {
+        "grumfFlex": "fierté"
+      },
+      "now": "2026-07-30T00:33:00+02:00",
+      "stream_start": "2026-07-29T20:52:00+02:00",
+      "title": "Live anniversaire de la chaîne !",
+      "category": "Among Us",
+      "genres": [
+        "Strategy",
+        "Indie"
+      ],
+      "description": "Crewmates complete tasks on a spaceship while impostors secretly sabotage and eliminate them.",
+      "profiles": [
+        {
+          "name": "xX_Darkou_Xx",
+          "status": "modo",
+          "followed_at": "2025-03-01",
+          "last_seen": "2026-07-19",
+          "summary": "Fait de l'escalade le week-end."
+        },
+        {
+          "name": "Speedy_Gonzague",
+          "status": "follower",
+          "followed_at": "2025-02-13",
+          "last_seen": "2026-07-06",
+          "summary": ""
+        },
+        {
+          "name": "Biscotte_Rebelle",
+          "status": "abonné depuis 6 mois",
+          "followed_at": "2024-12-18",
+          "last_seen": "2026-07-28",
+          "summary": "Regarde le stream depuis le Québec. Joue à Minecraft avec ses cousins."
+        }
+      ],
+      "history": [
+        {
+          "author": "Brownie_Fondant",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:07:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:08:00+02:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:08:00+02:00"
+        },
+        {
+          "author": "SirBotalot",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-30T00:09:00+02:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:09:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:09:00+02:00"
+        },
+        {
+          "author": "Mamzelle_Pixie",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-07-30T00:10:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:11:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:11:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:11:00+02:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "abonné depuis 6 mois",
+          "text": "",
+          "sent_at": "2026-07-30T00:11:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:12:00+02:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:13:00+02:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "abonné depuis 6 mois",
+          "text": "",
+          "sent_at": "2026-07-30T00:13:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:13:00+02:00"
+        },
+        {
+          "author": "xX_Darkou_Xx",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-07-30T00:14:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:15:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:15:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:15:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:16:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:17:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:18:00+02:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:18:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:19:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:20:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:20:00+02:00"
+        },
+        {
+          "author": "SirBotalot",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-30T00:21:00+02:00"
+        },
+        {
+          "author": "MlleChoupette",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:22:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:22:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:22:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:23:00+02:00"
+        },
+        {
+          "author": "Biscotte_Rebelle",
+          "status": "abonné depuis 6 mois",
+          "text": "",
+          "sent_at": "2026-07-30T00:23:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:24:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:24:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:25:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:26:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:27:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:27:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:28:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:28:00+02:00"
+        },
+        {
+          "author": "Lama_Zen",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:29:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:29:00+02:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:30:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:31:00+02:00"
+        },
+        {
+          "author": "Hibou_Nocturne",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:31:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-07-30T00:32:00+02:00"
+        },
+        {
+          "author": "PapyGamer_75",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-30T00:33:00+02:00"
+        }
+      ],
+      "author": "xX_Darkou_Xx",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-15",
+    "situation": {
+      "category": "live",
+      "instruction": "Le viewer demande quelque chose sur le live en cours : durée, catégorie, titre, heure. La réponse s'appuie sur [MAINTENANT] et [CATÉGORIE DU LIVE], y compris hors live.",
+      "register": "courant",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "LadyBrume",
+        "gender": "f"
+      },
+      "mentioned": [],
+      "without_profile": [],
+      "history_count": 3
+    },
+    "inputs": {
+      "bot_name": "Lulu",
+      "facts": [
+        "La streameuse s'appelle LadyBrume.",
+        "LadyBrume utilise un micro Shure SM7B.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Jeux préférés de LadyBrume : Zelda Breath of the Wild, Dead Cells, Slay the Spire.",
+        "Projet en cours : créer un petit jeu vidéo avec Godot.",
+        "Le jeu de la communauté est Among Us.",
+        "Prochain jeu prévu : Sea of Stars.",
+        "LadyBrume a fini Dark Souls sans mourir en 2024.",
+        "Le stream a lieu tous les soirs de semaine à partir de 19h.",
+        "LadyBrume vit avec deux chats, Caramel et Nuage.",
+        "Objectif du mois : 50 abonnés.",
+        "Un giveaway est organisé à chaque palier de 500 followers.",
+        "LadyBrume prépare une vidéo YouTube sur l'histoire des RPG."
+      ],
+      "emotes": {
+        "bzzRage": "colère",
+        "bzzDino": "acceptation",
+        "bzzSus": "méfiance",
+        "bzzGG": "victoire",
+        "bzzScared": "peur",
+        "bzzBye": "au revoir",
+        "bzzNope": "refus",
+        "bzzDance": "fête",
+        "bzzLurk": "présence discrète"
+      },
+      "now": "2027-02-08T21:08:00+01:00",
+      "stream_start": "2027-02-08T19:25:00+01:00",
+      "title": "Premier live sur Dofus",
+      "category": "Dofus",
+      "genres": [
+        "Role-playing (RPG)",
+        "Tactical",
+        "Turn-based strategy (TBS)"
+      ],
+      "description": "Jeu de rôle en ligne massivement multijoueur, aux combats tactiques au tour par tour, dans le Monde des Douze.",
+      "profiles": [
+        {
+          "name": "Chips_Paprika",
+          "status": "follower",
+          "followed_at": "2025-04-25",
+          "last_seen": "2027-01-25",
+          "summary": "Dit parler cinq langues. Joue de la batterie dans un groupe."
+        }
+      ],
+      "history": [
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-02-08T21:03:00+01:00"
+        },
+        {
+          "author": "Lama_Zen",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-02-08T21:05:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2027-02-08T21:05:00+01:00"
+        }
+      ],
+      "author": "Chips_Paprika",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-16",
+    "situation": {
+      "category": "fait_absent",
+      "instruction": "Le viewer pose une question sur la chaîne ou le streamer dont la réponse n'est dans aucun bloc. La réponse dit qu'il ne sait pas, sans inventer.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Théo_Live",
+        "gender": "m"
+      },
+      "mentioned": [
+        "Tonton_Flingueur"
+      ],
+      "without_profile": [],
+      "history_count": 3
+    },
+    "inputs": {
+      "bot_name": "SirBotalot",
+      "facts": [
+        "Le streamer s'appelle Théo_Live.",
+        "Jeux préférés de Théo_Live : Final Fantasy IX, Chrono Trigger, Persona 5.",
+        "Le stream a lieu le samedi et le dimanche à partir de 20h.",
+        "La chaîne a été créée en 2023."
+      ],
+      "emotes": {
+        "bzzShy": "gêne"
+      },
+      "now": "2027-09-15T10:26:00+02:00",
+      "stream_start": null,
+      "title": "",
+      "category": null,
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Jambon_Beurre",
+          "status": "VIP",
+          "followed_at": "2027-02-14",
+          "last_seen": "2027-02-24",
+          "summary": "Dit être champion régional d'échecs. Apprend le japonais. Dit parler cinq langues."
+        },
+        {
+          "name": "Tonton_Flingueur",
+          "status": "VIP",
+          "followed_at": "2025-05-10",
+          "last_seen": "2027-08-30",
+          "summary": "Apprend le japonais. Organise des parties de jeux de société. Prépare son permis de conduire."
+        }
+      ],
+      "history": [
+        {
+          "author": "Jambon_Beurre",
+          "status": "VIP",
+          "text": "",
+          "sent_at": "2027-09-15T10:19:00+02:00"
+        },
+        {
+          "author": "SushiMaster3000",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-09-15T10:22:00+02:00"
+        },
+        {
+          "author": "SushiMaster3000",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2027-09-15T10:23:00+02:00"
+        }
+      ],
+      "author": "Jambon_Beurre",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-17",
+    "situation": {
+      "category": "emotes",
+      "instruction": "Le message appelle une réaction (victoire, échec, blague, salut). La réponse utilise une emote de [EMOTES DE LA CHAÎNE] adaptée à son sens, écrite sans crochets.",
+      "register": "courant",
+      "attitude": "enthousiaste"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Nymeria",
+        "gender": "f"
+      },
+      "mentioned": [
+        "Mimosa_Blue"
+      ],
+      "without_profile": [],
+      "history_count": 6
+    },
+    "inputs": {
+      "bot_name": "Bidule",
+      "facts": [
+        "La streameuse s'appelle Nymeria.",
+        "Objectif du mois : finir un jeu sans guide.",
+        "Prochain jeu prévu : Pentiment.",
+        "La chaîne a été créée en 2023."
+      ],
+      "emotes": {
+        "papriLOL": "rire",
+        "papriNope": "refus",
+        "papriCoffee": "pause",
+        "papriCool": "décontraction",
+        "papriWow": "émerveillement",
+        "papriPog": "surprise",
+        "papriPray": "espoir",
+        "papriLove": "amour",
+        "papriScared": "peur"
+      },
+      "now": "2026-07-31T21:26:00+02:00",
+      "stream_start": "2026-07-31T18:04:00+02:00",
+      "title": "Grosse session Factorio ce soir",
+      "category": "Factorio",
+      "genres": [
+        "Simulator",
+        "Strategy",
+        "Indie"
+      ],
+      "description": "Build and maintain ever-growing factories on an alien planet, automating mining, production and logistics.",
+      "profiles": [
+        {
+          "name": "Tonton_Flingueur",
+          "status": "abonné depuis 17 mois",
+          "followed_at": "2024-03-30",
+          "last_seen": "2026-07-12",
+          "summary": ""
+        },
+        {
+          "name": "Mimosa_Blue",
+          "status": "follower",
+          "followed_at": "2026-04-28",
+          "last_seen": null,
+          "summary": ""
+        }
+      ],
+      "history": [
+        {
+          "author": "Mimosa_Blue",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-31T21:16:00+02:00"
+        },
+        {
+          "author": "GeekDuDimanche",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-07-31T21:16:00+02:00"
+        },
+        {
+          "author": "Tonton_Flingueur",
+          "status": "abonné depuis 17 mois",
+          "text": "",
+          "sent_at": "2026-07-31T21:20:00+02:00"
+        },
+        {
+          "author": "Tonton_Flingueur",
+          "status": "abonné depuis 17 mois",
+          "text": "",
+          "sent_at": "2026-07-31T21:22:00+02:00"
+        },
+        {
+          "author": "Nymeria",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-07-31T21:23:00+02:00"
+        },
+        {
+          "author": "Bidule",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-07-31T21:23:00+02:00"
+        }
+      ],
+      "author": "Tonton_Flingueur",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-18",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Jeannot",
+        "gender": "m"
+      },
+      "mentioned": [
+        "WaffleKing"
+      ],
+      "without_profile": [],
+      "history_count": 13
+    },
+    "inputs": {
+      "bot_name": "TchatGPTeuh",
+      "facts": [
+        "Le streamer s'appelle Jeannot.",
+        "La chaîne a été créée en 2019.",
+        "Objectif du mois : 2 000 followers.",
+        "Les lives annulés sont annoncés sur le Discord.",
+        "Jeannot joue toujours avec une manette Xbox.",
+        "Les lives durent en général entre 3 et 4 heures.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h.",
+        "Projet en cours : un marathon caritatif en décembre.",
+        "La mascotte de la chaîne est un raton laveur nommé Gaston.",
+        "Jeannot travaille dans le développement web la journée."
+      ],
+      "emotes": {
+        "chocoDance": "fête",
+        "chocoTacos": "colère",
+        "chocoShy": "gêne",
+        "chocoLove": "amour",
+        "chocoCool": "décontraction"
+      },
+      "now": "2026-02-10T01:16:00+01:00",
+      "stream_start": "2026-02-09T20:28:00+01:00",
+      "title": "On teste des trucs, venez voir",
+      "category": "Just Chatting",
+      "genres": null,
+      "description": null,
+      "profiles": [
+        {
+          "name": "Speedy_Gonzague",
+          "status": "modo",
+          "followed_at": "2025-12-14",
+          "last_seen": "2026-01-29",
+          "summary": "Pose souvent des questions sur les jeux en cours."
+        },
+        {
+          "name": "WaffleKing",
+          "status": "abonné depuis 29 mois",
+          "followed_at": "2023-08-25",
+          "last_seen": "2026-01-28",
+          "summary": "Prépare un marathon."
+        }
+      ],
+      "history": [
+        {
+          "author": "Jeannot",
+          "status": "streamer",
+          "text": "",
+          "sent_at": "2026-02-10T00:58:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:01:00+01:00"
+        },
+        {
+          "author": "WaffleKing",
+          "status": "abonné depuis 29 mois",
+          "text": "",
+          "sent_at": "2026-02-10T01:01:00+01:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-02-10T01:01:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:04:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:04:00+01:00"
+        },
+        {
+          "author": "Grizzly_Doux",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:07:00+01:00"
+        },
+        {
+          "author": "WaffleKing",
+          "status": "abonné depuis 29 mois",
+          "text": "",
+          "sent_at": "2026-02-10T01:08:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:10:00+01:00"
+        },
+        {
+          "author": "TchatGPTeuh",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-02-10T01:14:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:14:00+01:00"
+        },
+        {
+          "author": "Speedy_Gonzague",
+          "status": "modo",
+          "text": "",
+          "sent_at": "2026-02-10T01:15:00+01:00"
+        },
+        {
+          "author": "Cookie_Monstre",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-02-10T01:16:00+01:00"
+        }
+      ],
+      "author": "Speedy_Gonzague",
+      "message": ""
+    }
+  },
+  {
+    "id": "b007-19",
+    "situation": {
+      "category": "fait_present",
+      "instruction": "Le viewer pose une question dont la réponse est dans [FAITS DE LA CHAÎNE]. La réponse s'appuie sur ce fait, sans rien inventer.",
+      "register": "courant",
+      "attitude": "neutre"
+    },
+    "meta": {
+      "streamer": {
+        "name": "Rosalie",
+        "gender": "f"
+      },
+      "mentioned": [
+        "ZeroCool_FR"
+      ],
+      "without_profile": [
+        "ZeroCool_FR"
+      ],
+      "history_count": 11
+    },
+    "inputs": {
+      "bot_name": "Saperlipopette",
+      "facts": [
+        "La streameuse s'appelle Rosalie.",
+        "Les meilleurs moments sont publiés sur TikTok.",
+        "La commande !planning donne les horaires de la semaine.",
+        "Rosalie travaille dans le développement web la journée.",
+        "Config de Rosalie : RTX 4090, 64 Go de RAM, Intel Core i9.",
+        "Prochain jeu prévu : Pentiment.",
+        "Le stream a lieu le lundi et le jeudi à partir de 20h."
+      ],
+      "emotes": {
+        "chocoHype": "excitation",
+        "chocoGG": "victoire",
+        "chocoPingouin": "espoir"
+      },
+      "now": "2026-05-29T01:18:00+02:00",
+      "stream_start": "2026-05-28T22:19:00+02:00",
+      "title": "Soirée tranquille, venez papoter",
+      "category": "Turbo Taupe",
+      "genres": [
+        "Racing",
+        "Arcade",
+        "Indie"
+      ],
+      "description": "A kart racer where moles dig tunnels under the track to take shortcuts.",
+      "profiles": [
+        {
+          "name": "Mojito_Glacé",
+          "status": "follower",
+          "followed_at": "2025-04-05",
+          "last_seen": "2026-05-23",
+          "summary": "Joue à League of Legends en ranked. Est fan de speedrun. Vient de déménager à Lyon."
+        }
+      ],
+      "history": [
+        {
+          "author": "ZeroCool_FR",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-29T00:57:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-29T00:59:00+02:00"
+        },
+        {
+          "author": "Ours_Polaire",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-29T01:03:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-29T01:03:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-29T01:06:00+02:00"
+        },
+        {
+          "author": "Saperlipopette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-05-29T01:10:00+02:00"
+        },
+        {
+          "author": "Mangue_Sacrée",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-29T01:10:00+02:00"
+        },
+        {
+          "author": "Saperlipopette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-05-29T01:10:00+02:00"
+        },
+        {
+          "author": "ZeroCool_FR",
+          "status": "viewer",
+          "text": "",
+          "sent_at": "2026-05-29T01:11:00+02:00"
+        },
+        {
+          "author": "Mojito_Glacé",
+          "status": "follower",
+          "text": "",
+          "sent_at": "2026-05-29T01:13:00+02:00"
+        },
+        {
+          "author": "Saperlipopette",
+          "status": "bot",
+          "text": "",
+          "sent_at": "2026-05-29T01:17:00+02:00"
+        }
+      ],
+      "author": "Mojito_Glacé",
+      "message": ""
+    }
+  }
+]
