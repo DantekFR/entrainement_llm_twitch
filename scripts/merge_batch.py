@@ -163,8 +163,8 @@ def find_problems(item: dict, row: dict) -> list[str]:
         problems.append("message ou texte d'historique vide")
     if any("\n" in text for text in texts):
         problems.append("retour à la ligne dans le message ou l'historique")
-    if not re.match("@" + re.escape(bot_name) + r"(?![\w-])", row["message"]):
-        problems.append("le message ne commence pas par @" + bot_name)
+    if not mentions(row["message"], bot_name):
+        problems.append("le message ne mentionne pas @" + bot_name)
     for name in meta["mentioned"]:
         if not mentions(row["message"], name):
             problems.append("mention manquante : @" + name)

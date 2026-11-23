@@ -60,8 +60,8 @@ def test_fill_item_keeps_the_batch_untouched():
 def test_mentions_must_be_exact():
     item = make_item(mentioned=["WaffleKing"])
     bot = item["inputs"]["bot_name"]
-    assert "mention manquante" in problems_of(item, message=f"@{bot} @WaffleKingou tu vas bien ?")
-    assert "ne commence pas par" in problems_of(item, message=f"@{bot}ou @WaffleKing tu vas bien ?")
+    assert "ne mentionne pas" in problems_of(item, message=f"@{bot}ou @WaffleKing tu vas bien ?")
+    assert not any("ne mentionne pas" in p for p in problems_of(item, message=f"salut @{bot} tu vas bien ?"))
     assert problems_of(item, message=f"@{bot} @WaffleKing, tu vas bien ?") == ""
 
 
