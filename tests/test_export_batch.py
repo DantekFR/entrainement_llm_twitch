@@ -34,7 +34,7 @@ def test_exported_batch_is_never_exported_again(tmp_path):
     with pytest.raises(SystemExit, match="même avec --force"):
         check_not_exported(tmp_path, force=True)  # déjà envoyé au générateur
     with pytest.raises(SystemExit):
-        check_not_exported(batch_dir(1))  # lot déjà généré, versionné dans le repo
+        check_not_exported(batch_dir(3))  # lot déjà généré, versionné dans le repo (les lots 1 et 2 ont été retirés)
 
 
 def test_situations_fit_their_context():
