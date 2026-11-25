@@ -1,0 +1,37 @@
+# Entraînement v0 du tournoi : Ministral 3 3B, QLoRA sur le dataset seed v0.
+# Pour le 8B (live 2) : copier ce fichier et changer seulement model.id et run_name.
+
+run_name: v0_ministral3_3b
+seed: 3407
+
+model:
+  id: unsloth/Ministral-3-3B-Instruct-2512-unsloth-bnb-4bit
+  max_seq_length: 4096      # prompt v1 plafonné à ~3 500 tokens, plus une marge
+
+data:
+  train: data/seed/train.jsonl
+  val: data/seed/val.jsonl
+
+lora:
+  r: 16                     # taille des petites matrices ajoutées
+  alpha: 16                 # force de l'adaptateur (alpha / r = 1)
+  dropout: 0.0              # 0 = chemin optimisé par Unsloth
+  # Unsloth choisit les modules : attention + MLP de la partie langage seulement.
+  # (une liste target_modules touchait aussi l'encodeur d'images, mêmes noms)
+  finetune_language_layers: true
+  finetune_attention_modules: true   # q, k, v, o
+  finetune_mlp_modules: true         # gate, up, down
+  finetune_vision_layers: false
+
+training:
+  epochs: 2
+  learning_rate: 2.0e-4
+  lr_scheduler: linear
+  warmup_steps: 5
+  batch_size: 2
+  gradient_accumulation: 4  # lot effectif = 2 x 4 = 8 exemples
+  optimizer: adamw_8bit
+  weight_decay: 0.01
+  logging_steps: 1          # un point par étape sur TensorBoard
+  eval_steps: 10            # perte de validation toutes les 10 étapes
+  save_steps: 20            # checkpoint toutes les 20 étapes
