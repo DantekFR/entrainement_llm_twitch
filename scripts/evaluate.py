@@ -58,6 +58,7 @@ def main():
     parser.add_argument("--name", default="base", help="nom du run (ex. base, v0)")
     parser.add_argument("--model", default=MODEL_ID, help=f"modèle Hugging Face (défaut : {MODEL_ID})")
     parser.add_argument("--adapter", help="dossier d'un adaptateur LoRA (ex. runs/<id>/adapter)")
+    parser.add_argument("--cases", default="eval/cases.jsonl", help="fichier de cas (défaut : eval-v1)")
     args = parser.parse_args()
 
     model, tokenizer = load_model(args.model, args.adapter)
@@ -67,7 +68,7 @@ def main():
     def count_tokens(text: str) -> int:
         return len(tokenizer.encode(text, add_special_tokens=False))
 
-    cases = load_cases()
+    cases = load_cases(Path(args.cases))
     results = []
     for index, case in enumerate(cases, start=1):
         inputs = apply_limits(case_to_inputs(case), count_tokens)
@@ -92,6 +93,7 @@ def main():
         "name": args.name,
         "model": args.model,
         "adapter": args.adapter,
+        "cases": args.cases,
         "vram_after_load_gb": vram_gb,
         "prompt_format": PROMPT_FORMAT_VERSION,
         "max_new_tokens": MAX_NEW_TOKENS,
