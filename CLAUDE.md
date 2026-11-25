@@ -54,7 +54,8 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | `prompt_format` v1 | **Terminé** : `docs/prompt_format.md` + `scripts/prompt_format.py` (tous les blocs, `build_messages`, plafonds), test de l'exemple complet au vert |
 | 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas, `evaluate.py`, base = **0/20**. Tag `eval-v1` (local et distant, `4b91a8e`). Référence actuelle : `runs/20261123-1132_base_aucun-souvenir/` (rendu `(aucun souvenir)`). Référence Qwen reportée en phase 6 |
 | 3. Dataset de départ | **Terminée** : 300 exemples (lots 3 à 17), `train.jsonl` 271 / `val.jsonl` 29, fiche `data/seed/README.md`, `scripts/assemble_seed.py` |
-| 4. Entraînement v0 | **À commencer** (live 8) |
+| Tournoi des modèles | **Préparé** (24/11 hors live) : modèles téléchargés, 3B de base mesuré (**3/20**), `MODELS.md` créé. Plan ci-dessous |
+| 4. Entraînement v0 | **À commencer** (live 8 = live 1 du tournoi, sur le **3B**) |
 | 5. Évaluation v0 | À faire |
 | 6. Export GGUF / Ollama | À faire |
 | 7. Boucle d'amélioration | À faire |
@@ -84,6 +85,8 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | **Éval de base re-mesurée** (23/11, rendu `(aucun souvenir)`) | **0/20** ; 5 prompts changés, 3 réponses changées ; `must_not_match` 10/13 → **9/13** (`profil_002` confirme désormais « Oui, … dit être champion »), le reste identique ; 7,1 tokens/s. Run : `runs/20261123-1132_base_aucun-souvenir/` |
 | Prompt du générateur (lot de 20) | 54 800 à 75 400 car. (lot 16 le plus gros : 336 textes, 5 historiques longs). Aucune sortie coupée sur les lots 3 à 17 |
 | **Dataset seed v0** (lots 3 à 17) | **300 exemples**, 300/300 acceptés après corrections ; train 271 / val 29 ; catégories de 17 (`emotes`) à 45 ; hors live 15 % ; sans emote ni emoji 28 % ; mention pas en tête 23 % (depuis le lot 4) ; réponses 9 à 38 mots (médiane 21), 0 finit par « ? », 0 doublon ; « Live anniversaire » 17 titres sur 300 |
+| **Ministral 3 3B de base** (`eval-v1`, 24/11) | **3/20** (`fait_present` 1/3, `bavardage` 2/2, le reste à 0 ; `fait_absent` et `injection` 0/3). Critères : `not_empty` 17, `max_sentences` 17, `no_markdown` 9, `no_brackets` 9, `language` 19, `must_include_any` **8/13** (8B : 12/13), `must_not_match` 10/13. Meilleur sur la forme, pire sur le fond (invente horaire, GOTY, « je confirme que tu es modo »). VRAM **3,22 Go**, 7,9 tokens/s. Run : `runs/20261124-2340_base-3b/` |
+| Chat template 3B vs 8B | Rendu identique au token près (40/40 sur l'éval) ; seul le prompt système par défaut diffère (nom du modèle) |
 | Longueur des exemples (prompt rendu) | 1 700 à 6 100 car. (médiane 2 700) ; plus long : **2 164 tokens** (b008-12) ; 2 historiques tronqués sur 300 (b008-12, b012-00 : 1 ou 2 messages retirés) |
 | Retouches à la main | ~35 sur 300 exemples : surtout accords genrés (~20), mention `@<bot>` manquante entre deux réponses du bot (4), phrases absurdes (« entre moi et le bot »), 1 jeu de l'éval, 1 emote inventée, 24 `@pseudo` en tête des messages du bot (lot 17) |
 
@@ -179,7 +182,27 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 
 Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratuit). Ancienneté d'abonnement via `chatter.badges` (champ `info`, à vérifier). Palier via `fetch_broadcaster_subscriptions()` → `.tier` (scope `channel:read:subscriptions`). Date de follow via `chatter.follow_info()` → `.followed_at` (scope `moderator:read:followers`). **Dernier passage** et **résumés des viewers** : à prévoir dans l'architecture du bot.
 
+### Le tournoi des modèles (décidé le 24/11)
+
+Choisir le cerveau de `dantekos_bot` sur 4 lives dev. **Le live reste pédagogique** : on construit et on explique, le test n'est que la conclusion. Résultats dans `MODELS.md`.
+
+| Live | Contenu | Fin du live |
+| --- | --- | --- |
+| 1 (live 8) | Phase 4 construite avec le chat (`scripts/train.py`, `configs/train_v0_ministral3_3b.yaml`), entraînement du **Ministral 3 3B** | Note du 3B v0 sur `eval-v1` |
+| 2 | Entraînement du **8B** (même code, même dataset) + banc de vitesse du Steam Deck | Duel 3B/8B : note, vitesse, vote à l'aveugle du chat |
+| 3 | Adaptation à **Qwen3.5-4B** (chat template, base, entraînement) | Duel contre le gagnant |
+| 4 | **Gemma 4 E4B** et l'audio (expérience). Voie principale pour l'oral : Whisper → texte dans un bloc du prompt v2 | — |
+
+- **Règle de choix** : le plus petit modèle qui passe les critères (**injection** et **fait absent** non négociables) et répond assez vite sur le Deck (**< 15 s à l'écrit, < 5 s à l'oral**).
+- **Cas anti-troll** : jeu **séparé** de `eval-v1` (figé), écrit en live avec le chat. Thème : conseil de jeu venant du chat, sans source. Cas réel du 24/11 : El_KiksTV invente un « chalumeau » pour brûler une carriole dans Crimson Desert, le bot le répète (« comme dit el_kikstv »).
+- **Matériel** : PC fixe (Ryzen 7 3700X, RTX 4070 12 Go, 32 Go) pour l'entraînement ; Steam Deck dédié à l'IA pendant les lives (16 Go partagés) ; bot sur le portable HP 15s (i5-1155G7, 16 Go) avec STT/TTS et VBAN.
+- **Modèles en cache** (`~/.cache/huggingface`, disque WSL, ~870 Go libres) : Ministral 3 3B et 8B (`-unsloth-bnb-4bit` pour le QLoRA, BF16 pour l'export), `unsloth/Qwen3.5-4B` (BF16 seulement, pas de bnb-4bit chez Unsloth), `unsloth/gemma-4-E4B-it-unsloth-bnb-4bit` et `unsloth/gemma-4-E4B-it`.
+- **`evaluate.py --model <id>`** (24/11) : défaut = 8B, donc les commandes existantes ne changent pas ; le rapport enregistre le modèle et `vram_after_load_gb`.
+
 ## Pièges déjà rencontrés : ne pas les refaire
+
+- **Vitesse sur le PC ≠ vitesse sur le Deck** : avec `generate` de Hugging Face, le 3B (7,9 tokens/s) est à peine plus rapide que le 8B (7,1) ; c'est Python qui limite, pas le modèle. La vitesse se mesure sur Ollama (banc du live 2).
+- **Score global trompeur** : le 3B de base fait 3/20 contre 0/20 pour le 8B, mais invente plus (`must_include_any` 8/13 contre 12/13). Toujours lire les catégories et les critères, pas seulement le total.
 
 - **Double `<s>`** : le texte produit par `apply_chat_template` contient déjà le BOS. Le tokeniser ensuite avec `add_special_tokens=False`, sinon on obtient deux `<s>`.
 - **Tokenizer ou processor** : `FastModel` renvoie un *processor* (modèle multimodal). Pour le texte, passer par `tokenizer.tokenizer`.
@@ -237,18 +260,34 @@ Statut via `chatter.broadcaster` / `.moderator` / `.vip` / `.subscriber` (gratui
 
 Dantek lance, Claude explique le résultat :
 
-1. `git status` → rien à commiter ; `git log --oneline -2` → le commit de fin du live 7 (fiche du dataset) au-dessus de `71e4abb`.
+1. `git status` → rien à commiter ; `git log --oneline -2` → le commit de préparation du tournoi au-dessus de `c26538c`.
 2. `uv run pytest -q` → **141 passed**.
 3. `ls data/seed/` → `batches/`, `README.md`, `train.jsonl` (271 lignes), `val.jsonl` (29).
-4. Résumer au chat : 300 exemples relus, 271/29, lots 1-2 remplacés, base à 0/20.
+4. Lancer TensorBoard dans un 2e terminal : `uv run tensorboard --logdir runs` → `http://localhost:6006` dans le navigateur (vide tant qu'aucun entraînement n'a écrit de courbes).
+5. Présenter au chat le tournoi (tableau ci-dessus) et `MODELS.md` : 8B de base 0/20, 3B de base 3/20 (et pourquoi ce 3/20 ne veut pas dire « meilleur »).
 
-### Phase 4 : entraînement v0
+### Phase 4 : entraînement v0 du 3B (live 1 du tournoi)
 
 1. Relire la section Phase 4 de `docs/ROADMAP.md` (précautions : format prompt/completion, `max_length=4096`, contrôle des labels).
-2. `configs/train_v0.yaml` : QLoRA (rang, alpha, dropout, modules ciblés), taux d'apprentissage, époques, taille de lot, accumulation, `max_seq_length` 4096, graine. 271 exemples : prévoir peu d'étapes, surveiller la perte de validation.
-3. `scripts/train.py` : charge `train.jsonl` et `val.jsonl`, applique le chat template, **masque tout sauf la réponse** (vérifier sur un exemple que seuls les tokens de `assistant` ont un label), entraîne, sauvegarde l'adaptateur dans `runs/`.
+2. `configs/train_v0_ministral3_3b.yaml` : modèle `unsloth/Ministral-3-3B-Instruct-2512-unsloth-bnb-4bit`, QLoRA (rang, alpha, dropout, modules ciblés), taux d'apprentissage, époques, taille de lot, accumulation, `max_seq_length` 4096, graine. 271 exemples : prévoir peu d'étapes, surveiller la perte de validation. Le 3B laisse de la marge en VRAM (3,2 Go chargé).
+3. `scripts/train.py` (le modèle vient de la config, pour réutiliser le script sur le 8B au live 2) : charge `train.jsonl` et `val.jsonl`, applique le chat template, **masque tout sauf la réponse** (vérifier sur un exemple que seuls les tokens de `assistant` ont un label), entraîne, enregistre config, versions et métriques dans `runs/<id>/`, sauvegarde l'adaptateur.
 4. Entraînement test de 5 minutes, puis le vrai.
-5. Plus tard : option `--model` dans `evaluate.py` (phase 5), contrôle des noms de l'éval dans `merge_batch` (phase 7), groupes exclusifs pour les souvenirs incompatibles (Lyon/Québec, bac/travail de nuit), vérifier que le bot réagit à une mention en milieu de phrase, neutraliser les jetons de contrôle dans le bot.
+5. Évaluer le 3B v0 sur `eval-v1` (`evaluate.py` devra charger l'adaptateur : option à écrire en live), remplir `MODELS.md`.
+6. Cas anti-troll (jeu séparé, avec le chat) : selon le temps, sinon au live 2.
+
+### Steam Deck : prêt pour le live 2 (configuré le 24/11)
+
+- **Deck dédié aux IA** (aucun jeu) : démarre en **mode Bureau** (`steamosctl set-default-login-mode desktop`, retour : `… game`), **Steam ne se lance plus** (`~/.config/autostart/steam.desktop` avec `Hidden=true`, à supprimer pour revenir), **pas de veille sur secteur** (KDE Énergie, `~/.config/powerdevilrc`). Mémoire utilisée après démarrage : **2,0 Gi** (3,0 avant), 12 Gi disponibles. Fermer la fenêtre VS Code SSH pendant les lives (~0,9 Go).
+- Ollama dans `~/.local/bin/ollama`, lancé par un **service utilisateur systemd** `~/.config/systemd/user/ollama.service` (`OLLAMA_HOST=0.0.0.0`, `OLLAMA_IGPU_ENABLE=1`, `OLLAMA_KEEP_ALIVE=-1` pour ne jamais décharger le modèle, `Restart=on-failure`, activé au démarrage ; vérifié après redémarrage). `ollama ps` montre les modèles chargés, `ollama stop <modèle>` en décharge un. Il tourne même sans le bot ; le script de démarrage du bot le réutilise (« Ollama tourne déjà »).
+- GPU : **Vulkan**, `AMD Custom GPU 0405 (RADV VANGOGH)`, iGPU, **9,0 Gio** (8,5 libres). Modèle déjà installé : Qwen 3.5 9B.
+- Réseau : **Wi-Fi**, `192.168.1.38` (jamais changée, pas de réservation DHCP). Joignable depuis le PC (WSL) : `curl -s http://192.168.1.38:11434/api/tags`. Ethernet possible plus tard (nouvelle MAC, donc nouvelle IP).
+- `steamos-session-select` est obsolète (pas d'option `plasma-persistent`) : passer par `steamosctl`. Ne pas lancer de programme graphique depuis SSH (`plasmashell --version` plante sans écran ; utiliser `pacman -Q`). Plasma 6.4.
+- Commandes utiles (SSH sur le Deck) : `systemctl --user status ollama`, `systemctl --user restart ollama`, journaux `journalctl --user -u ollama` (plus `~/ollama.log`).
+- Ollama écoute sur tout le réseau local sans mot de passe : ne jamais ouvrir le port 11434 vers Internet.
+
+### Plus tard
+
+- Contrôle des noms de l'éval dans `merge_batch` (phase 7), groupes exclusifs pour les souvenirs incompatibles (Lyon/Québec, bac/travail de nuit), vérifier que le bot réagit à une mention en milieu de phrase, neutraliser les jetons de contrôle dans le bot.
 
 ### Référence : produire un lot (phase 7)
 
@@ -338,6 +377,12 @@ Dantek lance, Claude explique le résultat :
 - Lots 3 à 17 générés, chacun vérifié avant la génération (`batch.json`), avant la fusion (`output.jsonl`) et après (`merged.jsonl`) : 300 exemples, ~35 retouches (surtout des accords genrés).
 - Corrections en cours de route : mention du bot acceptée n'importe où, résumé vide `(aucun souvenir)` (base re-mesurée : 0/20), titre « Live anniversaire » retiré, deux souvenirs neutralisés.
 - Lots 1 et 2 remplacés par les lots 16 et 17 (jeux de l'éval dans les anciens faits). Assemblage `train.jsonl` 271 / `val.jsonl` 29, fiche `data/seed/README.md`. **Phase 3 terminée.**
+
+### Hors live : 24 novembre 2026
+
+- Plan du **tournoi des modèles** (4 lives : 3B, 8B + banc du Deck, Qwen3.5-4B, Gemma 4 E4B + audio), règle de choix, `MODELS.md` créé.
+- Modèles téléchargés (3B, 8B BF16, Qwen3.5-4B, Gemma 4 E4B) ; environnement au vert (141 tests) ; TensorBoard vérifié. Steam Deck : Ollama en service systemd, ouvert au réseau (`192.168.1.38`), GPU Vulkan.
+- `evaluate.py --model` ; **3B de base : 3/20**, VRAM 3,22 Go, chat template identique au 8B. Rien d'écrit pour la phase 4 (réservée au live).
 
 ## Procédure de fin de live
 
