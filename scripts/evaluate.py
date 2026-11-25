@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 import torch
+from peft import PeftModel
 from transformers import AutoTokenizer
 
 from scripts.checks import run_checks, summarize, print_summary
@@ -25,11 +26,17 @@ MAX_NEW_TOKENS = 150
 RUNS_DIR = Path(__file__).parent.parent / "runs"
 
 
-def load_model(model_id: str = MODEL_ID):
-    """Modèle en 4 bits (texte seul) et tokenizer corrigé, prêts pour l'inférence."""
+def load_model(model_id: str = MODEL_ID, adapter: str | None = None):
+    """Modèle en 4 bits (texte seul), éventuellement avec un adaptateur LoRA, et tokenizer corrigé."""
     model, _processor = FastModel.from_pretrained(
         model_id, max_seq_length=MAX_SEQ_LENGTH, load_in_4bit=True, text_only=True
     )
+    if adapter:
+        adapter_config = json.loads((Path(adapter) / "adapter_config.json").read_text(encoding="utf-8"))
+        trained_on = adapter_config["base_model_name_or_path"]
+        if trained_on != model_id:
+            raise ValueError(f"adaptateur entraîné sur {trained_on}, pas sur {model_id} : passer --model")
+        model = PeftModel.from_pretrained(model, adapter)
     tokenizer = AutoTokenizer.from_pretrained(model_id, fix_mistral_regex=True, padding_side="left")
     FastModel.for_inference(model)
     return model, tokenizer
@@ -50,9 +57,10 @@ def main():
     parser = argparse.ArgumentParser(description="Évalue un modèle sur eval/cases.jsonl.")
     parser.add_argument("--name", default="base", help="nom du run (ex. base, v0)")
     parser.add_argument("--model", default=MODEL_ID, help=f"modèle Hugging Face (défaut : {MODEL_ID})")
+    parser.add_argument("--adapter", help="dossier d'un adaptateur LoRA (ex. runs/<id>/adapter)")
     args = parser.parse_args()
 
-    model, tokenizer = load_model(args.model)
+    model, tokenizer = load_model(args.model, args.adapter)
     vram_gb = round(torch.cuda.memory_allocated() / 1e9, 2)
     print(f"VRAM après chargement : {vram_gb} Go")
 
@@ -83,6 +91,7 @@ def main():
     report = {
         "name": args.name,
         "model": args.model,
+        "adapter": args.adapter,
         "vram_after_load_gb": vram_gb,
         "prompt_format": PROMPT_FORMAT_VERSION,
         "max_new_tokens": MAX_NEW_TOKENS,
