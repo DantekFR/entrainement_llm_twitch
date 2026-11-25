@@ -2,20 +2,20 @@
 
 Choix du cerveau de `dantekos_bot` (Ollama sur le Steam Deck). Chaque modèle est mesuré sur **`eval-v1`** (20 cas figés, décodage glouton, `max_new_tokens` 150, prompt `v1`), avant et après l'entraînement sur le même dataset (`data/seed/`, 271/29).
 
-**Règle de choix :** le plus petit modèle qui passe les critères (**injection** et **fait absent** non négociables) **et** répond assez vite sur le Deck (< 15 s à l'écrit, < 5 s à l'oral).
+**Règle de choix :** le plus petit modèle qui passe les critères (**injection** et **fait absent** non négociables) **et** répond assez vite sur le Deck (< 15 s à l'écrit, < 5 s à l'oral). À l'oral, le délai compte **modèle + TTS** si la voix tourne aussi sur le Deck (OmniVoice, voir plus bas) : un modèle plus petit laisse de la mémoire pour une meilleure voix.
 
 ## Vue d'ensemble
 
-| Modèle | Version | eval-v1 | Fait absent | Injection | Délai Deck | VRAM (PC, 4 bits) | Vote du chat |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Ministral 3 8B Instruct | base | 0/20 | 0/3 | 0/3 | à mesurer | 6,90 Go | — |
-| Ministral 3 3B Instruct | base | 3/20 | 0/3 | 0/3 | à mesurer | 3,22 Go | — |
-| Ministral 3 3B Instruct | v0 | | | | | | |
-| Ministral 3 8B Instruct | v0 | | | | | | |
-| Qwen3.5-4B | base | | | | | | |
-| Gemma 4 E4B | base | | | | | | |
+| Modèle | Version | eval-v1 | Fait absent | Injection | Délai Deck écrit | Délai Deck oral (modèle + TTS) | Mémoire Deck (modèle / reste pour le TTS) | VRAM (PC, 4 bits) | Vote du chat |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ministral 3 8B Instruct | base | 0/20 | 0/3 | 0/3 | à mesurer | à mesurer | à mesurer | 6,90 Go | — |
+| Ministral 3 3B Instruct | base | 3/20 | 0/3 | 0/3 | à mesurer | à mesurer | à mesurer | 3,22 Go | — |
+| Ministral 3 3B Instruct | v0 | | | | | | | | |
+| Ministral 3 8B Instruct | v0 | | | | | | | | |
+| Qwen3.5-4B | base | | | | | | | | |
+| Gemma 4 E4B | base | | | | | | | | |
 
-Délai Deck = temps entre l'envoi du prompt et la fin de la réponse, sur Ollama (banc du live 2). Les vitesses mesurées sur le PC avec `generate` de Hugging Face (~7 à 8 tokens/s quel que soit le modèle) ne prédisent pas celle du Deck.
+Délai Deck écrit = temps entre l'envoi du prompt et la fin de la réponse, sur Ollama (banc du live 2). Délai Deck oral = même chose + synthèse vocale jusqu'à la fin de l'audio (ou jusqu'au début de la lecture si le TTS diffuse en continu). Mémoire Deck : 9,0 Gio pour le GPU (Vulkan), mesurée avec `ollama ps` puis le TTS chargé à côté. Les vitesses mesurées sur le PC avec `generate` de Hugging Face (~7 à 8 tokens/s quel que soit le modèle) ne prédisent pas celle du Deck.
 
 ## Ministral 3 8B Instruct
 
@@ -72,3 +72,19 @@ Dépôt : `unsloth/Qwen3.5-4B` (BF16, pas de version bnb-4bit d'Unsloth : quanti
 ## Gemma 4 E4B
 
 Dépôts : `unsloth/gemma-4-E4B-it-unsloth-bnb-4bit` (QLoRA) et `unsloth/gemma-4-E4B-it` (BF16, encodeur audio complet). Téléchargés le 24/11. Live 4.
+
+## Voix du bot : OmniVoice (TTS)
+
+Modèle de synthèse vocale de k2-fsa (`k2-fsa/omnivoice`, `pip install omnivoice`, PyTorch), ~613 M de paramètres, multilingue, clonage de voix à partir d'un court extrait. Mémoire **non confirmée** : ~1,3 Go en FP16 (estimation calculée par un tiers), ~4 Go observés par un utilisateur sur un portable. Versions GGUF communautaires.
+
+À mesurer au banc du live 2, sur le Deck **avec le modèle de langage chargé** :
+
+| Mesure | Résultat |
+| --- | --- |
+| Tourne sur le GPU du Deck ? (PyTorch attend CUDA ou ROCm ; Ollama, lui, passe par Vulkan) | |
+| Sinon, vitesse sur le processeur du Deck | |
+| Mémoire occupée | |
+| Temps pour une réponse type (une ou deux phrases) | |
+| Qualité de la voix en français (avis du chat) | |
+
+Si OmniVoice ne tient pas sur le Deck à côté du modèle, il reste sur le portable (ou une voix plus légère sur le Deck). Whisper (STT) reste sur le portable dans tous les cas. Voix clonée : uniquement une voix dont on a le droit (la sienne ou une voix créée pour le bot).
