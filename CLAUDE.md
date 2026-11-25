@@ -261,20 +261,27 @@ Choisir le cerveau de `dantekos_bot` sur 4 lives dev. **Le live reste pédagogiq
 
 Dantek lance, Claude explique le résultat :
 
-1. `git status` → rien à commiter ; `git log --oneline -2` → le commit de préparation du tournoi au-dessus de `c26538c`.
+1. `git status` → rien à commiter ; `git log --oneline -4` → les commits de préparation du 24/11 (`882fb2e`, `7d850d9`, puis celui des consignes du live) au-dessus de `c26538c`.
 2. `uv run pytest -q` → **141 passed**.
 3. `ls data/seed/` → `batches/`, `README.md`, `train.jsonl` (271 lignes), `val.jsonl` (29).
 4. Lancer TensorBoard dans un 2e terminal : `uv run tensorboard --logdir runs` → `http://localhost:6006` dans le navigateur (vide tant qu'aucun entraînement n'a écrit de courbes).
 5. Présenter au chat le tournoi (tableau ci-dessus) et `MODELS.md` : 8B de base 0/20, 3B de base 3/20 (et pourquoi ce 3/20 ne veut pas dire « meilleur »).
+6. **Rappel** : le live est **pédagogique**, pas un live de test. On construit la phase 4 avec le chat, en expliquant chaque réglage ; les mesures ne sont que la conclusion. Claude ne modifie aucun fichier et ne lance aucune commande : il donne les étapes une par une.
 
 ### Phase 4 : entraînement v0 du 3B (live 1 du tournoi)
 
 1. Relire la section Phase 4 de `docs/ROADMAP.md` (précautions : format prompt/completion, `max_length=4096`, contrôle des labels).
 2. `configs/train_v0_ministral3_3b.yaml` : modèle `unsloth/Ministral-3-3B-Instruct-2512-unsloth-bnb-4bit`, QLoRA (rang, alpha, dropout, modules ciblés), taux d'apprentissage, époques, taille de lot, accumulation, `max_seq_length` 4096, graine. 271 exemples : prévoir peu d'étapes, surveiller la perte de validation. Le 3B laisse de la marge en VRAM (3,2 Go chargé).
 3. `scripts/train.py` (le modèle vient de la config, pour réutiliser le script sur le 8B au live 2) : charge `train.jsonl` et `val.jsonl`, applique le chat template, **masque tout sauf la réponse** (vérifier sur un exemple que seuls les tokens de `assistant` ont un label), entraîne, enregistre config, versions et métriques dans `runs/<id>/`, sauvegarde l'adaptateur.
-4. Entraînement test de 5 minutes, puis le vrai.
+4. Entraînement test de 5 minutes, puis le vrai. **Pendant le test, contrôler OBS** (checklist « Avant le premier entraînement en live » de la ROADMAP) : images perdues dans les statistiques d'OBS quand le GPU entraîne ? Si oui, réduire le lot ou passer l'encodage d'OBS en x264 avant le vrai entraînement.
 5. Évaluer le 3B v0 sur `eval-v1` (`evaluate.py` devra charger l'adaptateur : option à écrire en live), remplir `MODELS.md`.
 6. Cas anti-troll (jeu séparé, avec le chat) : selon le temps, sinon au live 2.
+
+### Si on enchaîne sur le live 2 dans la foulée
+
+1. **8B** : copier la config du 3B en `configs/train_v0_ministral3_8b.yaml`, changer seulement le modèle (`unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`). 6,9 Go chargé sur 12 : si mémoire insuffisante, réduire d'abord le lot (en gardant le lot effectif par l'accumulation), puis la longueur. Même script, même dataset, même graine.
+2. **Banc de vitesse du Deck** : pas besoin d'attendre l'export des adaptateurs (phase 6). La vitesse dépend de l'architecture et de la quantification, pas du fine-tuning : mesurer les **GGUF de base en Q4_K_M** (`unsloth/Ministral-3-3B-Instruct-2512-GGUF`, `unsloth/Ministral-3-8B-Instruct-2512-GGUF`, via `ollama pull hf.co/<dépôt>:Q4_K_M` sur le Deck), avec de vrais prompts de l'éval (system + user rendus par `build_messages`, ~700 à 2 800 tokens) : délai avant le premier token, tokens/s, délai total. Écrire le script du banc en live (`ollama` joint depuis le PC sur `http://192.168.1.38:11434`, `/api/chat` avec `stream`, toujours un message système). Puis, si le temps le permet, OmniVoice à côté (voir `MODELS.md`).
+3. Le **vote à l'aveugle** du chat demande les deux modèles **entraînés** : il attend l'éval des deux v0.
 
 ### Steam Deck : prêt pour le live 2 (configuré le 24/11)
 
