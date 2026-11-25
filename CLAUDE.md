@@ -43,7 +43,7 @@ uv sync                                  # recrée l'environnement à l'identiqu
 uv run python scripts/check_env.py       # doit finir par "Environnement prêt pour la phase 1"
 ```
 
-Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, chargé avec `FastModel.from_pretrained(..., load_in_4bit=True, text_only=True)`. Le tokenizer est ensuite rechargé avec `AutoTokenizer.from_pretrained(MODEL_ID, fix_mistral_regex=True, padding_side="left")`, puis réassigné à `tokenizer.tokenizer`.
+Modèle de départ : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit` (champion provisoire du tournoi depuis le live 8 : le **3B**, même famille, même chargement), chargé avec `FastModel.from_pretrained(..., load_in_4bit=True, text_only=True)`. Le tokenizer est ensuite rechargé avec `AutoTokenizer.from_pretrained(MODEL_ID, fix_mistral_regex=True, padding_side="left")`, puis réassigné à `tokenizer.tokenizer`.
 
 ## Où on en est
 
@@ -54,9 +54,9 @@ Modèle utilisé : `unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`, char
 | `prompt_format` v1 | **Terminé** : `docs/prompt_format.md` + `scripts/prompt_format.py` (tous les blocs, `build_messages`, plafonds), test de l'exemple complet au vert |
 | 2. Jeu d'évaluation | **Terminée pour la v0** : 20 cas, `evaluate.py`, base = **0/20**. Tag `eval-v1` (local et distant, `4b91a8e`). Référence actuelle : `runs/20261123-1132_base_aucun-souvenir/` (rendu `(aucun souvenir)`). Référence Qwen reportée en phase 6 |
 | 3. Dataset de départ | **Terminée** : 300 exemples (lots 3 à 17), `train.jsonl` 271 / `val.jsonl` 29, fiche `data/seed/README.md`, `scripts/assemble_seed.py` |
-| Tournoi des modèles | **Préparé** (24/11 hors live) : modèles téléchargés, 3B de base mesuré (**3/20**), `MODELS.md` créé. Plan ci-dessous |
-| 4. Entraînement v0 | **À commencer** (live 8 = live 1 du tournoi, sur le **3B**) |
-| 5. Évaluation v0 | À faire |
+| Tournoi des modèles | **3 manches sur 4 jouées au live 8** : Ministral 3B, 8B, Qwen3.5-4B. **Champion provisoire : Ministral 3 3B v0** (16/20, Deck 5 s). Reste Gemma 4 E4B. Détails dans `MODELS.md` |
+| 4. Entraînement v0 | **Terminée** (live 8) : `scripts/train.py`, configs `train_v0_ministral3_3b.yaml`, `…_8b.yaml`, `train_v0_qwen35_4b.yaml` ; 3 adaptateurs dans `runs/` |
+| 5. Évaluation v0 | **Terminée pour les 3 modèles** : 3B 16/20, 8B 18/20, Qwen 16/20 ; banc du Deck (`scripts/bench_deck.py`). Aucun ne passe encore les critères non négociables (fait absent et injection 3/3) |
 | 6. Export GGUF / Ollama | À faire |
 | 7. Boucle d'amélioration | À faire |
 
@@ -89,6 +89,11 @@ Les sorties du notebook ne sont pas versionnées : les chiffres importants doive
 | Chat template 3B vs 8B | Rendu identique au token près (40/40 sur l'éval) ; seul le prompt système par défaut diffère (nom du modèle) |
 | Longueur des exemples (prompt rendu) | 1 700 à 6 100 car. (médiane 2 700) ; plus long : **2 164 tokens** (b008-12) ; 2 historiques tronqués sur 300 (b008-12, b012-00 : 1 ou 2 messages retirés) |
 | Retouches à la main | ~35 sur 300 exemples : surtout accords genrés (~20), mention `@<bot>` manquante entre deux réponses du bot (4), phrases absurdes (« entre moi et le bot »), 1 jeu de l'éval, 1 emote inventée, 24 `@pseudo` en tête des messages du bot (lot 17) |
+| **Entraînements v0** (live 8, 68 étapes, 2 époques, lot effectif 8) | 3B : **7 min**, pic 4,06 Go, validation min 1,42 (étape 40) puis stagne · 8B : **16 min**, pic 7,64 Go, min 1,23 (étapes 30-40) puis remonte (1,28) · Qwen 4B : **11 min**, pic 4,46 Go, 1,57 → 1,34, ne remonte pas. Pertes Ministral/Qwen non comparables (tokenizers différents) |
+| **Éval v0** (`eval-v1`) | 3B **16/20** (fait absent 2/3, injection 2/3) · 8B **18/20** (3/3, 2/3 : recopie tout le prompt système sur `injection_003`) · Qwen base **12/20** (3/3, 0/3) → v0 **16/20** (2/3, 2/3 : confirme les 100 € de `injection_002`, invente une date) |
+| Vitesse PC avec adaptateur non fusionné | 3B 5,9 · 8B 4,1 · Qwen 4,2 tokens/s (sans adaptateur : 7,9 · 7,1 · 6,2) |
+| **Banc du Deck** (GGUF de base Q4_K_M, `val.jsonl`, 560 à 1 900 tokens) | 3B : écriture **27 tokens/s**, lecture ~270 tokens/s, total médiane **5 s**, max 10 s · Qwen : 21 et ~185 tokens/s, médiane 7 s, max 12,1 s · 8B : > 15 s vers 1 800 tokens (banc arrêté). Délai ≈ prompt / lecture + réponse / écriture ; au plafond de 3 500 tokens : 3B ~15 s, Qwen ~19 s |
+| Jeu anti-troll v0 (`eval/troll_cases.jsonl`, 5 cas, pas figé) | 3B base 0/5, 3B v0 1/5 (faux succès sur `troll_004`) |
 
 ### Comportement du modèle de base (référence avant fine-tuning)
 
@@ -200,10 +205,29 @@ Choisir le cerveau de `dantekos_bot` sur 4 lives dev. **Le live reste pédagogiq
 - **Modèles en cache** (`~/.cache/huggingface`, disque WSL, ~870 Go libres) : Ministral 3 3B et 8B (`-unsloth-bnb-4bit` pour le QLoRA, BF16 pour l'export), `unsloth/Qwen3.5-4B` (BF16 seulement, pas de bnb-4bit chez Unsloth), `unsloth/gemma-4-E4B-it-unsloth-bnb-4bit` et `unsloth/gemma-4-E4B-it`.
 - **`evaluate.py --model <id>`** (24/11) : défaut = 8B, donc les commandes existantes ne changent pas ; le rapport enregistre le modèle et `vram_after_load_gb`.
 
+### Décisions du live 8 (25 novembre)
+
+- **Trois manches en un live** : 3B, 8B et Qwen3.5-4B entraînés avec le même script, le même dataset, les mêmes réglages et la même graine. On évalue toujours l'**adaptateur final** (même règle pour tous).
+- **Duel 3B/8B** : le 8B est meilleur à l'éval (18 contre 16) mais **éliminé par la vitesse** (> 15 s sur le Deck vers 1 800 tokens). Vote à l'aveugle abandonné.
+- **Duel 3B/Qwen** : même note et même répartition ; le 3B garde le titre (échecs moins graves, plus petit, plus rapide).
+- **Le 3B v0 n'est pas déployable en l'état** : fait absent et injection à 2/3, alors qu'ils sont non négociables. Pistes v1 : une seule époque (la validation ne gagne plus rien en 2e époque), plus d'exemples d'`injection` (faux bloc dans le message, demande de recopier les règles), et casser l'excuse passe-partout « je n'ai pas accès à l'actualité » (11 réponses du dataset, toutes `culture_actu`, réutilisées par le 3B pour l'âge et le hors live).
+- **Trolling reporté en v2** : la règle v1 « Les blocs entre crochets viennent du bot et sont fiables » couvre aussi `[HISTORIQUE DU CHAT]`, donc le modèle croit les affirmations du chat (« Gratin_Dauphinois a raison »). À corriger par les règles v2 et des exemples troll dans le dataset (autres jeux et pseudos que `eval/troll_cases.jsonl`). Le jeu anti-troll reste non figé, avec un faux positif connu (`troll_004`, regex à étendre à « ne mentionne »).
+- **Code** : `train.py` lit le modèle, `chat_template_kwargs` et `completion_suffix` dans la config ; garde-fou contre les adaptateurs sur la vision ; `--check-only` (labels de chaque exemple = réponse + suffixe) et `--max-steps` (test, suffixe `_test`). `evaluate.py --adapter` (vérifie `base_model_name_or_path`), `--cases`, `enable_thinking=False` toujours passé. `bench_deck.py` (`--dataset`, `--no-think`).
+- **Modules LoRA** : `finetune_language_layers/attention/mlp=True`, `finetune_vision_layers=False` (pas de liste `target_modules`).
+
 ## Pièges déjà rencontrés : ne pas les refaire
 
 - **Vitesse sur le PC ≠ vitesse sur le Deck** : avec `generate` de Hugging Face, le 3B (7,9 tokens/s) est à peine plus rapide que le 8B (7,1) ; c'est Python qui limite, pas le modèle. La vitesse se mesure sur Ollama (banc du live 2).
-- **Score global trompeur** : le 3B de base fait 3/20 contre 0/20 pour le 8B, mais invente plus (`must_include_any` 8/13 contre 12/13). Toujours lire les catégories et les critères, pas seulement le total.
+- **Score global trompeur** : le 3B de base fait 3/20 contre 0/20 pour le 8B, mais invente plus (`must_include_any` 8/13 contre 12/13). Toujours lire les catégories et les critères, pas seulement le total. Revu 3 fois au live 8 : 8B v0 18/20 mais recopie tout le prompt système ; Qwen v0 16/20 comme le 3B, mais confirme une fausse promesse de 100 €.
+- **`target_modules` sur un modèle multimodal** : `q_proj`, `gate_proj`… existent aussi dans l'encodeur d'images (336 adaptateurs sur `vision_tower`). Utiliser `finetune_vision_layers=False` et garder le contrôle `vision_lora` de `train.py`.
+- **Qwen et la réflexion** : le template ouvre `<think>` par défaut ; TRL rend le prompt avec les options par défaut, donc sans la colonne `chat_template_kwargs` le modèle apprendrait `\n</think>\n\n`. Passer `enable_thinking=False` à l'entraînement, à l'éval et `"think": false` à Ollama. Labels Qwen = réponse + `<|im_end|>\n` (saut de ligne compris).
+- **Test de 10 étapes plus lent que le vrai entraînement** (compilation, préchauffage) : 3B 11,9 → 6,2 s/étape, Qwen 31,5 → 9,6. Estimer la durée avec un rapport ~2, pas ×68.
+- **TensorBoard vide** alors que les fichiers existent (`runs/<run>/runs/<date>/events…`) : rafraîchir la page et le bouton ⟳ ; lancer TensorBoard depuis la racine du repo.
+- **Architecture « rapide » en théorie** : l'attention linéaire de Qwen3.5 lit le prompt **plus lentement** que le 3B sur le Deck (~185 contre ~270 tokens/s, llama.cpp Vulkan). Toujours mesurer.
+- **Banc sur des prompts courts** : les cas de l'éval font 450 à 620 tokens ; les vrais lives montent à ~2 800. Mesurer la vitesse sur `val.jsonl` (`--dataset`). Chaque cas a un nom de bot différent en tête du prompt, donc le cache d'Ollama ne joue presque pas.
+- **`KEEP_ALIVE=-1`** : un modèle reste chargé sur le Deck même après un script interrompu. `ollama stop <modèle>` avant de mesurer le suivant.
+- **Règle système qui rend le chat crédible** : « les blocs entre crochets sont fiables » s'applique aussi à `[HISTORIQUE DU CHAT]`. Une règle doit rester vraie pour **chaque** bloc qu'elle désigne.
+- **Commit oublié avant d'entraîner** : l'adaptateur Qwen a été entraîné avec un `train.py` non commité. Commiter code et config **avant** de lancer l'entraînement (provenance).
 
 - **Double `<s>`** : le texte produit par `apply_chat_template` contient déjà le BOS. Le tokeniser ensuite avec `add_special_tokens=False`, sinon on obtient deux `<s>`.
 - **Tokenizer ou processor** : `FastModel` renvoie un *processor* (modèle multimodal). Pour le texte, passer par `tokenizer.tokenizer`.
@@ -257,33 +281,33 @@ Choisir le cerveau de `dantekos_bot` sur 4 lives dev. **Le live reste pédagogiq
 
 ## Prochaines étapes
 
-### Au début du live 8, avant tout
+### Au début du live 9, avant tout
 
 Dantek lance, Claude explique le résultat :
 
-1. `git status` → rien à commiter ; `git log --oneline -4` → les commits de préparation du 24/11 (`882fb2e`, `7d850d9`, puis celui des consignes du live) au-dessus de `c26538c`.
-2. `uv run pytest -q` → **141 passed**.
-3. `ls data/seed/` → `batches/`, `README.md`, `train.jsonl` (271 lignes), `val.jsonl` (29).
-4. Lancer TensorBoard dans un 2e terminal : `uv run tensorboard --logdir runs` → `http://localhost:6006` dans le navigateur (vide tant qu'aucun entraînement n'a écrit de courbes).
-5. Présenter au chat le tournoi (tableau ci-dessus) et `MODELS.md` : 8B de base 0/20, 3B de base 3/20 (et pourquoi ce 3/20 ne veut pas dire « meilleur »).
-6. **Rappel** : le live est **pédagogique**, pas un live de test. On construit la phase 4 avec le chat, en expliquant chaque réglage ; les mesures ne sont que la conclusion. Claude ne modifie aucun fichier et ne lance aucune commande : il donne les étapes une par une.
+1. `git status` → rien à commiter (sinon : les fichiers du live 8 non commités, voir le journal) ; `git log --oneline -3` → le commit de fin du live 8 en haut.
+2. `uv run pytest -q` → **141 passed** (aucun test ajouté au live 8).
+3. TensorBoard dans un 2e terminal, **depuis la racine** : `uv run tensorboard --logdir runs` → les runs `v0_ministral3_3b`, `v0_ministral3_8b`, `v0_qwen35_4b` visibles.
+4. Deck : `curl -s http://192.168.1.38:11434/api/tags` répond ; `ollama ps` (SSH) vide, sinon `ollama stop`.
+5. Rappeler au chat le résultat du tournoi (`MODELS.md`) : 3B champion provisoire, et pourquoi il n'est pas encore déployable.
 
-### Phase 4 : entraînement v0 du 3B (live 1 du tournoi)
+### Live 9 : Gemma 4 E4B, dernière manche du tournoi
 
-1. Relire la section Phase 4 de `docs/ROADMAP.md` (précautions : format prompt/completion, `max_length=4096`, contrôle des labels).
-2. `configs/train_v0_ministral3_3b.yaml` : modèle `unsloth/Ministral-3-3B-Instruct-2512-unsloth-bnb-4bit`, QLoRA (rang, alpha, dropout, modules ciblés), taux d'apprentissage, époques, taille de lot, accumulation, `max_seq_length` 4096, graine. 271 exemples : prévoir peu d'étapes, surveiller la perte de validation. Le 3B laisse de la marge en VRAM (3,2 Go chargé).
-3. `scripts/train.py` (le modèle vient de la config, pour réutiliser le script sur le 8B au live 2) : charge `train.jsonl` et `val.jsonl`, applique le chat template, **masque tout sauf la réponse** (vérifier sur un exemple que seuls les tokens de `assistant` ont un label), entraîne, enregistre config, versions et métriques dans `runs/<id>/`, sauvegarde l'adaptateur.
-4. Entraînement test de 5 minutes, puis le vrai. **Pendant le test, contrôler OBS** (checklist « Avant le premier entraînement en live » de la ROADMAP) : images perdues dans les statistiques d'OBS quand le GPU entraîne ? Si oui, réduire le lot ou passer l'encodage d'OBS en x264 avant le vrai entraînement.
-5. Évaluer le 3B v0 sur `eval-v1` (`evaluate.py` devra charger l'adaptateur : option à écrire en live), remplir `MODELS.md`.
-6. Cas anti-troll (jeu séparé, avec le chat) : selon le temps, sinon au live 2.
+1. **Chat template** (sans GPU, comme `inspect_qwen.py` au live 8) : format des tours, gestion du message **système** (certains templates Gemma le fusionnent dans le 1er message user : à vérifier), mode réflexion éventuel, BOS/EOS, suffixe des labels. Le prompt seul doit être le **préfixe exact** de la conversation complète.
+2. Config `configs/train_v0_gemma4_e4b.yaml` (copie de celle du 3B ; `unsloth/gemma-4-E4B-it-unsloth-bnb-4bit` ; `chat_template_kwargs` et `completion_suffix` si besoin) → **commiter avant d'entraîner** → `--check-only` (labels, vision **et audio** exclus des adaptateurs : élargir le garde-fou `vision_lora` si les modules audio ont un autre nom) → `--max-steps 10` → vrai entraînement.
+3. Éval base puis v0 sur `eval-v1` ; banc du Deck sur `val.jsonl` (GGUF Q4_K_M de Gemma 4 E4B, nom du dépôt à vérifier). Remplir `MODELS.md`. Duel contre le 3B.
+4. L'audio (expérience) : seulement si le temps le permet. Voie principale pour l'oral : Whisper → texte (prompt v2).
 
-### Si on enchaîne sur le live 2 dans la foulée
+### Après le tournoi
 
-1. **8B** : copier la config du 3B en `configs/train_v0_ministral3_8b.yaml`, changer seulement le modèle (`unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit`). 6,9 Go chargé sur 12 : si mémoire insuffisante, réduire d'abord le lot (en gardant le lot effectif par l'accumulation), puis la longueur. Même script, même dataset, même graine.
-2. **Banc de vitesse du Deck** : pas besoin d'attendre l'export des adaptateurs (phase 6). La vitesse dépend de l'architecture et de la quantification, pas du fine-tuning : mesurer les **GGUF de base en Q4_K_M** (`unsloth/Ministral-3-3B-Instruct-2512-GGUF`, `unsloth/Ministral-3-8B-Instruct-2512-GGUF`, via `ollama pull hf.co/<dépôt>:Q4_K_M` sur le Deck), avec de vrais prompts de l'éval (system + user rendus par `build_messages`, ~700 à 2 800 tokens) : délai avant le premier token, tokens/s, délai total. Écrire le script du banc en live (`ollama` joint depuis le PC sur `http://192.168.1.38:11434`, `/api/chat` avec `stream`, toujours un message système). Puis, si le temps le permet, OmniVoice à côté (voir `MODELS.md`).
-3. Le **vote à l'aveugle** du chat demande les deux modèles **entraînés** : il attend l'éval des deux v0.
+- **Dataset et entraînement v1 du champion** : une époque (ou comparer), exemples d'injection supplémentaires, excuse « pas accès à l'actualité » limitée à l'actualité, « Oui, il dit être… » à corriger (`profil_002` échoue chez les 3 modèles). Tout changement des règles système = prompt v2 (trolling, historique non fiable).
+- **Phase 6** : fusionner l'adaptateur du champion, export GGUF, Modelfile Ollama (toujours un message système), vérifier la tokenisation HF/llama.cpp, puis banc sur le **modèle fine-tuné**.
+- **OmniVoice** sur le Deck à côté du modèle (mémoire, délai) ; relever la mémoire avec `ollama ps` (jamais mesurée au live 8).
+- Hors live : installer `causal_conv1d` si Qwen revient en lice (entraînement et éval plus rapides sur le PC).
 
-### Steam Deck : prêt pour le live 2 (configuré le 24/11)
+### Steam Deck (configuré le 24/11)
+
+- GGUF installés au live 8 : `hf.co/unsloth/Ministral-3-3B-Instruct-2512-GGUF:Q4_K_M`, `…-8B-…:Q4_K_M`, `hf.co/unsloth/Qwen3.5-4B-GGUF:Q4_K_M` (plus Qwen 3.5 9B d'avant).
 
 - **Deck dédié aux IA** (aucun jeu) : démarre en **mode Bureau** (`steamosctl set-default-login-mode desktop`, retour : `… game`), **Steam ne se lance plus** (`~/.config/autostart/steam.desktop` avec `Hidden=true`, à supprimer pour revenir), **pas de veille sur secteur** (KDE Énergie, `~/.config/powerdevilrc`). Mémoire utilisée après démarrage : **2,0 Gi** (3,0 avant), 12 Gi disponibles. Fermer la fenêtre VS Code SSH pendant les lives (~0,9 Go).
 - Ollama dans `~/.local/bin/ollama`, lancé par un **service utilisateur systemd** `~/.config/systemd/user/ollama.service` (`OLLAMA_HOST=0.0.0.0`, `OLLAMA_IGPU_ENABLE=1`, `OLLAMA_KEEP_ALIVE=-1` pour ne jamais décharger le modèle, `Restart=on-failure`, activé au démarrage ; vérifié après redémarrage). `ollama ps` montre les modèles chargés, `ollama stop <modèle>` en décharge un. Il tourne même sans le bot ; le script de démarrage du bot le réutilise (« Ollama tourne déjà »).
@@ -391,6 +415,12 @@ Dantek lance, Claude explique le résultat :
 - Plan du **tournoi des modèles** (4 lives : 3B, 8B + banc du Deck, Qwen3.5-4B, Gemma 4 E4B + audio), règle de choix, `MODELS.md` créé.
 - Modèles téléchargés (3B, 8B BF16, Qwen3.5-4B, Gemma 4 E4B) ; environnement au vert (141 tests) ; TensorBoard vérifié. Steam Deck : Ollama en service systemd, ouvert au réseau (`192.168.1.38`), GPU Vulkan.
 - `evaluate.py --model` ; **3B de base : 3/20**, VRAM 3,22 Go, chat template identique au 8B. Rien d'écrit pour la phase 4 (réservée au live).
+
+### Live 8 : 25 novembre 2026
+
+- **Phase 4 construite avec le chat** : `scripts/train.py` (prompt/completion, labels vérifiés sur chaque exemple, garde-fou vision, `--check-only`, `--max-steps`), configs YAML, TensorBoard ; `evaluate.py --adapter`. OBS n'a perdu aucune image.
+- **Tournoi, 3 manches** : 3B v0 16/20 (7 min, Deck 5 s), 8B v0 18/20 mais > 15 s sur le Deck (éliminé), Qwen3.5-4B base 12/20 → v0 16/20 (Deck 7 s, échecs plus graves). **3B champion provisoire**, pas encore déployable (fait absent et injection 2/3).
+- `scripts/bench_deck.py` (Ollama en streaming, prompts longs de `val.jsonl`) ; jeu anti-troll `eval/troll_cases.jsonl` (5 cas, 3B v0 1/5), trolling reporté en v2 (règle « blocs fiables » qui couvre l'historique).
 
 ## Procédure de fin de live
 

@@ -27,7 +27,7 @@ def load_config(path: str) -> dict:
         return yaml.safe_load(f)
 
 
-def load_split(path: str) -> Dataset:
+def load_split(path: str, chat_template_kwargs: dict | None = None) -> Dataset:
     """Charge un JSONL {id, category, messages} au format prompt/completion de TRL."""
     rows = []
     with open(ROOT / path, encoding="utf-8") as f:
@@ -36,10 +36,13 @@ def load_split(path: str) -> Dataset:
             roles = [m["role"] for m in example["messages"]]
             if roles != ["system", "user", "assistant"]:
                 raise ValueError(f"{example['id']} : rôles inattendus {roles}")
-            rows.append({
+            row ={
                 "prompt": example["messages"][:2],       # system + user : lu, pas appris
                 "completion": example["messages"][2:],   # assistant : la seule partie apprise
-            })
+            }
+            if chat_template_kwargs:
+                row["chat_template_kwargs"] = chat_template_kwargs
+            rows.append(row)
     return Dataset.from_list(rows)
 
 def load_model(config: dict):
@@ -108,7 +111,7 @@ def build_trainer(config: dict, model, tokenizer, train_set, val_set, output_dir
     )
 
 
-def check_labels(trainer: SFTTrainer, tokenizer, raw_set: Dataset, max_length: int):
+def check_labels(trainer: SFTTrainer, tokenizer, raw_set: Dataset, max_length: int, suffix: str):
     """Vérifie que chaque exemple n'apprend que sa réponse, suivie de </s>, sans être coupé."""
     prepared = trainer.train_dataset
     if len(prepared) != len(raw_set):
@@ -119,12 +122,12 @@ def check_labels(trainer: SFTTrainer, tokenizer, raw_set: Dataset, max_length: i
         labels = batch["labels"][0]
         longest = max(longest, len(labels))
         learned = tokenizer.decode(labels[labels != -100], skip_special_tokens=False)
-        expected = raw_set[i]["completion"][0]["content"] + tokenizer.eos_token
+        expected = raw_set[i]["completion"][0]["content"] + suffix
         if learned != expected:
             raise ValueError(f"exemple {i} : labels {learned!r} au lieu de {expected!r}")
     if longest >= max_length:
         raise ValueError(f"un exemple atteint {longest} tokens : il a sans doute été coupé")
-    print(f"Labels vérifiés : {len(prepared)}/{len(raw_set)} exemples, réponse + </s> seulement")
+    print(f"Labels vérifiés : {len(prepared)}/{len(raw_set)} exemples, réponse + {suffix!r} seulement")
     print(f"Exemple le plus long : {longest} tokens (limite {max_length})")
 
 def save_run_info(run_dir: Path, config: dict):
@@ -148,8 +151,9 @@ def main():
     if args.max_steps:
         config["training"]["max_steps"] = args.max_steps
         config["run_name"] += "_test"
-    train_set = load_split(config["data"]["train"])
-    val_set = load_split(config["data"]["val"])
+    template_kwargs = config["model"].get("chat_template_kwargs")
+    train_set = load_split(config["data"]["train"], template_kwargs)
+    val_set = load_split(config["data"]["val"], template_kwargs)
     print(f"Modèle : {config['model']['id']}")
     print(f"Exemples : train {len(train_set)}, val {len(val_set)}")
     print(f"Première réponse à apprendre : {train_set[0]['completion'][0]['content']}")
@@ -160,7 +164,8 @@ def main():
 
     run_dir = ROOT / "runs" / f"{datetime.now():%Y%m%d-%H%M}_{config['run_name']}"
     trainer = build_trainer(config, model, tokenizer, train_set, val_set, run_dir)
-    check_labels(trainer, tokenizer, train_set, config["model"]["max_seq_length"])
+    suffix = config["model"].get("completion_suffix", tokenizer.eos_token)   # Ministral : </s> 
+    check_labels(trainer, tokenizer, train_set, config["model"]["max_seq_length"], suffix)
     if args.check_only:
         return
 

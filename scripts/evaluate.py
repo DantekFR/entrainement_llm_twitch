@@ -23,6 +23,8 @@ from scripts.prompt_format import PROMPT_FORMAT_VERSION, apply_limits, build_mes
 MODEL_ID = "unsloth/Ministral-3-8B-Instruct-2512-unsloth-bnb-4bit"
 MAX_SEQ_LENGTH = 4096
 MAX_NEW_TOKENS = 150
+# Qwen : pas de réflexion <think> (trop lent pour le chat). Ignoré par les templates qui ne l'utilisent pas (Ministral).
+CHAT_TEMPLATE_KWARGS = {"enable_thinking": False}
 RUNS_DIR = Path(__file__).parent.parent / "runs"
 
 
@@ -44,7 +46,7 @@ def load_model(model_id: str = MODEL_ID, adapter: str | None = None):
 
 def generate(model, tokenizer, messages: list[dict]) -> tuple[str, int, float]:
     """Réponse du modèle (décodage glouton), nombre de tokens générés, durée en secondes."""
-    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **CHAT_TEMPLATE_KWARGS)
     inputs = tokenizer(text, add_special_tokens=False, return_tensors="pt").to(model.device)
     start = time.time()
     output = model.generate(**inputs, max_new_tokens=MAX_NEW_TOKENS, do_sample=False)
@@ -97,6 +99,7 @@ def main():
         "vram_after_load_gb": vram_gb,
         "prompt_format": PROMPT_FORMAT_VERSION,
         "max_new_tokens": MAX_NEW_TOKENS,
+        "chat_template_kwargs": CHAT_TEMPLATE_KWARGS,
         "summary": summary,
         "results": results,
     }

@@ -23,9 +23,12 @@ WRITTEN_LIMIT_S = 15
 RUNS_DIR = Path(__file__).parent.parent / "runs"
 
 
-def chat(host: str, model: str, messages: list[dict]) -> dict:
+def chat(host: str, model: str, messages: list[dict], think: bool | None = None) -> dict:
     """Envoie un prompt en streaming et chronomètre la réponse."""
-    body = json.dumps({"model": model, "messages": messages, "stream": True, "options": OPTIONS}).encode()
+    payload = {"model": model, "messages": messages, "stream": True, "options": OPTIONS}
+    if think is not None:
+        payload["think"] = think   # Qwen : false = pas de bloc <think>
+    body = json.dumps(payload).encode()
     request = urllib.request.Request(f"{host}/api/chat", data=body, headers={"Content-Type": "application/json"})
     start = time.perf_counter()
     first_token = None
@@ -61,6 +64,7 @@ def main():
     parser.add_argument("--host", default=DECK_HOST)
     parser.add_argument("--cases", default="eval/cases.jsonl")
     parser.add_argument("--dataset", help="JSONL déjà rendu (ex. data/seed/val.jsonl) au lieu des cas de l'éval")
+    parser.add_argument("--no-think", action="store_true", help="désactive la réflexion (Qwen)")
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_ID, fix_mistral_regex=True)
@@ -77,12 +81,13 @@ def main():
         cases = load_cases(Path(args.cases))
         prompts = [build_messages(apply_limits(case_to_inputs(case), count_tokens)) for case in cases]
 
-    warmup = chat(args.host, args.model, prompts[0])
+    think = False if args.no_think else None
+    warmup = chat(args.host, args.model, prompts[0], think)
     print(f"Préchauffage : chargement du modèle {warmup['load_s']} s, total {warmup['total_s']} s")
 
     results = []
     for index, (case, messages) in enumerate(zip(cases, prompts), start=1):
-        result = {"id": case["id"], **chat(args.host, args.model, messages)}
+        result = {"id": case["id"], **chat(args.host, args.model, messages, think)}
         results.append(result)
         print(f"[{index}/{len(cases)}] {case['id']} : 1er token {result['first_token_s']} s · "
               f"total {result['total_s']} s · {result['tokens_per_s']} tokens/s · "
